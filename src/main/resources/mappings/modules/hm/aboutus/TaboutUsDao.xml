@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.hm.dao.aboutus.TaboutUsDao">
+    
+	<sql id="taboutUsColumns">
+		a.id AS "id",
+		a.content AS "content",
+		a.file AS "file",
+		a.dir AS "dir",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="taboutUsJoins">
+	</sql>
+    
+	<select id="get" resultType="TaboutUs">
+		SELECT 
+			<include refid="taboutUsColumns"/>
+		FROM tabout_us a
+		<include refid="taboutUsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="TaboutUs">
+		SELECT 
+			<include refid="taboutUsColumns"/>
+		FROM tabout_us a
+		<include refid="taboutUsJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="content != null and content != ''">
+				AND a.content = #{content}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="TaboutUs">
+		SELECT 
+			<include refid="taboutUsColumns"/>
+		FROM tabout_us a
+		<include refid="taboutUsJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO tabout_us(
+			id,
+			content,
+			file,
+			dir,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{content},
+			#{file},
+			#{dir},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE tabout_us SET 	
+			content = #{content},
+			file = #{file},
+			dir = #{dir},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE tabout_us SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
