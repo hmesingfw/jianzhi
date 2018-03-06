@@ -4,13 +4,19 @@
 package com.thinkgem.jeesite.modules.hm.service.aboutus;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.hm.entity.aboutus.TaboutUs;
+import com.thinkgem.jeesite.modules.hm.web.aboutus.AboutConfig;
 import com.thinkgem.jeesite.modules.hm.dao.aboutus.TaboutUsDao;
 
 /**
@@ -44,4 +50,15 @@ public class TaboutUsService extends CrudService<TaboutUsDao, TaboutUs> {
 		super.delete(taboutUs);
 	}
 	
+	
+	//刷新信息
+	public void flashAboutConfig(){
+		WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+		ServletContext sx = webApplicationContext.getServletContext();
+		
+		//循环遍历出每个键值
+		for (Map.Entry<String, String> entry: AboutConfig.map.entrySet()) {					
+			sx.setAttribute(entry.getKey(), this.get(entry.getValue()));			
+		}		
+	}
 }

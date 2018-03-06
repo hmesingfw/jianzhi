@@ -3,6 +3,9 @@
  */
 package com.thinkgem.jeesite.modules.hm.web.aboutus;
 
+import java.util.Map;
+
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,12 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.hm.entity.aboutus.TaboutUs;
 import com.thinkgem.jeesite.modules.hm.service.aboutus.TaboutUsService;
 
@@ -68,6 +73,7 @@ public class TaboutUsController extends BaseController {
 			return form(taboutUs, model);
 		}
 		taboutUsService.save(taboutUs);
+		taboutUsService.flashAboutConfig();
 		addMessage(redirectAttributes, "保存关于我们信息成功");
 		return "redirect:"+Global.getAdminPath()+"/hm/aboutus/taboutUs/?repage";
 	}
@@ -80,4 +86,7 @@ public class TaboutUsController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/hm/aboutus/taboutUs/?repage";
 	}
 
+
+	
+	
 }
