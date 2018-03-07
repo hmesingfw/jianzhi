@@ -49,7 +49,8 @@
 			<label class="control-label">文件路径：</label>
 			<div class="controls"> 
 				<input type="hidden" id="file" name="file" value="${taboutUs.file}" />
-				<sys:ckfinder input="file" type="thumb" uploadPath="/aboutus/file" selectMultiple="false"/>
+				<sys:ckfinder input="file" type="images" uploadPath="/aboutus/file" selectMultiple="false"/>
+				<span style="margin-left: 40px;color: red;">二维码推荐尺寸 100*100</span>
 			</div>
 		</div>		
 		<div class="control-group">

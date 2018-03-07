@@ -280,7 +280,65 @@ public class Page<T> {
 		
 		return sb.toString();
 	}
-	
+	/**
+	 * 生成前台分页HTML代码
+	 * <div class="page">${page}</div>
+	 */
+	public String frontToString() {
+
+		StringBuilder sb = new StringBuilder();
+		if (pageNo == first) {// 如果是首页
+			sb.append("<a href=\"javascript:\" class=\"btn\">上一页</a>\n");
+		} else {
+			sb.append("<a href=\"javascript:\" class=\"btn\" onclick=\""+funcName+"("+prev+","+pageSize+",'"+funcParam+"');\">上一页</a>\n");
+		}
+		int begin = pageNo - (length / 2);
+		if (begin < first) {
+			begin = first;
+		}
+		int end = begin + length - 1;
+		if (end >= last) {
+			end = last;
+			begin = end - length + 1;
+			if (begin < first) {
+				begin = first;
+			}
+		}
+		if (begin > first) {
+			int i = 0;
+			for (i = first; i < first + slider && i < begin; i++) {
+				sb.append("<a href=\"javascript:\" onclick=\""+funcName+"("+i+","+pageSize+",'"+funcParam+"');\">"
+						+ (i + 1 - first) + "</a>\n");
+			}
+			if (i < begin) {
+				sb.append("<a href=\"javascript:\">...</a>\n");
+			}
+		}
+		for (int i = begin; i <= end; i++) {
+			if (i == pageNo) {
+				sb.append("<a href=\"javascript:\" class=\"btn\">" + (i + 1 - first)
+						+ "</a>\n");
+			} else {
+				sb.append("<a href=\"javascript:\" onclick=\""+funcName+"("+i+","+pageSize+",'"+funcParam+"');\">"
+						+ (i + 1 - first) + "</a>\n");
+			}
+		}
+		if (last - end > slider) {
+			sb.append("<a href=\"javascript:\">...</a>\n");
+			end = last - slider;
+		}
+		for (int i = end + 1; i <= last; i++) {
+			sb.append("<a href=\"javascript:\" onclick=\""+funcName+"("+i+","+pageSize+",'"+funcParam+"');\">"
+					+ (i + 1 - first) + "</a>\n");
+		}
+		if (pageNo == last) {
+			sb.append("<a aria-label=\"Next\" class=\"btn\" href=\"javascript:\">下一页</a>\n");
+		} else {
+			sb.append("<a aria-label=\"Next\" class=\"btn\" href=\"javascript:\" onclick=\""+funcName+"("+next+","+pageSize+",'"+funcParam+"');\">"
+					+ "下一页</a>\n");
+		}
+		return sb.toString();
+	}
 	/**
 	 * 获取分页HTML代码
 	 * @return

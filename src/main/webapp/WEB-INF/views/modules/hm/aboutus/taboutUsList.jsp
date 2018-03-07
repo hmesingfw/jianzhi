@@ -58,7 +58,7 @@
 				
 				<shiro:hasPermission name="hm:aboutus:taboutUs:edit"><td>
     				<a href="${ctx}/hm/aboutus/taboutUs/form?id=${taboutUs.id}">修改</a>
-					<a href="${ctx}/hm/aboutus/taboutUs/delete?id=${taboutUs.id}" onclick="return confirmx('确认要删除该关于我们信息吗？', this.href)">删除</a>
+					<%-- <a href="${ctx}/hm/aboutus/taboutUs/delete?id=${taboutUs.id}" onclick="return confirmx('确认要删除该关于我们信息吗？', this.href)">删除</a> --%>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.hm.dao.banner.ZbannerDao">
+    
+	<sql id="zbannerColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.type AS "type",
+		a.url AS "url",
+		a.filepath AS "filepath",
+		a.weight AS "weight",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="zbannerJoins">
+	</sql>
+    
+	<select id="get" resultType="Zbanner">
+		SELECT 
+			<include refid="zbannerColumns"/>
+		FROM zbanner a
+		<include refid="zbannerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Zbanner">
+		SELECT 
+			<include refid="zbannerColumns"/>
+		FROM zbanner a
+		<include refid="zbannerJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="type != null and type != ''">
+				and a.type = #{type}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC, a.weight desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Zbanner">
+		SELECT 
+			<include refid="zbannerColumns"/>
+		FROM zbanner a
+		<include refid="zbannerJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC, a.weight desc
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zbanner(
+			id,
+			name,
+			type,
+			url,
+			filepath,
+			weight,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{name},
+			#{type},
+			#{url},
+			#{filepath},
+			#{weight},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zbanner SET 	
+			name = #{name},
+			type = #{type},
+			url = #{url},
+			filepath = #{filepath},
+			weight = #{weight},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE zbanner SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

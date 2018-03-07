@@ -1,0 +1,31 @@
+
+.pages {
+	font-size: 0px;
+	text-align: center;
+	height: 29px;
+	margin-top: 20px;
+}
+
+.pages span,
+.pages a {
+	display: inline-block;
+	height: 29px;
+	line-height: 29px;
+	padding: 0px 10px;
+	font-size: 14px;
+	color: #f0f0f0;
+	margin: 0px 5px;
+}
+
+.pages a.btn {
+	background-color: #2574ea !important;
+	color: #fff;
+}
+
+.pages a:hover {
+	background-color: #efefef;
+}
+
+.pages a.cur {
+	color: #2574ea;
+}

@@ -6,10 +6,10 @@
 	<div class="top-bar">
 		<div class="page-width">
 			<nav class="top-bar-menu">
-				<div class="index-logo">
+				<div class="index-logo" onclick="window.location.href='${ctxF}'">
 					<img  src="${ctxStatic}/jianzhi/img/logo.jpg"/>
 					<span>您好，欢迎来到辽宁建执在线教育！</span>
-					<label><img src="${ctxStatic}/jianzhi/icon/phone.png" class="bat4"/>资讯热线：0<span>2</span>4-2<span>3</span>4<span>9</span>7930</label>
+					<label><img src="${ctxStatic}/jianzhi/icon/phone.png" class="bat4"/>资讯热线：${aboutPhone.content}</label>
 				</div>
 			</nav>
 			<div class="top-bar-user" id="nologin">
@@ -20,11 +20,11 @@
 	</div>
 	<div class="index-nav">
 		<div class="index-nav1">
-			<a href="" class="index-click">首页</a>
-			<a href="">全部课程<img src="icon/under.png"/></a>
-			<a href="">在线测试</a>
-			<a href="">在线文库</a>
-			<a href="">新闻资讯</a>
+			<a href="${ctxF}"  ${mendId=='1'?'class="index-click"':'' }>首页</a>
+			<a href=""  ${mendId=='2'?'class="index-click"':'' }>全部课程</a>
+			<a href=""  ${mendId=='3'?'class="index-click"':'' }>在线测试</a>
+			<a href=""  ${mendId=='4'?'class="index-click"':'' }>在线文库</a>
+			<a href="${ctxF}/news" ${mendId=='5'?'class="index-click"':'' }>新闻资讯</a>
 		</div>
 	</div>		
 </header>

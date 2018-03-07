@@ -16,7 +16,10 @@
 	<script src="${ctxStatic}/jianzhi/js/jquery.js"></script>
 	<script src="${ctxStatic}/jianzhi/js/cs.common.js"></script>
   	<link rel="stylesheet" href="${ctxStatic}/jianzhi/css/style.css" />
+
     <!--[if lt IE 9]>
     <script src="https://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
     <![endif]-->    
+
+    <link href="${ctxStatic}/jianzhi/css/page.css" rel="stylesheet" />
 </head>

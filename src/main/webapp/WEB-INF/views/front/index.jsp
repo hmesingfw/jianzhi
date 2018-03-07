@@ -3,21 +3,22 @@
 <!doctype html>
 <html>
 	<jsp:include page="include/head.jsp" />
+	<style type="text/css">
+		.Hhide{
+			display: none !important;
+		}
+	</style>
 <body>
 	<jsp:include page="include/ifie.jsp" />
 	
 	<jsp:include page="include/header.jsp" />
 	<!--// header-->
-    
-
-	
+    	
     <section id="carousel" class="index-carousel">
       	<ul>
-       		<li style="background:url(${ctxStatic}/jianzhi/img/banner2.jpg) no-repeat 50% 50%; "></li>
-			<li style="background:url(${ctxStatic}/jianzhi/img/banner3.jpg) no-repeat 50% 50%; "></li>
-			<li style="background:url(${ctxStatic}/jianzhi/img/banner4.jpg) no-repeat 50% 50%; "></li>
-			<li style="background:url(${ctxStatic}/jianzhi/img/banner5.jpg) no-repeat 50% 50%; "></li>
-			<!--<li style="background:url(img/banner6.jpg) no-repeat 50% 50%; "></li>-->  
+      		<c:forEach items="${aboutBanner}" var="banner" end="4">
+	       		<a href="${banner.url}" target="_blank"><li style="background:url(${banner.filepath}) no-repeat 50% 50%; "></li> </a>
+			</c:forEach>
       	</ul>
     </section>
       <!--头部广告1-->   	
@@ -136,63 +137,52 @@
 	</div>
     <div class="box-inner">
 		<ul class="clearfix">
-			
-            
-<li>
-   
-   <div class="hot-img">
-	 <a href="/cv-1173.aspx" target="_blank" title="运动教程"><img src="${ctxStatic}/jianzhi/img/L131502800435962.jpg" class="m-img" alt="运动教程"></a>
-  </div>
-    <div class="hot-img-info">
-    	<div class="bat">
-		   <h3 class="live1"><a href="/cv-1173.aspx" target="_blank" title="运动教程">施工员必会的计算法，工程计量别再拍脑袋估算了</a></h3>
-		   <p>2107-11-28</p>
-	   </div>
-	    <div class="author-info clearfix">
-                    <span class="ep_name"><a href="http://me.cs.com/tv-180.aspx" title="罗高见" target="_blank">首先，它是编制施工图预算的重要因素，工程量计算是否准确，直接关系到工程
-造价的准确性。其次，工程量是施工企业编制施工作业计划、合理地安排...</a></span>
-                    <!--<span class="ep-name"><a href="/school/0.aspx" target="_blank"></a></span><span class="tc-name"><a href="http://me.cs.com/tv-.aspx?180" title="罗高见" target="_blank">罗高见</a> </span>-->
-             </div>
-    </div>
-   </li>
-	<li>
-		<div class="hot-img-info bat1">
-    	<div class="bat">
-		   <h3 class="live1"><a href="/cv-1173.aspx" target="_blank" title="运动教程">施工员必会的计算法，工程计量别再拍脑袋估算了</a></h3>
-		   <p>2107-11-28</p>
-	   </div>
-	    
-    </div>
-	</li>
-	<li>
-		<div class="hot-img-info bat1">
-    	<div class="bat">
-		   <h3 class="live1"><a href="/cv-1173.aspx" target="_blank" title="运动教程">施工员必会的计算法，工程计量别再拍脑袋估算了</a></h3>
-		   <p>2107-11-28</p>
-	   </div>
-	    
-    </div>
-	</li>
-	<li>
-		<div class="hot-img-info bat1">
-    	<div class="bat">
-		   <h3 class="live1"><a href="/cv-1173.aspx" target="_blank" title="运动教程">施工员必会的计算法，工程计量别再拍脑袋估算了</a></h3>
-		   <p>2107-11-28</p>
-	   </div>
-	    
-    </div>
-	</li>
-	<li>
-		<div class="hot-img-info bat1">
-    	<div class="bat">
-		   <h3 class="live1"><a href="/cv-1173.aspx" target="_blank" title="运动教程">施工员必会的计算法，工程计量别再拍脑袋估算了</a></h3>
-		   <p>2107-11-28</p>
-	   </div>
-	    
-    </div>
-	</li>
+			<c:forEach items="${pageNewList.list}" var="info" varStatus="list">
 
-            
+				<c:choose>
+					<c:when test="${list.index == 0}"> 
+						<li onclick="window.location.href='${ctxF}/newdetail?id=${info.id}'">
+						   	<div class="hot-img">
+								<img src="${info.img}" class="m-img">
+						  	</div>
+						    <div class="hot-img-info">
+						    	<div class="bat">
+								   <h3 class="live1"><a href="javascript:;">${fns:abbr(info.title, 60)}</a></h3>
+								   <p><fmt:formatDate value="${info.updateDate}" pattern="yyyy-MM-dd"/></p>
+								</div>
+							    <div class="author-info clearfix">
+				                   	<span class="ep_name">${fns:abbr(info.introduce, 240)}</span>			                   
+						        </div>
+						    </div>
+						</li>						
+					</c:when>
+		    
+				   	<c:otherwise> 
+						<%-- <li class="Hnew">
+						   	<div class="hot-img Hhide">
+								<img src="${info.img}" class="m-img">
+						  	</div>
+						    <div class="hot-img-info bat1">
+						    	<div class="bat">
+								   <h3 class="live1"><a href="javascript:;">${fns:abbr(info.title, 60)}</a></h3>
+								   <p><fmt:formatDate value="${info.updateDate}" pattern="yyyy-MM-dd"/></p>
+							   	</div>
+							    <div class="author-info clearfix Hhide">
+				                   	<span class="ep_name">${fns:abbr(info.introduce, 240)}</span>			                   
+						        </div>
+						    </div>
+						</li> --%>
+						<li onclick="window.location.href='${ctxF}/newdetail?id=${info.id}'">
+							<div class="hot-img-info bat1">
+						    	<div class="bat">
+								   <h3 class="live1"><a href="javascript:;">${fns:abbr(info.title, 80)}</a></h3>
+								   <p><fmt:formatDate value="${info.updateDate}" pattern="yyyy-MM-dd"/></p>
+							    </div>						    
+					   		</div>
+						</li>
+				   	</c:otherwise>
+				</c:choose>			
+			</c:forEach>
 	    </ul>
 	    <ul class="bat2">
 	    	<h1><span></span>文档下载<label>TOP8↑</label></h1>
@@ -208,34 +198,29 @@
 </div>  
   
   
-  <div class="bat3">
-  	<h1>友情链接：</h1>
-  	<div class="bat3-div">
-  		<a href=""><img src="${ctxStatic}/jianzhi/icon/pic1.png"/></a>
-  		<a href=""><img src="${ctxStatic}/jianzhi/icon/pic2.png"/></a>
-  		<a href=""><img src="${ctxStatic}/jianzhi/icon/pic3.png"/></a>
-  		<a href=""><img src="${ctxStatic}/jianzhi/icon/pic4.png"/></a>
-  	</div>
-  </div>
-  
-  
-  
+  		<div class="bat3">
+		  	<h1>友情链接：</h1>
+		  	<div class="bat3-div">
+		  		<c:forEach items="${aboutFriendship}" var="ship" end="3">
+			  		<a href="${ship.url}" target="_blank"><img src="${ship.filepath}"/></a>
+			  	</c:forEach>
+		  	</div>
+	  	</div>
 
 
 	    </section>
     </div>
-    <!--// indexCourseList-->
 	
 	
 	
 	<jsp:include page="include/footer.jsp" /> 
-	<!--//footer-->
 
     <aside class="aside-operate">
     	<ul>    		 
     		<li onclick="goTop()"><span>返回<br />头部</span><i class="edufont e-icon-top"></i></li>
     	</ul>
     </aside>  
+
 
 <script src="${ctxStatic}/jianzhi/js/imgload.js"></script>
 <script src="${ctxStatic}/jianzhi/js/cs.assembly.js"></script>
@@ -297,9 +282,7 @@ $(".indexCourseList").find(".box").each(function() {
 	if (courseLength == 0) {
 		$(this).remove()
 	}
-});
-//懒加载
-imgLoad('m-img','/tp/PC/skin055/images/common/none.png');
+}); 
 
 </script>
 </body>

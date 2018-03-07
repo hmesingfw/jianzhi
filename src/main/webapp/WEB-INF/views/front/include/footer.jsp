@@ -8,7 +8,7 @@
 				<h3>新闻中心</h3>
 				<ul>
 					<li>
-						<a href="http://me.cs.com/a/1255.aspx" target="_blank">公司新闻</a>
+						<a href="${ctxF}/news" target="_blank">新闻资讯</a>
 					</li>
 					<li>
 						<a href="http://me.cs.com/a/1256.aspx" target="_blank">文件下载</a>
@@ -41,15 +41,16 @@
 				<ul>
 					<h3>联系我们</h3>
 					<li>
-						<a href="">
-							<span style="font-size: 24px;">400-008-0263</span>( 9:00-24:00 )</a>
-						<a href="">地址：沈阳市和平区市府大路55号年华国际大厦1210室</a>
+						<a href="javascript:;">
+							<span style="font-size: 24px;">${aboutPhone.content}</span>
+						</a><br>
+						<a href="javascript:;">${aboutAdress.content}</a>
 					</li>
 				</ul>
 			</div>
 			<div class="tel-item">
 				<div class="tel">
-					<img src="${ctxStatic}/jianzhi/img/116815.jpg" style="height: 100px;" />
+					<img src="${aboutCode.file}" style="height: 100px;" />
 					<br />
 					<span>关注微信公众号</span>
 				</div>
@@ -57,7 +58,7 @@
 			</div>
 		</div>
 		<div class="foot_inner clearfix">
-			<img src="${ctxStatic}/jianzhi/icon/icon1.png" /> 版权所有 辽ICP备14011102号
+			<img src="${ctxStatic}/jianzhi/icon/icon1.png" /> ${aboutIpc.content}
 		</div>
 	</div>
 </footer>
