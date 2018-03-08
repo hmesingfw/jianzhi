@@ -30,12 +30,7 @@
         }
 	</script>
     
-	<div class="page-width" style="margin-top: 30px;">
-		
-		<form id="searchForm" action="${ctxF}/news" method="post" style="display:none">
-			<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
-			<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
-		</form>
+	<div class="page-width" style="margin-top: 30px;">			
 		
 		<section class="newslist clearfix">
 			<div class="news-newslistl fl">
@@ -71,6 +66,12 @@
 			<div class="news-newslistr fr">	 
 				
 				<section class="newslistrn1">
+					<form id="searchForm" action="${ctxF}/news" method="post" >
+						<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+						<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
+						<div style="overflow: hidden;margin-top: 10px;"><input type="text" name="title" value="${znew.title}" style="height: 30px;padding: 0px 10px;width: 60%;float: left;"><button style="height: 34px;float: right;width: 25%;background: #4076D4;color: #fff;border: none;">搜索</button></div>
+					</form>
+
 				  	<div class="panel-heading">
 						<h3 class="panel-title">推荐新闻</h3>
 				  	</div>

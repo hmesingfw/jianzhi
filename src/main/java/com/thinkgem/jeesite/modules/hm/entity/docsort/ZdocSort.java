@@ -3,10 +3,14 @@
  */
 package com.thinkgem.jeesite.modules.hm.entity.docsort;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
@@ -61,6 +65,9 @@ public class ZdocSort extends DataEntity<ZdocSort> {
 	}
 	
 	public String getSort() {
+		if(sort==null || "".equals(sort)){
+			sort = "0";
+		}
 		return sort;
 	}
 
@@ -85,5 +92,29 @@ public class ZdocSort extends DataEntity<ZdocSort> {
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	
+	
+	
+	@JsonIgnore
+	public static void sortList(List<ZdocSort> list, List<ZdocSort> sourcelist, String parentId, boolean cascade){
+		for (int i=0; i<sourcelist.size(); i++){
+			ZdocSort e = sourcelist.get(i);
+			if (e.getParent()!=null && e.getParent().equals(parentId)){
+				list.add(e);
+				if (cascade){
+					// 判断是否还有子节点, 有则继续获取子节点
+					for (int j=0; j<sourcelist.size(); j++){
+						ZdocSort child = sourcelist.get(j);
+						if (child.getParent()!=null && child.getParent().equals(e.getId())){
+							sortList(list, sourcelist, e.getId(), true);
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	
 	
 }

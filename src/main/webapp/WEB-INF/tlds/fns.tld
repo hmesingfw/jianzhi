@@ -243,5 +243,23 @@
     <function-signature>java.lang.String toJsonString(java.lang.Object)</function-signature>
     <example>${fns:toJson(object)}</example>  
   </function>
+
+
+  <function>
+    <description>文档分类列表</description>
+    <name>getDocSortList</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZdocSortUtils</function-class>
+    <function-signature>java.util.List getDocSortList()</function-signature>
+    <example>${fns:getDocSortList()}</example>  
+  </function>
+
+  <function>
+    <description>文档分类信息</description>
+    <name>getDocSort</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZdocSortUtils</function-class>
+    <function-signature>com.thinkgem.jeesite.modules.hm.entity.docsort.ZdocSort getDocSort(java.lang.String)</function-signature>
+    <example>${fns:getDocSort(id)}</example>  
+  </function>
+
   
 </taglib>

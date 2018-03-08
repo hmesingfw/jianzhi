@@ -23,7 +23,7 @@
 			<a href="${ctxF}"  ${mendId=='1'?'class="index-click"':'' }>首页</a>
 			<a href=""  ${mendId=='2'?'class="index-click"':'' }>全部课程</a>
 			<a href=""  ${mendId=='3'?'class="index-click"':'' }>在线测试</a>
-			<a href=""  ${mendId=='4'?'class="index-click"':'' }>在线文库</a>
+			<a href="${ctxF}/sortlist"  ${mendId=='4'?'class="index-click"':'' }>在线文库</a>
 			<a href="${ctxF}/news" ${mendId=='5'?'class="index-click"':'' }>新闻资讯</a>
 		</div>
 	</div>		

@@ -577,6 +577,73 @@
 		</dependency>
 		<!-- CKFinder end -->
 		
+		<!-- offic -->
+		<dependency>
+			<groupId>com.jacob</groupId>
+			<artifactId>jacob</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/jacob.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.iText</groupId>
+			<artifactId>iText</artifactId>
+			<version>2.1.4</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/iText-2.1.4.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.jodconverter</groupId>
+			<artifactId>jodconverter</artifactId>
+			<version>2.2.2</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/jodconverter-2.2.2.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.PDFRenderer</groupId>
+			<artifactId>PDFRenderer</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/PDFRenderer.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>1.8.13</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/pdfbox-1.8.13.jar</systemPath>
+		</dependency>		
+				
+		<dependency>
+			<groupId>com.juh</groupId>
+			<artifactId>juh</artifactId>
+			<version>3.0.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/juh-3.0.1.jar</systemPath>
+		</dependency>
+			
+		<dependency>
+			<groupId>com.jurt</groupId>
+			<artifactId>jurt</artifactId>
+			<version>3.0.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/jurt-3.0.1.jar</systemPath>
+		</dependency>
+					
+		<dependency>
+			<groupId>com.ridl</groupId>
+			<artifactId>ridl</artifactId>
+			<version>3.0.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ridl-3.0.1.jar</systemPath>
+		</dependency> 
+		
+		
+		<!-- offic end -->
 		<!-- TEST begin -->
 		<dependency>
 			<groupId>junit</groupId>

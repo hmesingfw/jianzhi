@@ -4,7 +4,7 @@
     
 	<sql id="zdocSortColumns">
 		a.id AS "id",
-		a.parent_id AS "parent.id",
+		a.parent_id AS "parent",
 		a.parent_ids AS "parentIds",
 		a.name AS "name",
 		a.sort AS "sort",
@@ -42,13 +42,17 @@
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
+			<if test="parent != null and parent != ''">
+				AND a.parent_id = #{parent}
+					 
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.update_date DESC,a.sort desc
 			</otherwise>
 		</choose>
 	</select>
@@ -66,7 +70,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.update_date DESC,a.sort desc
 			</otherwise>
 		</choose>
 	</select>
@@ -88,7 +92,7 @@
 			del_flag
 		) VALUES (
 			#{id},
-			#{parent.id},
+			#{parent},
 			#{parentIds},
 			#{name},
 			#{sort},
@@ -105,7 +109,7 @@
 	
 	<update id="update">
 		UPDATE zdoc_sort SET 	
-			parent_id = #{parent.id},
+			parent_id = #{parent},
 			parent_ids = #{parentIds},
 			name = #{name},
 			sort = #{sort},
@@ -123,4 +127,10 @@
 		WHERE id = #{id}
 	</update>
 	
+	
+	<update id="deleteParent">
+		UPDATE zdoc_sort SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE parent_id = #{parent}
+	</update>
 </mapper>

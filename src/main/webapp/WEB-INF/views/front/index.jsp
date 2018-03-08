@@ -14,13 +14,7 @@
 	<jsp:include page="include/header.jsp" />
 	<!--// header-->
     	
-    <section id="carousel" class="index-carousel">
-      	<ul>
-      		<c:forEach items="${aboutBanner}" var="banner" end="4">
-	       		<a href="${banner.url}" target="_blank"><li style="background:url(${banner.filepath}) no-repeat 50% 50%; "></li> </a>
-			</c:forEach>
-      	</ul>
-    </section>
+    <jsp:include page="include/banner.jsp" />
       <!--头部广告1-->   	
     
   	
@@ -186,13 +180,11 @@
 	    </ul>
 	    <ul class="bat2">
 	    	<h1><span></span>文档下载<label>TOP8↑</label></h1>
-	    	<li><a href=""><img src="${ctxStatic}/jianzhi/icon/lianjie.png" />关于领取2016年10月机考准考</a></li>
-	    	<li><a href=""><img src="${ctxStatic}/jianzhi/icon/lianjie.png" />关于领取2016年10月机考准考</a></li>
-	    	<li><a href=""><img src="${ctxStatic}/jianzhi/icon/lianjie.png" />关于领取2016年10月机考准考</a></li>
-	    	<li><a href=""><img src="${ctxStatic}/jianzhi/icon/lianjie.png" />关于领取2016年10月机考准考</a></li>
-	    	<li><a href=""><img src="${ctxStatic}/jianzhi/icon/lianjie.png" />关于领取2016年10月机考准考</a></li>
-	    	<li><a href=""><img src="${ctxStatic}/jianzhi/icon/lianjie.png" />关于领取2016年10月机考准考</a></li>
-	    	<li><a href=""><img src="${ctxStatic}/jianzhi/icon/lianjie.png" />关于领取2016年10月机考准考</a></li>
+	    	
+	    	<c:forEach items="${zoctoplist}" var="info">
+	    		<li><a href=""><img src="${ctxStatic}/jianzhi/icon/lianjie.png" />${info.title}</a></li>
+	    	</c:forEach>    	
+	    	
 	    </ul>
     </div>
 </div>  

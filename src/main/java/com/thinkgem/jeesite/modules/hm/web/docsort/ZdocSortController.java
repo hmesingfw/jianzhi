@@ -3,6 +3,9 @@
  */
 package com.thinkgem.jeesite.modules.hm.web.docsort;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -50,11 +53,11 @@ public class ZdocSortController extends BaseController {
 	@RequiresPermissions("hm:docsort:zdocSort:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(ZdocSort zdocSort, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<ZdocSort> page = zdocSortService.findPage(new Page<ZdocSort>(request, response), zdocSort); 
+		List<ZdocSort> list = new ArrayList<ZdocSort>();
+		List<ZdocSort> sortlist = zdocSortService.findList(zdocSort);
+		ZdocSort.sortList(list, sortlist, "0", true);
 		
-		 
-		
-		model.addAttribute("page", page);
+		model.addAttribute("list", list);		
 		return "modules/hm/docsort/zdocSortList";
 	}
 
@@ -71,7 +74,7 @@ public class ZdocSortController extends BaseController {
 		if (!beanValidator(model, zdocSort)){
 			return form(zdocSort, model);
 		}
-		System.out.println(zdocSort);
+		
 		zdocSortService.save(zdocSort);
 		addMessage(redirectAttributes, "保存文档分类成功");
 		return "redirect:"+Global.getAdminPath()+"/hm/docsort/zdocSort/?repage";

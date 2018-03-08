@@ -14,5 +14,5 @@ import com.thinkgem.jeesite.modules.hm.entity.docsort.ZdocSort;
  */
 @MyBatisDao
 public interface ZdocSortDao extends CrudDao<ZdocSort> {
-	
+	public int deleteParent(ZdocSort zdocSort);
 }
