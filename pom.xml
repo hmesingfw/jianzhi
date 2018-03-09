@@ -642,6 +642,21 @@
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ridl-3.0.1.jar</systemPath>
 		</dependency> 
 		
+		<dependency>
+			<groupId>com.unoil</groupId>
+			<artifactId>unoil</artifactId>
+			<version>3.0.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/unoil-3.0.1.jar</systemPath>
+		</dependency> 
+		
+		<dependency>
+			<groupId>com.fontbox</groupId>
+			<artifactId>fontbox</artifactId>
+			<version>1.8.13</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/fontbox-1.8.13.jar</systemPath>
+		</dependency> 
 		
 		<!-- offic end -->
 		<!-- TEST begin -->

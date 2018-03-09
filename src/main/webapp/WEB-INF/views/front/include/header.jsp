@@ -13,7 +13,7 @@
 				</div>
 			</nav>
 			<div class="top-bar-user" id="nologin">
-				<a href="http://me.cs.com/login.aspx" target="_blank" class="bat5"><img src="${ctxStatic}/jianzhi/icon/user.png" />登录</a>
+				<a href="${ctxF}/gotologin" target="_blank" class="bat5"><img src="${ctxStatic}/jianzhi/icon/user.png" />登录</a>
 	            <a href="http://me.cs.com/reg.aspx" target="_blank">注册</a>
 			</div>
 		</div>

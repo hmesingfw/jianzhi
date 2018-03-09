@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.hm.dao.user.ZuserDao">
+    
+	<sql id="zuserColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.img AS "img",
+		a.password AS "password",
+		a.title AS "title",
+		a.major AS "major",
+		a.idcode AS "idcode",
+		a.truename AS "truename",
+		a.sex AS "sex",
+		a.age AS "age",
+		a.ethnic AS "ethnic",
+		a.xmajor AS "xmajor",
+		a.education AS "education",
+		a.employer AS "employer",
+		a.worklength AS "worklength",
+		a.adress AS "adress",
+		a.adresscode AS "adresscode",
+		a.phone AS "phone",
+		a.email AS "email",
+		a.type AS "type",
+		a.status AS "status",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="zuserJoins">
+	</sql>
+    
+	<select id="get" resultType="Zuser">
+		SELECT 
+			<include refid="zuserColumns"/>
+		FROM zuser a
+		<include refid="zuserJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Zuser">
+		SELECT 
+			<include refid="zuserColumns"/>
+		FROM zuser a
+		<include refid="zuserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+			<if test="idcode != null and idcode != ''">
+				AND a.idcode = #{idcode}
+			</if>
+			<if test="truename != null and truename != ''">
+				AND a.truename = #{truename}
+			</if>
+			<if test="phone != null and phone != ''">
+				AND a.phone = #{phone}
+			</if>
+			<if test="createDate != null and createDate != ''">
+				AND a.create_date = #{createDate}
+			</if>
+			
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			
+			<if test="password != null and password != ''">
+				AND a.password = #{password}
+			</if>
+			
+			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Zuser">
+		SELECT 
+			<include refid="zuserColumns"/>
+		FROM zuser a
+		<include refid="zuserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zuser(
+			id,
+			name,
+			img,
+			password,
+			title,
+			major,
+			idcode,
+			truename,
+			sex,
+			age,
+			ethnic,
+			xmajor,
+			education,
+			employer,
+			worklength,
+			adress,
+			adresscode,
+			phone,
+			email,
+			type,
+			status,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{name},
+			#{img},
+			#{password},
+			#{title},
+			#{major},
+			#{idcode},
+			#{truename},
+			#{sex},
+			#{age},
+			#{ethnic},
+			#{xmajor},
+			#{education},
+			#{employer},
+			#{worklength},
+			#{adress},
+			#{adresscode},
+			#{phone},
+			#{email},
+			#{type},
+			#{status},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zuser SET 	
+			name = #{name},
+			img = #{img},
+			password = #{password},
+			title = #{title},
+			major = #{major},
+			idcode = #{idcode},
+			truename = #{truename},
+			sex = #{sex},
+			age = #{age},
+			ethnic = #{ethnic},
+			xmajor = #{xmajor},
+			education = #{education},
+			employer = #{employer},
+			worklength = #{worklength},
+			adress = #{adress},
+			adresscode = #{adresscode},
+			phone = #{phone},
+			email = #{email},
+			type = #{type},
+			status = #{status},
+			create_date = #{createDate},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE zuser SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

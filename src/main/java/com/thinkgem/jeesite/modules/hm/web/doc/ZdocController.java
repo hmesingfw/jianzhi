@@ -76,7 +76,6 @@ public class ZdocController extends BaseController {
 		if("2".equals(zdoc.getFiletype())){			
 			if(zdoc.getFiles()!=null && !"".equals(zdoc.getFiles())){
 				String string = zdoc.getFiles();
-				System.out.println(string);
 				//string 为当前要转换的文件
 				String name = string.substring(string.lastIndexOf("/"), string.lastIndexOf("."));
 				String filetype = string.substring(string.lastIndexOf(".") + 1, string.length());
@@ -91,7 +90,6 @@ public class ZdocController extends BaseController {
 				String dfile = path + name + "." + filetype;		//当前文件 service下的路径	
 				String filepath = request.getSession().getServletContext().getRealPath("/") + dfile; 		//当前文件的绝对路径		
 				
-				System.out.println(filepath);
 				File file = new File(filepath);
 				String savefilepath = request.getSession().getServletContext().getRealPath("/");
 				if ("docx".equals(filetype) || "doc".equals(filetype) || "xls".equals(filetype)
@@ -101,8 +99,11 @@ public class ZdocController extends BaseController {
 					System.out.println(savefilepath);
 					System.out.println(filepathname);
 //					//最后得到的pdf
-//					String sile = filepathname.substring(savefilepath.length()-1, filepathname.length());
-//					System.out.println(sile);
+					String sile = filepathname.substring(savefilepath.length()-1, filepathname.length());
+					System.out.println(sile);
+					
+					sile = sile.replaceAll("\\\\", "/");
+					zdoc.setFiles("/jianzhi"+sile);
 				}
 			}			
 		}

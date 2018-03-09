@@ -115,18 +115,24 @@
 								<div class="litit">								
 										
 									<c:choose>
-										<c:when test="${info.filetype == 1 || info.filetype == 3}"> 
+										<c:when test="${info.filetype == 1}"> 
 											<a href="${ctxF}/doclook?id=${info.id}" target="_blank">
 												<img src="${ctxStatic}/jianzhi/img/doc.gif" />
 													${info.title}
 											</a>
 										</c:when>
 	    								<c:when test="${info.filetype == 2}"> 
-	    									<a href="${info.files}" >
+	    									<a href="${ctxF}/doclook?id=${info.id}" target="_blank">
 												<img src="${ctxStatic}/jianzhi/img/doc.gif" />
 													${info.title}
 											</a>
-										</c:when>										
+										</c:when>		
+										<c:when test="${info.filetype == 3}"> 
+	    									<a href="${ctxF}/doclook?id=${info.id}" target="_blank">
+												<img src="${ctxStatic}/jianzhi/img/doc.gif" />
+													${info.title}
+											</a>
+										</c:when>									
 			   							<c:otherwise> 
 			   								<a href="javascript:;" >
 												<img src="${ctxStatic}/jianzhi/img/doc.gif" />

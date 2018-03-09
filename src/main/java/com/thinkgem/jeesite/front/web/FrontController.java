@@ -15,11 +15,13 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.modules.hm.entity.doc.Zdoc;
 import com.thinkgem.jeesite.modules.hm.entity.docsort.ZdocSort;
 import com.thinkgem.jeesite.modules.hm.entity.news.Znew;
+import com.thinkgem.jeesite.modules.hm.entity.user.Zuser;
 import com.thinkgem.jeesite.modules.hm.service.aboutus.TaboutUsService;
 import com.thinkgem.jeesite.modules.hm.service.banner.ZbannerService;
 import com.thinkgem.jeesite.modules.hm.service.doc.ZdocService;
 import com.thinkgem.jeesite.modules.hm.service.docsort.ZdocSortService;
 import com.thinkgem.jeesite.modules.hm.service.news.ZnewService;
+import com.thinkgem.jeesite.modules.hm.service.user.ZuserService;
 
 /**
  * 前端展示页面
@@ -46,7 +48,9 @@ public class FrontController {
 //	文档分类管理
 	@Autowired
 	private ZdocSortService zdocSortService;
-
+//	用户信息管理
+	@Autowired
+	private ZuserService zuserService;
 	/**
 	 * 首页管理
 	 * 
@@ -194,5 +198,58 @@ public class FrontController {
 		zdocService.updateLook(zdoc);
 		model.addAttribute("zdoc", zdoc);
 		return "front/gotolookdoc";
+	}
+	
+	/**
+	 * 跳转登陆页面 
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value ="gotologin")
+	public String gotologin(HttpServletRequest request, HttpServletResponse response, Model model){
+		return "front/login";
+	}
+	
+	
+	/**
+	 * 登陆
+	 * @param zuser
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value ="login")
+	public String login(Zuser zuser,HttpServletRequest request, HttpServletResponse response, Model model){
+		List<Zuser> userlist = zuserService.findList(zuser);
+		if(userlist!=null && userlist.size()==1){
+			Zuser user = userlist.get(0);
+			if("1".equals(user.getDelFlag())){
+				model.addAttribute("msg", "账户不存在");
+				return "front/login";
+			}
+			
+			if("2".equals(user.getStatus())){
+				model.addAttribute("msg", "账号停用中");
+				return "front/login";
+			}
+			
+			if("3".equals(user.getStatus())){
+				model.addAttribute("msg", "账号审核中");
+				return "front/login";
+			}
+			request.getSession().setAttribute("myinfo", user);
+		}else{
+			if(userlist!=null && userlist.size()>1){
+				model.addAttribute("msg", "输入异常，请重新输入");
+				return "front/login";
+			}else{
+				model.addAttribute("msg", "账户密码错误，请重新输入");
+				return "front/login";
+			}			
+		}		
+		return "front/myinfo";
 	}
 }

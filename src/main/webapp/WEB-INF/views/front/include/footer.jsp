@@ -11,7 +11,7 @@
 						<a href="${ctxF}/news" target="_blank">新闻资讯</a>
 					</li>
 					<li>
-						<a href="http://me.cs.com/a/1256.aspx" target="_blank">文件下载</a>
+						<a href="${ctxF}/sortlist" target="_blank">文件下载</a>
 					</li>
 				</ul>
 			</div>

@@ -19,8 +19,10 @@ public class ZdocSortUtils {
 	public static List<ZdocSort> getDocSortList(){
 		@SuppressWarnings("unchecked")
 		List<ZdocSort> list = (List<ZdocSort>)CacheUtils.get(CACHE_COURSE_LIST);
+		ZdocSort sort = new ZdocSort();
+		sort.setDelFlag("0");
 		if (list==null){
-			list = zdocsortDao.findAllList(new ZdocSort());
+			list = zdocsortDao.findAllList(sort);
 			CacheUtils.put(CACHE_COURSE_LIST, list);
 		}
 		return list;
@@ -34,8 +36,10 @@ public class ZdocSortUtils {
 	public static ZdocSort getDocSort(String id){
 		@SuppressWarnings("unchecked")
 		List<ZdocSort> list = (List<ZdocSort>)CacheUtils.get(CACHE_COURSE_LIST);
+		ZdocSort sort = new ZdocSort();
+		sort.setDelFlag("0");
 		if (list==null){
-			list = zdocsortDao.findAllList(new ZdocSort());
+			list = zdocsortDao.findAllList(sort);
 			CacheUtils.put(CACHE_COURSE_LIST, list);
 		}
 		for(ZdocSort obj : list) {

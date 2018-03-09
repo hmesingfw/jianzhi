@@ -68,7 +68,8 @@ public class DocConverter {
 	private void doc2pdf(String viewfilename) throws Exception {
 		if (docFile.exists()) {
 			if (!pdfFile.exists()) {
-				OpenOfficeConnection connection = new SocketOpenOfficeConnection(8100);
+				OpenOfficeConnection connection = new SocketOpenOfficeConnection("127.0.0.1",8100);
+//				OpenOfficeConnection connection = new SocketOpenOfficeConnection(8100);
 				try {
 					connection.connect();
 					DocumentConverter converter = new OpenOfficeDocumentConverter(connection);
@@ -311,7 +312,7 @@ public class DocConverter {
 			//转换至PDF
 			//doc2pdf(viewfilename);
 			//获取截图
-			fileimage = getImageByPdf(thepdffile,viewfilename);
+//			fileimage = getImageByPdf(thepdffile,viewfilename);
 			System.out.println("fileimage :"+fileimage);
 			//转换swf
 			//pdf2swf(thepdffile,viewfilename);
@@ -392,10 +393,10 @@ public class DocConverter {
                     tag.getGraphics().drawImage(img, 0, 0, rect.width, rect.height,null);   
                     
                     String imagefilepath = pdfFile.getParent()+"/"+viewfilename+".jpg";
-                    FileOutputStream out = new FileOutputStream(imagefilepath);  
-                    JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);    
-                    encoder.encode(tag); // JPEG编码    
-                    out.close();   
+//                    FileOutputStream out = new FileOutputStream(imagefilepath);  
+//                    JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);    
+//                    encoder.encode(tag); // JPEG编码    
+//                    out.close();   
                     System.out.println("imagefilepath :"+imagefilepath);
                     return viewfilename+".jpg";
             }  
@@ -447,12 +448,12 @@ public class DocConverter {
                     BufferedImage tag = new BufferedImage(rect.width, rect.height,     BufferedImage.TYPE_INT_RGB);    
                     tag.getGraphics().drawImage(img, 0, 0, rect.width, rect.height,null);   
                     
-                    String imagefilepath = thepdffile.getParent()+"/"+viewfilename+".jpg";
-                    FileOutputStream out = new FileOutputStream(imagefilepath);  
-                    JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);    
-                    encoder.encode(tag); // JPEG编码    
-                    out.close();   
-                    System.out.println("imagefilepath :"+imagefilepath);
+//                    String imagefilepath = thepdffile.getParent()+"/"+viewfilename+".jpg";
+//                    FileOutputStream out = new FileOutputStream(imagefilepath);  
+//                    JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);    
+//                    encoder.encode(tag); // JPEG编码    
+//                    out.close();   
+//                    System.out.println("imagefilepath :"+imagefilepath);
                     return viewfilename+".jpg";
             }  
           

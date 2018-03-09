@@ -261,5 +261,22 @@
     <example>${fns:getDocSort(id)}</example>  
   </function>
 
+
+
+  <function>
+    <description>课程专业分类列表</description>
+    <name>getCourseSortList</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZcourseSortUtils</function-class>
+    <function-signature>java.util.List getCourseSortList()</function-signature>
+    <example>${fns:getCourseSortList()}</example>  
+  </function>
+
+  <function>
+    <description>课程专业分类信息</description>
+    <name>getCourseSort</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZcourseSortUtils</function-class>
+    <function-signature>com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort getDocSort(java.lang.String)</function-signature>
+    <example>${fns:getCourseSort(id)}</example>  
+  </function>
   
 </taglib>
