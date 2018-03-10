@@ -13,8 +13,15 @@
 				</div>
 			</nav>
 			<div class="top-bar-user" id="nologin">
-				<a href="${ctxF}/gotologin" target="_blank" class="bat5"><img src="${ctxStatic}/jianzhi/icon/user.png" />登录</a>
-	            <a href="http://me.cs.com/reg.aspx" target="_blank">注册</a>
+				<c:choose>
+		        	<c:when test="${!empty sessionMyinfo}">
+						<a href="${ctxF}/myinfo">${sessionMyinfo.name}</a>
+	            	</c:when>
+	        		<c:otherwise>
+	        			<a href="${ctxF}/gotologin"  class="bat5"><img src="${ctxStatic}/jianzhi/icon/user.png" />登录</a>
+			            <a href="http://me.cs.com/reg.aspx" target="_blank">注册</a>
+	        		</c:otherwise>
+	        </c:choose>
 			</div>
 		</div>
 	</div>

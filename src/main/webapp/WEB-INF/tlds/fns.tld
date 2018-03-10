@@ -275,8 +275,44 @@
     <description>课程专业分类信息</description>
     <name>getCourseSort</name>
     <function-class>com.thinkgem.jeesite.modules.hm.utils.ZcourseSortUtils</function-class>
-    <function-signature>com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort getDocSort(java.lang.String)</function-signature>
+    <function-signature>com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort getCourseSort(java.lang.String)</function-signature>
     <example>${fns:getCourseSort(id)}</example>  
   </function>
   
+
+  <function>
+    <description>用户列表</description>
+    <name>getZuserList</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZuserUtils</function-class>
+    <function-signature>java.util.List getZuserList()</function-signature>
+    <example>${fns:getZuserList()}</example>  
+  </function>
+
+  <function>
+    <description>用户信息</description>
+    <name>getZuser</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZuserUtils</function-class>
+    <function-signature>com.thinkgem.jeesite.modules.hm.entity.user.Zuser getZuser(java.lang.String)</function-signature>
+    <example>${fns:getZuser(id)}</example>  
+  </function>
+
+
+
+   <function>
+    <description>文档列表</description>
+    <name>getDocList</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZdocUtils</function-class>
+    <function-signature>java.util.List getDocList()</function-signature>
+    <example>${fns:getDocList()}</example>  
+  </function>
+
+  <function>
+    <description>文档信息</description>
+    <name>getDoc</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZdocUtils</function-class>
+    <function-signature>com.thinkgem.jeesite.modules.hm.entity.doc.Zdoc getDoc(java.lang.String)</function-signature>
+    <example>${fns:getDoc(id)}</example>  
+  </function>
+
+
 </taglib>

@@ -43,7 +43,7 @@
 			<label class="control-label">头像：</label>
 			<div class="controls">
 				<form:hidden id="img" path="img" htmlEscape="false" maxlength="400" class="input-xlarge"/>
-				<sys:ckfinder input="img" type="files" uploadPath="/hm/user/zuser" selectMultiple="true"/>
+				<sys:ckfinder input="img" type="images" uploadPath="/hm/user/zuser" selectMultiple="false"/>
 			</div>
 		</div>
 		<div class="control-group">

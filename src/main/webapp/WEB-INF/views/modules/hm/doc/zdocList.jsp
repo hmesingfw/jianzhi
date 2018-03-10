@@ -68,7 +68,8 @@
 			<tr>
 				<th>标题</th>
 				<th>文件类型</th>
-				<th>是否推荐</th>
+				<th>浏览量</th>
+				<th>下载量</th>
 				<th>文档分类</th>
 				<th>用户类型</th>
 				<th>更新时间</th>
@@ -84,9 +85,8 @@
 				<td>
 					${fns:getDictLabel(zdoc.filetype, 'doc_type', '')}
 				</td>
-				<td>
-					${fns:getDictLabel(zdoc.iscom, 'doc_commend', '')}
-				</td>
+				<td>${zdoc.look}</td>
+				<td>${zdoc.down}</td>
 				<td>
 					${fns:getDocSort(zdoc.sortid).name}
 				</td>

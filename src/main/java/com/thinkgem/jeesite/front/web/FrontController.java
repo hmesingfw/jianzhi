@@ -1,5 +1,6 @@
 package com.thinkgem.jeesite.front.web;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,18 +11,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.FileUtils;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.hm.entity.doc.Zdoc;
 import com.thinkgem.jeesite.modules.hm.entity.docsort.ZdocSort;
 import com.thinkgem.jeesite.modules.hm.entity.news.Znew;
 import com.thinkgem.jeesite.modules.hm.entity.user.Zuser;
+import com.thinkgem.jeesite.modules.hm.entity.userdoc.ZuserDoc;
 import com.thinkgem.jeesite.modules.hm.service.aboutus.TaboutUsService;
 import com.thinkgem.jeesite.modules.hm.service.banner.ZbannerService;
 import com.thinkgem.jeesite.modules.hm.service.doc.ZdocService;
 import com.thinkgem.jeesite.modules.hm.service.docsort.ZdocSortService;
 import com.thinkgem.jeesite.modules.hm.service.news.ZnewService;
 import com.thinkgem.jeesite.modules.hm.service.user.ZuserService;
+import com.thinkgem.jeesite.modules.hm.service.userdoc.ZuserDocService;
 
 /**
  * 前端展示页面
@@ -51,6 +58,9 @@ public class FrontController {
 //	用户信息管理
 	@Autowired
 	private ZuserService zuserService;
+//	用户文档下载记录管理
+	@Autowired
+	private ZuserDocService zuserDocService;
 	/**
 	 * 首页管理
 	 * 
@@ -137,6 +147,8 @@ public class FrontController {
 	 */
 	@RequestMapping(value = "sortlist")
 	public String sortlist(Zdoc zdoc, HttpServletRequest request, HttpServletResponse response, Model model){
+		Zuser user = (Zuser)request.getSession().getAttribute("sessionMyinfo");
+		
 		model.addAttribute("mendId", "4");	
 		//选择的分类的列表
 		List<String> sortlist = new ArrayList<String>();
@@ -149,7 +161,7 @@ public class FrontController {
 		/**分类信息列表*/
 		//一级分类
 		ZdocSort zdocSort = new ZdocSort();
-		zdocSort.setParent("0");
+		zdocSort.setParent("0");		
 		List<ZdocSort> docsort = zdocSortService.findList(zdocSort);
 		model.addAttribute("docsort", docsort);
 		
@@ -175,6 +187,14 @@ public class FrontController {
 		}
 		
 		zdoc.setSortlist(sortlist);
+		if(user==null || StringUtils.isBlank(user.getId())) {
+			zdoc.setUsertype("2");
+		}else{
+			//当前用户是不是注册用户
+			if("2".equals(user.getType())){
+				zdoc.setUsertype("2");
+			}
+		}
 		//主体内容
 		Page<Zdoc> page = zdocService.findPage(new Page<Zdoc>(request, response), zdoc); 
 		model.addAttribute("page", page);	
@@ -199,6 +219,48 @@ public class FrontController {
 		model.addAttribute("zdoc", zdoc);
 		return "front/gotolookdoc";
 	}
+	
+	/**
+     * 下载文件-本地
+     * @param path
+     * @param request
+     * @param response
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "docDown")
+    public String docDown(@RequestParam(required=true, value="docId")String docId,HttpServletRequest request, HttpServletResponse response) {
+    	Zuser user = (Zuser)request.getSession().getAttribute("sessionMyinfo");
+		if(user==null || StringUtils.isBlank(user.getId())) {
+			return "请登录";
+		}
+		
+		Zdoc zdoc = zdocService.get(docId);
+		zdocService.updateDown(zdoc);
+		
+		ZuserDoc zuserDoc = new ZuserDoc();
+		zuserDoc.setUserid(user.getId());
+		zuserDoc.setDocid(docId);
+		zuserDoc.setDelFlag("0");
+		List<ZuserDoc> userdoclist = zuserDocService.findList(zuserDoc);
+		if(userdoclist!=null && userdoclist.size()>0){
+			
+		}else{
+			zuserDocService.save(zuserDoc);
+		}
+		
+		String path = zdoc.getFiles();
+    	try{
+            if(!path.contains("http") && !path.contains("HTTP")) {
+                path = request.getSession().getServletContext().getRealPath(path);
+            }
+            FileUtils.downFile(new File(path), request, response);            
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+	
 	
 	/**
 	 * 跳转登陆页面 
@@ -240,7 +302,7 @@ public class FrontController {
 				model.addAttribute("msg", "账号审核中");
 				return "front/login";
 			}
-			request.getSession().setAttribute("myinfo", user);
+			request.getSession().setAttribute("sessionMyinfo", user);
 		}else{
 			if(userlist!=null && userlist.size()>1){
 				model.addAttribute("msg", "输入异常，请重新输入");
@@ -250,6 +312,51 @@ public class FrontController {
 				return "front/login";
 			}			
 		}		
+		return "redirect:myinfo";
+	}
+	
+	/**
+	 * 个人中心
+	 * @param zuser
+	 * @return
+	 */
+	@RequestMapping(value ="myinfo")
+	public String myinfo(Zuser zuser,HttpServletRequest request, HttpServletResponse response, Model model){
+		
+		Zuser user = (Zuser)request.getSession().getAttribute("sessionMyinfo");
+		if(user==null || StringUtils.isBlank(user.getId())) {
+			model.addAttribute("msg", "请登陆.");
+			return "front/login";
+		}
+		
 		return "front/myinfo";
 	}
+	
+	
+	/**
+	 * 我的下载记录
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value ="myDoc")
+	public String myDoc(HttpServletRequest request, HttpServletResponse response, Model model){
+		Zuser user = (Zuser)request.getSession().getAttribute("sessionMyinfo");
+		if(user==null || StringUtils.isBlank(user.getId())) {
+			model.addAttribute("msg", "请登陆.");
+			return "front/login";
+		}
+		
+		ZuserDoc doc = new ZuserDoc();
+		doc.setUserid(user.getId());
+		doc.setDelFlag("0");
+		
+		Page<ZuserDoc> pages = new Page<ZuserDoc>();
+		pages.setPageSize(10);
+		
+		Page<ZuserDoc> page = zuserDocService.findPage(pages, doc); 
+		model.addAttribute("page", page);	
+		
+		return "front/myDoc";
+	}
+	
 }

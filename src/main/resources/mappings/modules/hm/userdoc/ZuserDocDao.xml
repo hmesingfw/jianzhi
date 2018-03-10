@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.hm.dao.userdoc.ZuserDocDao">
+    
+	<sql id="zuserDocColumns">
+		a.id AS "id",
+		a.userid AS "userid",
+		a.docid AS "docid",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="zuserDocJoins">
+	</sql>
+    
+	<select id="get" resultType="ZuserDoc">
+		SELECT 
+			<include refid="zuserDocColumns"/>
+		FROM zuser_doc a
+		<include refid="zuserDocJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZuserDoc">
+		SELECT 
+			<include refid="zuserDocColumns"/>
+		FROM zuser_doc a
+		<include refid="zuserDocJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="userid != null and userid != ''">
+				AND a.userid = #{userid}
+			</if>
+			<if test="docid != null and docid != ''">
+				AND a.docid = #{docid}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZuserDoc">
+		SELECT 
+			<include refid="zuserDocColumns"/>
+		FROM zuser_doc a
+		<include refid="zuserDocJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zuser_doc(
+			id,
+			userid,
+			docid,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{userid},
+			#{docid},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zuser_doc SET 	
+			userid = #{userid},
+			docid = #{docid},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE zuser_doc SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -142,7 +142,7 @@
 		   							</c:choose>		
 										
 								</div>								
-								<button class="myreg-button">点击下载</button>
+								<a href="${ctxF}/docDown?docId=${info.id}" target="_blank"><button class="myreg-button" type="button">点击下载</button></a>
 							</li>
 						</c:forEach>		
 

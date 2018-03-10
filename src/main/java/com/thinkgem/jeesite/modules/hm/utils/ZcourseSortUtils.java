@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
 public class ZcourseSortUtils {
 	private static ZcourseSortDao zcourseSortDao = SpringContextHolder.getBean(ZcourseSortDao.class);
 
-	public static final String CACHE_COURSE_LIST = "videoCourseList";
+	public static final String CACHE_zcourseSort_LIST = "zoursortList";
 
 	/**
 	 * 获取课程专业分类列表
@@ -18,12 +18,12 @@ public class ZcourseSortUtils {
 	 */
 	public static List<ZcourseSort> getCourseSortList(){
 		@SuppressWarnings("unchecked")
-		List<ZcourseSort> list = (List<ZcourseSort>)CacheUtils.get(CACHE_COURSE_LIST);
+		List<ZcourseSort> list = (List<ZcourseSort>)CacheUtils.get(CACHE_zcourseSort_LIST);
 		ZcourseSort sort = new ZcourseSort();
 		sort.setDelFlag("0");
 		if (list==null){
 			list = zcourseSortDao.findAllList(sort);
-			CacheUtils.put(CACHE_COURSE_LIST, list);
+			CacheUtils.put(CACHE_zcourseSort_LIST, list);
 		}
 		return list;
 	}
@@ -35,12 +35,12 @@ public class ZcourseSortUtils {
 	 */
 	public static ZcourseSort getCourseSort(String id){
 		@SuppressWarnings("unchecked")
-		List<ZcourseSort> list = (List<ZcourseSort>)CacheUtils.get(CACHE_COURSE_LIST);
+		List<ZcourseSort> list = (List<ZcourseSort>)CacheUtils.get(CACHE_zcourseSort_LIST);
 		ZcourseSort sort = new ZcourseSort();
 		sort.setDelFlag("0");
 		if (list==null){
 			list = zcourseSortDao.findAllList(sort);
-			CacheUtils.put(CACHE_COURSE_LIST, list);
+			CacheUtils.put(CACHE_zcourseSort_LIST, list);
 		}
 		for(ZcourseSort obj : list) {
 			if(obj!=null && obj.getId().trim().equals(id.trim())) {

@@ -24,46 +24,45 @@
 		<div class="myuser-center">
 
 			<jsp:include page="include/myleft.jsp" />
-			
-
 			<div class="myuser-rt">
-				<div class="user1">
-					<div class="user1-img">
-						<h1>+</h1>
-						<p>头像上传</p>
-						<input type="file" />
-					</div>
-					<div class="user1-input">
-						<input type="text" placeholder="修改登陆密码"/>
-					</div>
-					<div class="user1-input">
-						<input type="text" placeholder="报名专业" value="${sessionMyinfo.xmajor}" />
-					</div>
-					<div class="user1-input user1-input1">
-						<input type="text" placeholder="姓名" value="${sessionMyinfo.name}" />
-						<select>
-							<option>学历</option>
-							<option>学历</option>
-							<option>学历</option>
-							<option>学历</option>
-						</select>
-					</div>
-					<div class="user1-input user1-input1">
-						<input type="text" placeholder="工作单位"/>
-						<select>
-							<option>工作经验</option>
-							<option>工作经验</option>
-							<option>工作经验</option>
-							<option>工作经验</option>
-						</select>
-					</div>
+				<div class="user2">
+					<ul class="user2-ul">
+						<c:forEach items="${page.list}" var="info">
+							<li>
+								<div class="user2-img"> 
+									<c:choose>
+										<c:when test="${fns:getDoc(info.docid).filetype == '1'}"> 
+											<img src="${ctxStatic}/jianzhi/img/doc.gif" />
+										</c:when>
+										<c:when test="${fns:getDoc(info.docid).filetype == '2'}"> 
+											<img src="${ctxStatic}/jianzhi/img/doc.gif" />
+										</c:when>
+										<c:when test="${fns:getDoc(info.docid).filetype == '3'}"> 
+											<img src="${ctxStatic}/jianzhi/img/doc.gif" />
+										</c:when>
+										<c:otherwise> 
+											<img src="${ctxStatic}/jianzhi/img/doc.gif" />
+										</c:otherwise>
+									</c:choose>
+									
+									<div class="user2-center">
+										<h1><a href="${ctxF}/doclook?id=${info.docid}" target="_blank">${fns:getDoc(info.docid).title}</a></h1>
+										<p style="word-break:keep-all; white-space:nowrap;  ">下载时间:<fmt:formatDate value="${info.updateDate}" pattern="yyyy-MM-dd HH:mm"/></p>
+									</div>
+									<a href="${ctxF}/docDown?docId=${info.docid}" target="_blank"><button class="user2-button" type="button">下载</button></a>
+								</div>
+							</li>
+						</c:forEach>
+					</ul>
+					<div class="pages">
+		            	${page.frontToString() }
+		            </div>	 
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	
-
 
 	<jsp:include page="include/footer.jsp" /> 
 <!--//footer-->

@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.modules.hm.entity.docsort.ZdocSort;
 public class ZdocSortUtils {
 	private static ZdocSortDao zdocsortDao = SpringContextHolder.getBean(ZdocSortDao.class);
 
-	public static final String CACHE_COURSE_LIST = "videoCourseList";
+	public static final String CACHE_docsort_LIST = "docsortList";
 
 	/**
 	 * 获取文类分类列表
@@ -18,12 +18,12 @@ public class ZdocSortUtils {
 	 */
 	public static List<ZdocSort> getDocSortList(){
 		@SuppressWarnings("unchecked")
-		List<ZdocSort> list = (List<ZdocSort>)CacheUtils.get(CACHE_COURSE_LIST);
+		List<ZdocSort> list = (List<ZdocSort>)CacheUtils.get(CACHE_docsort_LIST);
 		ZdocSort sort = new ZdocSort();
 		sort.setDelFlag("0");
 		if (list==null){
 			list = zdocsortDao.findAllList(sort);
-			CacheUtils.put(CACHE_COURSE_LIST, list);
+			CacheUtils.put(CACHE_docsort_LIST, list);
 		}
 		return list;
 	}
@@ -35,12 +35,12 @@ public class ZdocSortUtils {
 	 */
 	public static ZdocSort getDocSort(String id){
 		@SuppressWarnings("unchecked")
-		List<ZdocSort> list = (List<ZdocSort>)CacheUtils.get(CACHE_COURSE_LIST);
+		List<ZdocSort> list = (List<ZdocSort>)CacheUtils.get(CACHE_docsort_LIST);
 		ZdocSort sort = new ZdocSort();
 		sort.setDelFlag("0");
 		if (list==null){
 			list = zdocsortDao.findAllList(sort);
-			CacheUtils.put(CACHE_COURSE_LIST, list);
+			CacheUtils.put(CACHE_docsort_LIST, list);
 		}
 		for(ZdocSort obj : list) {
 			if(obj!=null && obj.getId().trim().equals(id.trim())) {
