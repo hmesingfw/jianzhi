@@ -298,7 +298,7 @@
 
 
 
-   <function>
+  <function>
     <description>文档列表</description>
     <name>getDocList</name>
     <function-class>com.thinkgem.jeesite.modules.hm.utils.ZdocUtils</function-class>
@@ -313,6 +313,25 @@
     <function-signature>com.thinkgem.jeesite.modules.hm.entity.doc.Zdoc getDoc(java.lang.String)</function-signature>
     <example>${fns:getDoc(id)}</example>  
   </function>
+
+
+
+  <function>
+    <description>课程列表</description>
+    <name>getCourseList</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZcourseUtils</function-class>
+    <function-signature>java.util.List getCourseList()</function-signature>
+    <example>${fns:getCourseList()}</example>  
+  </function>
+
+  <function>
+    <description>课程信息</description>
+    <name>getCourse</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZcourseUtils</function-class>
+    <function-signature>com.thinkgem.jeesite.modules.hm.entity.course.Zcourse getCourse(java.lang.String)</function-signature>
+    <example>${fns:getCourse(id)}</example>  
+  </function>
+
 
 
 </taglib>

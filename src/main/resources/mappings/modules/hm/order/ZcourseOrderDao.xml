@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.hm.dao.order.ZcourseOrderDao">
+    
+	<sql id="zcourseOrderColumns">
+		a.id AS "id",
+		a.courseid AS "courseid",
+		a.userid AS "userid",
+		a.paytype AS "paytype",
+		a.paytime AS "paytime",
+		a.payprice AS "payprice",
+		a.paystatus AS "paystatus",
+		a.courseprice AS "courseprice",
+		a.payid AS "payid",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="zcourseOrderJoins">
+	</sql>
+    
+	<select id="get" resultType="ZcourseOrder">
+		SELECT 
+			<include refid="zcourseOrderColumns"/>
+		FROM zcourse_order a
+		<include refid="zcourseOrderJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZcourseOrder">
+		SELECT 
+			<include refid="zcourseOrderColumns"/>
+		FROM zcourse_order a
+		<include refid="zcourseOrderJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="courseid != null and courseid != ''">
+				AND a.courseid = #{courseid}
+			</if>
+			<if test="userid != null and userid != ''">
+				AND a.userid = #{userid}
+			</if>
+			<if test="paytype != null and paytype != ''">
+				AND a.paytype = #{paytype}
+			</if>
+			<if test="paystatus != null and paystatus != ''">
+				AND a.paystatus = #{paystatus}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZcourseOrder">
+		SELECT 
+			<include refid="zcourseOrderColumns"/>
+		FROM zcourse_order a
+		<include refid="zcourseOrderJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zcourse_order(
+			id,
+			courseid,
+			userid,
+			paytype,
+			paytime,
+			payprice,
+			paystatus,
+			courseprice,
+			payid,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{courseid},
+			#{userid},
+			#{paytype},
+			#{paytime},
+			#{payprice},
+			#{paystatus},
+			#{courseprice},
+			#{payid},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zcourse_order SET 	
+			courseid = #{courseid},
+			userid = #{userid},
+			paytype = #{paytype},
+			paytime = #{paytime},
+			payprice = #{payprice},
+			paystatus = #{paystatus},
+			courseprice = #{courseprice},
+			payid = #{payid},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE zcourse_order SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

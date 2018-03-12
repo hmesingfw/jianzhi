@@ -41,7 +41,7 @@
 		<div class="batlogin1">
 			<div class="batlogin1-top">
 				<a href="${ctxF}/gotologin">登陆</a>
-				<a href="">注册</a>
+				<a href="${ctxF}/reg">注册</a>
 			</div>
 			<form action="${ctxF}/login" id="inputForm" method="post" onsubmit="return update()">
 				<div class="batlogin1-center">

@@ -19,92 +19,23 @@
     
   	
 	<section class="class-list page-width page-animate">
-	    <div class="index-title"><h4>热门班级</h4><p>class recommendation</p><img src="${ctxStatic}/jianzhi/img/xian.png"/></div>
+	    <div class="index-title"><h4>热门课程</h4><p>course recommendation</p><img src="${ctxStatic}/jianzhi/img/xian.png"/></div>
 	    <div class="clearfix">
-	    	<ul>	        	  
-				<li>
-				    <div class="li-box">
-				        <div class="class-img">
-				            <a href="http://me.cs.com/rv-43.aspx" target="_blank">
-				                <img src="${ctxStatic}/jianzhi/img/L131502920419855.jpg" alt="高级设计班" class="m-img" />
-				            </a>
-				        </div>
-				        <div class="name"><span class="price">￥56.00</span><a href="http://me.cs.com/rv-43.aspx" target="_blank">高级设计班</a></div>
-				        
-				    </div>
-				</li>
-				
-				<li>
-				    <div class="li-box">
-				        <div class="class-img">
-				            <a href="http://me.cs.com/rv-41.aspx" target="_blank">
-				                <img src="${ctxStatic}/jianzhi/img/A131502869117541.png" alt="旅游班" class="m-img" />
-				            </a>
-				        </div>
-				        <div class="name"><span class="price">￥0.00</span><a href="http://me.cs.com/rv-41.aspx" target="_blank">旅游班</a></div>
-				        
-				    </div>
-				</li>
-				
-				<li>
-				    <div class="li-box">
-				        <div class="class-img">
-				            <a href="http://me.cs.com/rv-40.aspx" target="_blank">
-				                <img src="${ctxStatic}/jianzhi/img/D131502620854801.jpg" alt="后期修图班班" class="m-img" />
-				            </a>
-				        </div>
-				        <div class="name"><span class="price">￥0.00</span><a href="http://me.cs.com/rv-40.aspx" target="_blank">后期修图班班</a></div>
-				        
-				    </div>
-				</li>
-				
-				<li>
-				    <div class="li-box">
-				        <div class="class-img">
-				            <a href="http://me.cs.com/rv-37.aspx" target="_blank">
-				                <img src="${ctxStatic}/jianzhi/img/U131502621568402.jpg" alt="特效后期班" class="m-img" />
-				            </a>
-				        </div>
-				        <div class="name"><span class="price">￥56.00</span><a href="http://me.cs.com/rv-37.aspx" target="_blank">特效后期班</a></div>
-				        
-				    </div>
-				</li>
-				<li>
-				    <div class="li-box">
-				        <div class="class-img">
-				            <a href="http://me.cs.com/rv-43.aspx" target="_blank">
-				                <img src="${ctxStatic}/jianzhi/img/L131502920419855.jpg" alt="高级设计班" class="m-img" />
-				            </a>
-				        </div>
-				        <div class="name"><span class="price">￥56.00</span><a href="http://me.cs.com/rv-43.aspx" target="_blank">高级设计班</a></div>
-				       
-				    </div>
-				</li>
-				
-				<li>
-				    <div class="li-box">
-				        <div class="class-img">
-				            <a href="http://me.cs.com/rv-41.aspx" target="_blank">
-				                <img src="${ctxStatic}/jianzhi/img/A131502869117541.png" alt="旅游班" class="m-img" />
-				            </a>
-				        </div>
-				        <div class="name"><span class="price">￥0.00</span><a href="http://me.cs.com/rv-41.aspx" target="_blank">旅游班</a></div>
-				        
-				    </div>
-				</li>
-				
-				<li>
-				    <div class="li-box">
-				        <div class="class-img">
-				            <a href="http://me.cs.com/rv-40.aspx" target="_blank">
-				                <img src="${ctxStatic}/jianzhi/img/D131502620854801.jpg" alt="后期修图班班" class="m-img" />
-				            </a>
-				        </div>
-				        <div class="name"><span class="price">￥0.00</span><a href="http://me.cs.com/rv-40.aspx" target="_blank">后期修图班班</a></div>
-				        
-				    </div>
-				</li>
-				
+	    	<ul>	
+		    	<c:forEach items="${zcoursepage.list}" var="info" varStatus="list">        	  
+					<li onclick="window.location.href='${ctxF}/coursedetail?id=${info.id}'">
+					    <div class="li-box">
+					        <div class="class-img">
+					            <a href="javascript:;">
+					                <img src="${info.img}" class="m-img" />
+					            </a>
+					        </div>
+					        <div class="name"><span class="price">￥${info.price}</span><a href="javascript:;">${info.title}</a></div>
+					        
+					    </div>
+					</li>
+				</c:forEach>
+				 
 				<li>
 				    <div class="li-box">
 				        <div class="class-img">
@@ -149,23 +80,8 @@
 						        </div>
 						    </div>
 						</li>						
-					</c:when>
-		    
-				   	<c:otherwise> 
-						<%-- <li class="Hnew">
-						   	<div class="hot-img Hhide">
-								<img src="${info.img}" class="m-img">
-						  	</div>
-						    <div class="hot-img-info bat1">
-						    	<div class="bat">
-								   <h3 class="live1"><a href="javascript:;">${fns:abbr(info.title, 60)}</a></h3>
-								   <p><fmt:formatDate value="${info.updateDate}" pattern="yyyy-MM-dd"/></p>
-							   	</div>
-							    <div class="author-info clearfix Hhide">
-				                   	<span class="ep_name">${fns:abbr(info.introduce, 240)}</span>			                   
-						        </div>
-						    </div>
-						</li> --%>
+					</c:when>		    
+				   	<c:otherwise> 						
 						<li onclick="window.location.href='${ctxF}/newdetail?id=${info.id}'">
 							<div class="hot-img-info bat1">
 						    	<div class="bat">
@@ -221,24 +137,6 @@
 <script src="${ctxStatic}/jianzhi/js/page.load.js"></script>
 <script src="${ctxStatic}/jianzhi/js/page.main.js"></script>
 <script>
-	//开启分类
-	setNavFlag(0);
-
-  var userUrl = {
-      index:'http://me.cs.com/user.aspx',//个人中心
-      loginout:'http://me.cs.com/loginout.aspx',//退出登录
-      editinfo:'/user.aspx?a-basic,f-editinfo',//修改资料
-      message:'/user.aspx?a-message,f-Receivedmessage',//站内消息
-      myCourse:'http://me.cs.com/user.aspx',//我的课程
-      courseOrder:'/user.aspx?a-course,f-MyCourseOrder',//我的订单
-      userLogin:'http://me.cs.com/login.aspx',//登录
-      courseUrl:'/user.aspx?a-basic,f-main,courseid-'
-  	  
-  }
-
-  //获取用户登录信息
-  getUserInfo(userUrl,'main','index');
-
 //轮播图
 $('#carousel').carousel({
 	  object:'li',
@@ -251,30 +149,6 @@ $('#carousel').carousel({
 	  speed:400,
 	  interval:4000
 });
-
-//评分计算
-coursePfCount('.index-cos-star');
-
-var subClassNum = 8;
-$(".index-title-subclass a").each(function() {
-	$(this).attr("data-index", $(this).index() + 1)
-});
-$(".index-title-subclass a").each(function() {
-	if ($(this).attr("data-index") > subClassNum) {
-		$(this).remove()
-	}
-});
-$(".con02").find(".jx2").hover(function() {
-	$(this).find(".qg-info").fadeIn(300)
-}, function() {
-	$(this).find(".qg-info").fadeOut(300)
-});
-$(".indexCourseList").find(".box").each(function() {
-	var courseLength = $(this).find("li").length;
-	if (courseLength == 0) {
-		$(this).remove()
-	}
-}); 
 
 </script>
 </body>

@@ -17,16 +17,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.FileUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.hm.entity.course.Zcourse;
+import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
 import com.thinkgem.jeesite.modules.hm.entity.doc.Zdoc;
 import com.thinkgem.jeesite.modules.hm.entity.docsort.ZdocSort;
 import com.thinkgem.jeesite.modules.hm.entity.news.Znew;
+import com.thinkgem.jeesite.modules.hm.entity.order.ZcourseOrder;
 import com.thinkgem.jeesite.modules.hm.entity.user.Zuser;
 import com.thinkgem.jeesite.modules.hm.entity.userdoc.ZuserDoc;
 import com.thinkgem.jeesite.modules.hm.service.aboutus.TaboutUsService;
 import com.thinkgem.jeesite.modules.hm.service.banner.ZbannerService;
+import com.thinkgem.jeesite.modules.hm.service.course.ZcourseService;
+import com.thinkgem.jeesite.modules.hm.service.course_sort.ZcourseSortService;
 import com.thinkgem.jeesite.modules.hm.service.doc.ZdocService;
 import com.thinkgem.jeesite.modules.hm.service.docsort.ZdocSortService;
 import com.thinkgem.jeesite.modules.hm.service.news.ZnewService;
+import com.thinkgem.jeesite.modules.hm.service.order.ZcourseOrderService;
 import com.thinkgem.jeesite.modules.hm.service.user.ZuserService;
 import com.thinkgem.jeesite.modules.hm.service.userdoc.ZuserDocService;
 
@@ -61,6 +67,15 @@ public class FrontController {
 //	用户文档下载记录管理
 	@Autowired
 	private ZuserDocService zuserDocService;
+//	课程分类管理
+	@Autowired
+	private ZcourseSortService zcourseSortService;
+//	课程信息管理
+	@Autowired
+	private ZcourseService zcourseService;
+//	课程订单信息
+	@Autowired
+	private ZcourseOrderService zcourseOrderService;
 	/**
 	 * 首页管理
 	 * 
@@ -69,7 +84,7 @@ public class FrontController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping
+	@RequestMapping(value={"index", ""})
 	public String index(HttpServletRequest request, HttpServletResponse response, Model model) {
 		model.addAttribute("mendId", "1");
 		// 刷新关于我们
@@ -83,6 +98,14 @@ public class FrontController {
 		znew.setDelFlag("0");
 		Page<Znew> pageNewList = znewService.findPage(znewpage, znew);
 		model.addAttribute("pageNewList", pageNewList);
+		//课程推荐
+		Zcourse zcourse = new Zcourse();
+		zcourse.setDelFlag("1");
+		zcourse.setIscommend("1");
+		Page<Zcourse> coursepage = new Page<Zcourse>();
+		coursepage.setPageSize(8);
+		Page<Zcourse> zcoursepage = zcourseService.findPage(coursepage, zcourse);
+		model.addAttribute("zcoursepage", zcoursepage);
 		//文档推荐
 		List<Zdoc> zoctoplist = zdocService.findDownTop();
 		model.addAttribute("zoctoplist", zoctoplist);
@@ -274,6 +297,23 @@ public class FrontController {
 		return "front/login";
 	}
 	
+	/**
+	 * 系统退出
+	 */
+	@RequestMapping(value = "logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response, Model model) {
+		request.getSession().removeAttribute("sessionMyinfo");
+		// 登录完成后，进入登录界面
+		return "redirect:index";
+	}
+	
+	/**
+	 * 跳转用户注册
+	 */
+	@RequestMapping(value ="reg")
+	public String reg(HttpServletRequest request, HttpServletResponse response, Model model){
+		return "front/reg";
+	}
 	
 	/**
 	 * 登陆
@@ -359,4 +399,106 @@ public class FrontController {
 		return "front/myDoc";
 	}
 	
+	
+	
+	
+	/**
+	 * 课程列表
+	 * 
+	 */
+	@RequestMapping(value ="courseList")
+	public String courseList(Zcourse zcourse, HttpServletRequest request, HttpServletResponse response, Model model){
+		model.addAttribute("mendId", "2");	
+		
+		//选择的分类的列表
+		List<String> sortlist = new ArrayList<String>();
+		//前台选择的分类ID
+		String sort1 = request.getParameter("classflyone");
+		String sort2 = request.getParameter("classflytwo");
+		String sort3 = request.getParameter("classflythr");
+		
+		ZcourseSort sort = new ZcourseSort();
+		sort.setDelFlag("0");
+		
+		//一级分类信息列表
+		sort.setParentId("0");
+		List<ZcourseSort> sortlist1 = zcourseSortService.findList(sort);
+		model.addAttribute("sortlist1", sortlist1);
+		
+		//将分类信息导入
+		if(sort1!=null && !"".equals(sort1)){
+			//二级分类信息列表
+			sort.setParentId(sort1);
+			sortlist1 = zcourseSortService.findList(sort);
+			model.addAttribute("sortlist2", sortlist1);
+			
+			sortlist.add(sort1);
+		}
+		if(sort2!=null && !"".equals(sort2)){
+			//三级分类信息列表
+			sort.setParentId(sort2);
+			sortlist1 = zcourseSortService.findList(sort);
+			model.addAttribute("sortlist3", sortlist1);
+			sortlist.add(sort2);	
+		}
+		
+		//是否点击了第三级
+		if(sort3!=null && !"".equals(sort3)){
+			sortlist.add(sort3);
+		}
+		
+		zcourse.setSortlist(sortlist);
+		Page<Zcourse> page = zcourseService.findPage(new Page<Zcourse>(request, response), zcourse);
+		model.addAttribute("page", page);
+		model.addAttribute("zcourse", zcourse);
+		
+		model.addAttribute("classflyone", sort1);
+		model.addAttribute("classflytwo", sort2);
+		model.addAttribute("classflythr", sort3);
+		
+		return "front/courselist";
+	}
+	
+	/**
+	 * 课程详细信息
+	 * @param zcourse
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping( value= "coursedetail")
+	public String coursedetail(Zcourse zcourse, HttpServletRequest request, HttpServletResponse response, Model model){
+		model.addAttribute("mendId", "2");	
+		
+		Zuser user = (Zuser)request.getSession().getAttribute("sessionMyinfo");
+		if(user==null || StringUtils.isBlank(user.getId())) {
+			model.addAttribute("msg", "请登陆.");
+			return "front/login";
+		}
+		
+		//当前课程是否购买
+		ZcourseOrder zcourseOrder = new ZcourseOrder();
+		zcourseOrder.setCourseid(zcourse.getId());
+		zcourseOrder.setUserid(user.getId());
+		List<ZcourseOrder> orderlist = zcourseOrderService.findList(zcourseOrder);
+		if(orderlist!=null && orderlist.size()==1){
+			zcourseOrder = orderlist.get(0);
+			if("2".equals(zcourseOrder.getPaystatus())){
+				model.addAttribute("ispay", "yespay");
+			}else{
+				model.addAttribute("ispay", "nopay");
+			}
+		}else{
+			model.addAttribute("ispay", "nopay");
+		}
+		
+		zcourse = zcourseService.get(zcourse.getId());
+		model.addAttribute("zcourse", zcourse);
+		
+		return "front/coursedetail";
+	}
+	
+
+
 }

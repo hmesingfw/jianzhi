@@ -7,10 +7,8 @@
 		.Hhide{
 			display: none !important;
 		}
-		 
-		
 	</style>
-	<link href="${ctxStatic}/jianzhi/css/download.css" rel="stylesheet" />
+	<link href="${ctxStatic}/jianzhi/css/course.css" rel="stylesheet" />
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var msg = "${message}";
@@ -46,8 +44,7 @@
 	
 	<jsp:include page="include/header.jsp" />
 	<!--// header-->
-     
-
+	
 	<section class="i-banner" id="banner">
 		<ul>
 			<c:forEach items="${aboutBanner}" var="banner" end="4">
@@ -56,12 +53,15 @@
 		</ul>
 	</section>
 
-	<div class="myteam">
+	<div class="clear blank20"></div>
+   
+    <div class="page-width">
+
+		<div class="myteam">
   		<div class="myteam1">
   			<div class="myteam2">
   				<span>分类</span>
-	  			<c:forEach items="${docsort}" var="info">
-	  				 
+	  			<c:forEach items="${sortlist1}" var="info">	  				 
 		  			<a href="javascript:;" onclick="sortclick('${info.id}','1')" ${info.id == classflyone?'class="myteamon"':'' } >${info.name}</a>
 		  		</c:forEach>
   			</div>
@@ -70,104 +70,64 @@
   		<div class="myteam1">
   			<div class="myteam2">
   				<span>分类</span>
-  				<c:forEach items="${docsort2}" var="info">
+	  			<c:forEach items="${sortlist2}" var="info">	  				 
 		  			<a href="javascript:;" onclick="sortclick('${info.id}','2')" ${info.id == classflytwo?'class="myteamon"':'' } >${info.name}</a>
-		  		</c:forEach>	  		
+		  		</c:forEach>
   			</div>
   		</div>
-
   		<div class="myteam1">
   			<div class="myteam2">
   				<span>分类</span>
-  				<c:forEach items="${docsort3}" var="info">
+	  			<c:forEach items="${sortlist3}" var="info">	  				 
 		  			<a href="javascript:;" onclick="sortclick('${info.id}','3')" ${info.id == classflythr?'class="myteamon"':'' } >${info.name}</a>
-		  		</c:forEach>	  			
+		  		</c:forEach>
   			</div>
-  		</div>	  		
+  		</div>
+  		
   	</div>
-
-
-
   	<div class="myreg">
-  		<p>*仅TXT,WORD,PDF支持在线预览</p>
-		<form id="searchForm" action="${ctxF}/sortlist" method="post" >
-  			<div class="myreg-serch">
-				<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+  		<form id="searchForm" action="${ctxF}/courseList" method="post" >
+	  		<div class="myreg-serch">
+
+	  			<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 				<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 
 				<input type="hidden" name="classflyone" id="classflyone" value="${classflyone}">
 				<input type="hidden" name="classflytwo" id="classflytwo" value="${classflytwo}">
 				<input type="hidden" name="classflythr" id="classflythr" value="${classflythr}">
 
-	  			<input type="text" name="title" value="${zdoc.title}" placeholder="输入标题查询"/>
+	  			<input type="text" placeholder="输入课程名称" name="title" value="${zcourse.title}" />
 	  			<button>搜索</button>
-  			</div>
+	  		</div>
 	  	</form>
-  	</div>
-    <section class="downmain page-width">
-		<div class="clearfix">
-			<div class="downleft"  style="width: 1180px;">
-				
 
-				<section class="downlist bd-all">
-					<div class="downlist-title">资料列表</div>
-									
-					<ul class="myreg-ul">
-						<c:forEach items="${page.list}" var="info">
-							<li>
-								<div class="litit">								
-										
-									<c:choose>
-										<c:when test="${info.filetype == 1}"> 
-											<a href="${ctxF}/doclook?id=${info.id}" target="_blank">
-												<img src="${ctxStatic}/jianzhi/icon/txt.png" />
-													${info.title}
-											</a>
-										</c:when>
-	    								<c:when test="${info.filetype == 2}"> 
-	    									<a href="${ctxF}/doclook?id=${info.id}" target="_blank">
-												<img src="${ctxStatic}/jianzhi/img/doc.gif" />
-													${info.title}
-											</a>
-										</c:when>		
-										<c:when test="${info.filetype == 3}"> 
-	    									<a href="${ctxF}/doclook?id=${info.id}" target="_blank">
-												<img src="${ctxStatic}/jianzhi/icon/pdf.png" />
-													${info.title}
-											</a>
-										</c:when>									
-			   							<c:otherwise> 
-			   								<a href="javascript:;" >
-												<img src="${ctxStatic}/jianzhi/icon/all.png" />
-													${info.title}
-											</a>
-			   							</c:otherwise>
-		   							</c:choose>		
-										
-								</div>								
-								<a href="${ctxF}/docDown?docId=${info.id}" target="_blank"><button class="myreg-button" type="button">点击下载</button></a>
-							</li>
-						</c:forEach>		
+  	</div>		
+		
+		<section class="course-list-wrap">
+            
 
-						<c:if test="${page.list == null || fn:length(page.list) == 0}">
-							<li>
-								<div class="litit">
-									<a href="javascript:;" >
-										暂无数据
-									</a>
-								</div>
-							</li>
-						</c:if>				 
-					</ul>
-					<div class="pages">
-		            	${page.frontToString() }
-		            </div>	  					
-				</section>
-			</div>				
-		</div>	
-    </section>
+			<div class="course-list bd-all">
+				<ul>
+					<c:forEach items="${page.list}" var="info">
+						<li>
+							<div class="course-list-img"><img src="${info.img}" class="m-img imgLoad" /></div>
 
-    <jsp:include page="include/footer.jsp" /> 
+							<div class="course-list-title"><a href="${ctxF}/coursedetail?id=${info.id}">${info.title}</a></div>
+							<div class="course-list-info">${info.teacher}</div> 
+							<div class="reg3"><p>1200名学生正在学习...</p></div>
+							<div class="course-list-price"><span><font>¥</font>${info.price}</span></div>
+							<div class="course-list-button"><a href="${ctxF}/coursedetail?id=${info.id}">马上学习</a></div>
+							
+						</li>
+					</c:forEach>
+				</ul>
+			</div>
+		</section>		
+		<div class="pages" style="margin-bottom: 30px">
+        	${page.frontToString() }
+        </div>	
+	</div> 
+	<jsp:include page="include/footer.jsp" /> 
 <!--//footer-->
 
     <aside class="aside-operate">
@@ -178,6 +138,6 @@
     		<li onclick="goTop()"><span>返回<br />头部</span><i class="edufont e-icon-top"></i></li>
     	</ul>
     </aside>  
- 
+
 </body>
 </html>
