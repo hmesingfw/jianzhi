@@ -15,11 +15,11 @@
 			<div class="top-bar-user" id="nologin">
 				<c:choose>
 		        	<c:when test="${!empty sessionMyinfo}">
-						<a href="${ctxF}/myinfo">${sessionMyinfo.name}</a>
-						<a href="${ctxF}/outlogin">退出</a>
+						<a href="${ctxF}/myinfo" class="bat5">${sessionMyinfo.truename}</a>
+						<a href="${ctxF}/logout">退出</a>
 	            	</c:when>
 	        		<c:otherwise>
-	        			<a href="${ctxF}/gotologin"  class="bat5"><img src="${ctxStatic}/jianzhi/icon/user.png" />登录</a>
+	        			<a href="${ctxF}/gotologin" class="bat5"><img src="${ctxStatic}/jianzhi/icon/user.png" />登录</a>
 			            <a href="${ctxF}/reg" >注册</a>
 	        		</c:otherwise>
 	        </c:choose>
@@ -30,7 +30,7 @@
 		<div class="index-nav1">
 			<a href="${ctxF}"  ${mendId=='1'?'class="index-click"':'' }>首页</a>
 			<a href="${ctxF}/courseList"  ${mendId=='2'?'class="index-click"':'' }>全部课程</a>
-			<a href=""  ${mendId=='3'?'class="index-click"':'' }>在线测试</a>
+			<a href="${ctxF}/questionlist"  ${mendId=='3'?'class="index-click"':'' }>在线测试</a>
 			<a href="${ctxF}/sortlist"  ${mendId=='4'?'class="index-click"':'' }>在线文库</a>
 			<a href="${ctxF}/news" ${mendId=='5'?'class="index-click"':'' }>新闻资讯</a>
 		</div>

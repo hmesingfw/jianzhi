@@ -12,7 +12,7 @@
 				<img src="${ctxStatic}/jianzhi/img/116815.jpg"/>
 			</c:otherwise>
 		</c:choose>
-			<p>${sessionMyinfo.name}</p>
+			<p>${sessionMyinfo.truename}</p>
 	</div>
 	<div class="myuser2">
 		<a href="">个人资料</a>

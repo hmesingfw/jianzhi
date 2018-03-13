@@ -25,8 +25,8 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>名称：</label>
-				<form:input path="name" htmlEscape="false" maxlength="200" class="input-medium"/>
+			<li><label>真实名称：</label>
+				<form:input path="truename" htmlEscape="false" maxlength="200" class="input-medium"/>
 			</li>
 			<li><label>身份证：</label>
 				<form:input path="idcode" htmlEscape="false" maxlength="18" class="input-medium"/>

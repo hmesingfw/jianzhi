@@ -57,7 +57,7 @@
    
     <div class="page-width">
 
-		<div class="myteam">
+	<div class="myteam">
   		<div class="myteam1">
   			<div class="myteam2">
   				<span>分类</span>

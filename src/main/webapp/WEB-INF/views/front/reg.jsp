@@ -18,6 +18,13 @@
 
     <!--// indexCourseList-->
     <script type="text/javascript">
+    	var msg = '${msg}';
+    	$(function(){
+    		if(msg!=null &&  msg.length>0){
+    			layer.msg(msg);
+    		}
+    	})
+
     	function isCardNo(card){ 
 			  // 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X 
 			var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/; 
@@ -25,14 +32,16 @@
 			    layer.msg("身份证输入不合法"); 
 			    console.log(2)
 			    return false; 
-			} 
+			}else{
+				return true;
+			}
 		} 
 
 		function update(){
 			var IDcode = $("#IDcode").val();
 			var password1 = $("#password1").val();
 			var password2 = $("#password2").val();
-			
+ 
 			if(!isCardNo(IDcode)){
 				return false; 
 			}
@@ -40,10 +49,13 @@
 				layer.msg("请输入密码"); 
 				return false; 
 			}
+			console.log(323)
 			if(password1!=password2){
 				layer.msg("两次密码不匹配"); 
 				return false; 
 			}
+
+			// $("#inputForm").submit();
 		}
     </script>
 	
@@ -53,15 +65,17 @@
 				<a href="${ctxF}/gotologin">登陆</a>
 				<a href="javascript:;">注册</a>
 			</div>
-			<div class="batlogin1-center">
-				<input type="text" name="IDcode" id="IDcode" placeholder="身份证号"/>
-				<input type="password" name="password" id="password1" placeholder="密码"/>
-				<input type="password" name="" id="password2" placeholder="再次输入密码"/>
-				<div class="batlogin1-bottom">
-					<p><a href="javascript:;" id="batbox" onclick="batbox(this)"></a>同意阅读相关条款</p>					
-				</div>
-				<button class="batlogin1-button" onclick="update()" type="button">点击注册</button>
-			</div>	
+			<form action="${ctxF}/reg1" id="inputForm" method="post" onsubmit="return update()">
+				<div class="batlogin1-center">
+					<input type="text" name="idcode" id="IDcode" placeholder="身份证号"/>
+					<input type="password" name="password" id="password1" placeholder="密码"/>
+					<input type="password" name="" id="password2" placeholder="再次输入密码"/>
+					<div class="batlogin1-bottom">
+						<p><a href="javascript:;" id="batbox" onclick="batbox(this)"></a>同意阅读相关条款</p>					
+					</div>
+					<button class="batlogin1-button">点击注册</button>
+				</div>	
+			</form>
 		</div>
 	</div>
 	

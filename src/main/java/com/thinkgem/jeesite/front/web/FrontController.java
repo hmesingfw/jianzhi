@@ -1,7 +1,9 @@
 package com.thinkgem.jeesite.front.web;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.FileUtils;
@@ -316,6 +319,56 @@ public class FrontController {
 	}
 	
 	/**
+	 * 注册下一步
+	 */
+	@RequestMapping(value ="reg1")
+	public String reg1(Zuser zuser, HttpServletRequest request, HttpServletResponse response, Model model){
+				
+		Zuser queryuser = new Zuser();
+		queryuser.setIdcode(zuser.getIdcode());		
+		queryuser.setDelFlag("0");
+		List<Zuser> userlist = zuserService.findList(zuser);
+		if(userlist!=null && userlist.size()>0){
+			model.addAttribute("msg", "当前身份证已使用");
+			return "front/reg";
+		}
+		model.addAttribute("zuser", zuser);
+		return "front/reg1";
+	}
+	
+	/**
+	 * 注册信息填写录入
+	 * @param zuser
+	 * @return
+	 */
+	@RequestMapping(value ="register")
+	public String register(Zuser zuser,@RequestParam(required=false ,value="file")MultipartFile file, HttpServletRequest request, HttpServletResponse response, Model model){
+		
+		try {
+			// 判断用户是否上传头像，如果上传头像，则保存头像信息
+			long uuid = new Date().getTime();
+			String fileName=file.getOriginalFilename();
+			if(file!=null && !StringUtils.isBlank(fileName)) { 
+				System.out.println(fileName);
+				int index = fileName.lastIndexOf(".");
+				fileName = fileName.substring(0,index)+"_"+uuid+fileName.substring(index);
+				String filePath = request.getSession().getServletContext().getRealPath("/static/userfile");
+				File savefile = new File(filePath, fileName);
+				file.transferTo(savefile);
+				zuser.setImg("/static/userfile/"+fileName);
+			}
+			zuserService.save(zuser);
+			request.getSession().setAttribute("sessionMyinfo", zuser);
+			return "redirect:myinfo";
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			model.addAttribute("message", "修改失败.");
+			return "front/reg1";
+		}						
+	}
+	
+	/**
 	 * 登陆
 	 * @param zuser
 	 * @param request
@@ -499,6 +552,59 @@ public class FrontController {
 		return "front/coursedetail";
 	}
 	
+	/**
+	 * 测试题列表信息
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping( value= "questionlist")
+	public String questionlist(HttpServletRequest request, HttpServletResponse response, Model model){
+		model.addAttribute("mendId", "3");	
+		
+		//选择的分类的列表
+		List<String> sortlist = new ArrayList<String>();
+		//前台选择的分类ID
+		String sort1 = request.getParameter("classflyone");
+		String sort2 = request.getParameter("classflytwo");
+		String sort3 = request.getParameter("classflythr");
+		
+		ZcourseSort sort = new ZcourseSort();
+		sort.setDelFlag("0");
+		
+		//一级分类信息列表
+		sort.setParentId("0");
+		List<ZcourseSort> sortlist1 = zcourseSortService.findList(sort);
+		model.addAttribute("sortlist1", sortlist1);
+		
+		//将分类信息导入
+		if(sort1!=null && !"".equals(sort1)){
+			//二级分类信息列表
+			sort.setParentId(sort1);
+			sortlist1 = zcourseSortService.findList(sort);
+			model.addAttribute("sortlist2", sortlist1);
+			
+			sortlist.add(sort1);
+		}
+		if(sort2!=null && !"".equals(sort2)){
+			//三级分类信息列表
+			sort.setParentId(sort2);
+			sortlist1 = zcourseSortService.findList(sort);
+			model.addAttribute("sortlist3", sortlist1);
+			sortlist.add(sort2);	
+		}
+		
+		//是否点击了第三级
+		if(sort3!=null && !"".equals(sort3)){
+			sortlist.add(sort3);
+		}
+		
+		model.addAttribute("classflyone", sort1);
+		model.addAttribute("classflytwo", sort2);
+		model.addAttribute("classflythr", sort3);
+		return "front/questionlist";
+	}
 
 
 }

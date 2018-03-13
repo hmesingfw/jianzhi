@@ -184,7 +184,7 @@
 		     <artifactId>druid</artifactId>
 		     <version>${druid.version}</version>
 		</dependency>
-		
+		        
 		<!-- jdbc driver -->
 		<dependency>
 			<groupId>mysql</groupId>
