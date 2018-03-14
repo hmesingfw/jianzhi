@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.hm.dao.question.ZquestionDao">
+    
+	<sql id="zquestionColumns">
+		a.id AS "id",
+		a.parentid AS "parentid",
+		a.title AS "title",
+		a.type AS "type",
+		a.default_fraction AS "defaultFraction",
+		a.analytical AS "analytical",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="zquestionJoins">
+	</sql>
+    
+	<select id="get" resultType="Zquestion">
+		SELECT 
+			<include refid="zquestionColumns"/>
+		FROM zquestion a
+		<include refid="zquestionJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Zquestion">
+		SELECT 
+			<include refid="zquestionColumns"/>
+		FROM zquestion a
+		<include refid="zquestionJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Zquestion">
+		SELECT 
+			<include refid="zquestionColumns"/>
+		FROM zquestion a
+		<include refid="zquestionJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	
+	<select id="findRandList" resultType="Zquestion">
+		SELECT 
+			<include refid="zquestionColumns"/>
+		FROM zquestion a
+		<include refid="zquestionJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL} AND a.type = #{type}					
+		</where>	
+		order by rand() limit #{limit}	
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zquestion(
+			id,
+			parentid,
+			title,
+			type,
+			default_fraction,
+			analytical,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{parentid},
+			#{title},
+			#{type},
+			#{defaultFraction},
+			#{analytical},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zquestion SET 	
+			parentid = #{parentid},
+			title = #{title},
+			type = #{type},
+			default_fraction = #{defaultFraction},
+			analytical = #{analytical},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE zquestion SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

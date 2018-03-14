@@ -358,7 +358,8 @@ public class FrontController {
 				zuser.setImg("/static/userfile/"+fileName);
 			}
 			zuserService.save(zuser);
-			request.getSession().setAttribute("sessionMyinfo", zuser);
+			model.addAttribute("msg", "注册成功，请等待管理人员审核");
+			model.addAttribute("sessionMyinfo", zuser);
 			return "redirect:myinfo";
 			
 		} catch (Exception e) {

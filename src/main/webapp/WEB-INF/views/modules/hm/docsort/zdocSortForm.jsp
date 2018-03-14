@@ -50,8 +50,7 @@
 		<div class="control-group">
 			<label class="control-label">排序：</label>
 			<div class="controls">
-				<form:input path="sort" htmlEscape="false" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="sort" htmlEscape="false" class="required digits"/> 
 			</div>
 		</div>
 		<div class="control-group">

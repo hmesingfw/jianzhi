@@ -14,7 +14,15 @@
 	<jsp:include page="include/header.jsp" />
 	<!--// header-->
     
-
+	<script src="https://cdn.bootcss.com/layer/3.0.3/layer.min.js"></script>
+    <script type="text/javascript">
+    	var msg = '${msg}';
+    	$(function(){
+    		if(msg!=null &&  msg.length>0){
+    			layer.msg(msg);
+    		}
+    	})
+    </script>
     <!--// indexCourseList-->
 	
 	<div class="myuser">

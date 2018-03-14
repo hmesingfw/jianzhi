@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.hm.dao.course_sort.ZcourseSortDao">
+<mapper namespace="com.thinkgem.jeesite.modules.hm.dao.test.ZtestDao">
     
-	<sql id="zcourseSortColumns">
+	<sql id="ztestColumns">
 		a.id AS "id",
-		a.parent_id AS "parentId",
-		a.parent_ids AS "parentIds",
-		a.name AS "name",
-		a.sort AS "sort",
-		a.code AS "code",
+		a.title AS "title",
 		a.type AS "type",
+		a.parentid AS "parentid",
+		a.sum AS "sum",
+		a.testtype AS "testtype",
+		a.fraction AS "fraction",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -18,26 +18,32 @@
 		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="zcourseSortJoins">
+	<sql id="ztestJoins">
 	</sql>
     
-	<select id="get" resultType="ZcourseSort">
+	<select id="get" resultType="Ztest">
 		SELECT 
-			<include refid="zcourseSortColumns"/>
-		FROM zcourse_sort a
-		<include refid="zcourseSortJoins"/>
+			<include refid="ztestColumns"/>
+		FROM ztest a
+		<include refid="ztestJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="ZcourseSort">
+	<select id="findList" resultType="Ztest">
 		SELECT 
-			<include refid="zcourseSortColumns"/>
-		FROM zcourse_sort a
-		<include refid="zcourseSortJoins"/>
-		<where>				
+			<include refid="ztestColumns"/>
+		FROM ztest a
+		<include refid="ztestJoins"/>
+		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="parentId != null and parentId != ''">
-				AND a.parent_id = #{parentId}				 
+			<if test="title != null and title != ''">
+				AND a.title LIKE 
+					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
+			</if>
+			<if test="parentid != null and parentid != ''">
+				AND a.parentid = #{parentid}
 			</if>
 		</where>
 		<choose>
@@ -50,21 +56,11 @@
 		</choose>
 	</select>
 	
-	<select id="findName" resultType="ZcourseSort">
+	<select id="findAllList" resultType="Ztest">
 		SELECT 
-			<include refid="zcourseSortColumns"/>
-		FROM zcourse_sort a
-		<include refid="zcourseSortJoins"/>
-		<where>				
-			a.del_flag = '0' AND a.name = #{name}	
-		</where>	 
-	</select>
-	
-	<select id="findAllList" resultType="ZcourseSort">
-		SELECT 
-			<include refid="zcourseSortColumns"/>
-		FROM zcourse_sort a
-		<include refid="zcourseSortJoins"/>
+			<include refid="ztestColumns"/>
+		FROM ztest a
+		<include refid="ztestJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
@@ -79,14 +75,14 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO zcourse_sort(
+		INSERT INTO ztest(
 			id,
-			parent_id,
-			parent_ids,
-			name,
-			sort,
-			code,
+			title,
 			type,
+			parentid,
+			sum,
+			testtype,
+			fraction,
 			create_by,
 			create_date,
 			update_by,
@@ -95,12 +91,12 @@
 			del_flag
 		) VALUES (
 			#{id},
-			#{parentId},
-			#{parentIds},
-			#{name},
-			#{sort},
-			#{code},
+			#{title},
 			#{type},
+			#{parentid},
+			#{sum},
+			#{testtype},
+			#{fraction},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -111,13 +107,13 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE zcourse_sort SET 	
-			parent_id = #{parentId},
-			parent_ids = #{parentIds},
-			name = #{name},
-			sort = #{sort},
-			code = #{code},
+		UPDATE ztest SET 	
+			title = #{title},
 			type = #{type},
+			parentid = #{parentid},
+			sum = #{sum},
+			testtype = #{testtype},
+			fraction = #{fraction},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
@@ -125,15 +121,9 @@
 	</update>
 	
 	<update id="delete">
-		UPDATE zcourse_sort SET 
+		UPDATE ztest SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
 	
-	
-	<update id="deleteParent">
-		UPDATE zcourse_sort SET 
-			del_flag = #{DEL_FLAG_DELETE}
-		WHERE parent_id = #{parentId}
-	</update>
 </mapper>

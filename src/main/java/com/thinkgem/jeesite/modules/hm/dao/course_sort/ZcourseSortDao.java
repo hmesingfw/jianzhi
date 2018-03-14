@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.hm.dao.course_sort;
 
+import java.util.List;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
@@ -16,4 +18,6 @@ import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
 public interface ZcourseSortDao extends CrudDao<ZcourseSort> {
 	
 	public int deleteParent(ZcourseSort zcourseSort);
+	
+	public List<ZcourseSort> findName(String name);
 }

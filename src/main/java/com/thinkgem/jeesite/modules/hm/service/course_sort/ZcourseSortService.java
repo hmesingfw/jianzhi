@@ -36,6 +36,10 @@ public class ZcourseSortService extends CrudService<ZcourseSortDao, ZcourseSort>
 		return super.findList(zcourseSort);
 	}
 	
+	public List<ZcourseSort> findName(String name) {
+		return zcourseSortDao.findName(name);
+	}
+	
 	public Page<ZcourseSort> findPage(Page<ZcourseSort> page, ZcourseSort zcourseSort) {
 		return super.findPage(page, zcourseSort);
 	}
