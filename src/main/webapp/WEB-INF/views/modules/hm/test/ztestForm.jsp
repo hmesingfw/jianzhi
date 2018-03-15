@@ -59,6 +59,14 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">测试时长：</label>
+			<div class="controls">
+				<form:input path="testtype" htmlEscape="false" maxlength="20" class="required digits"/>
+				<span style="margin-left: 30px;color: red;">单位（分）</span>
+			</div>
+		</div>
+
+		<div class="control-group">
 			<label class="control-label">题目数量：</label>
 			<div class="controls">
 				<form:input path="sum" htmlEscape="false" maxlength="20" class="input-xlarge "/>

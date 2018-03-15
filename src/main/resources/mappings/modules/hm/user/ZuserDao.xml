@@ -110,6 +110,25 @@
 		</choose>
 	</select>
 	
+	<select id="findidcode" resultType="Zuser">
+		SELECT 
+			<include refid="zuserColumns"/>
+		FROM zuser a
+		<include refid="zuserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND a.idcode = #{idcode} 
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
 	<insert id="insert">
 		INSERT INTO zuser(
 			id,

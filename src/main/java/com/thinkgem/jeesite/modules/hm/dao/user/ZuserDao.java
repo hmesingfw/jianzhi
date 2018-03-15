@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.hm.dao.user;
 
+import java.util.List;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.hm.entity.user.Zuser;
@@ -14,5 +16,5 @@ import com.thinkgem.jeesite.modules.hm.entity.user.Zuser;
  */
 @MyBatisDao
 public interface ZuserDao extends CrudDao<Zuser> {
-	
+	public List<Zuser> findidcode(Zuser zuser);
 }

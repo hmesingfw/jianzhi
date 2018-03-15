@@ -45,7 +45,7 @@
 			</div>
 			<form action="${ctxF}/login" id="inputForm" method="post" onsubmit="return update()">
 				<div class="batlogin1-center">
-					<input type="text" name="IDcode" id="IDcode" placeholder="身份证号"/>
+					<input type="text" name="idcode" id="IDcode" placeholder="身份证号"/>
 					<input type="password" name="password" id="password" placeholder="密码"/>
 					<div class="batlogin1-bottom">
 						<p><a href="javascript:;" id="batbox" onclick="batbox(this)"></a>记住登录<label>(初始密码为身份证后六位)</label></p>

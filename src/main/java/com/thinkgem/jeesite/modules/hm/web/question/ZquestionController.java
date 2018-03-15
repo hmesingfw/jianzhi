@@ -146,12 +146,15 @@ public class ZquestionController extends BaseController {
 		try{
 			ImportExcel ei = new ImportExcel(file, 1, 0);
 			List<Zquestion> list = ei.getDataList(Zquestion.class);
-			for (Zquestion zquestion : list) {
+			System.out.println(list.size());
+			for (int i=0; i<list.size(); i++){
+				Zquestion zquestion = list.get(i);
 				String answer = zquestion.getAnswer();
 				String corret = zquestion.getIsCorrect();
 				
 				System.out.println(questionid);
 				if("".equals(title) || !title.equals(zquestion.getTitle())){		//第一次循环 
+					System.out.println(i);
 					ZcourseSort sort = new ZcourseSort();
 					List<ZcourseSort> sortlist =  zcourseSortService.findName(zquestion.getParentid());
 					if(sortlist!=null && sortlist.size()>0){
@@ -164,16 +167,19 @@ public class ZquestionController extends BaseController {
 					questionid = zquestion.getId();
 					title = zquestion.getTitle();
 				}
-				if(title.equals(zquestion.getTitle())){
-					//保存答案
-					ZquestionAnswer zquestionAnswer = new ZquestionAnswer();
-					zquestionAnswer.setQuesId(questionid);
-					zquestionAnswer.setAnswer(answer);
-					zquestionAnswer.setIsCorrect(corret);					
-					zquestionAnswerService.save(zquestionAnswer);
-				}
+				
+				
+				//保存答案
+				ZquestionAnswer zquestionAnswer = new ZquestionAnswer();
+				zquestionAnswer.setQuesId(questionid);
+				zquestionAnswer.setAnswer(answer);
+				zquestionAnswer.setIsCorrect(corret);					
+				zquestionAnswerService.save(zquestionAnswer);				
+				
 			}
 		}catch(Exception e){
+			System.out.println("----->");
+			System.out.println(e.getMessage());
 			addMessage(redirectAttributes, "导入用户失败！失败信息："+e.getMessage());
 		}
 			 

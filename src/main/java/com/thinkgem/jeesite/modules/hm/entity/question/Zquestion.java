@@ -32,6 +32,8 @@ public class Zquestion extends DataEntity<Zquestion> {
 	private int limit;			//随机数
 	private List<ZquestionAnswer> ZquestionAnswer;
 	
+	private List<String> sortlist;	//前台点击分类
+	
 	public Zquestion() {
 		super();
 	}
@@ -41,6 +43,14 @@ public class Zquestion extends DataEntity<Zquestion> {
 	}
 	
 	
+
+	public List<String> getSortlist() {
+		return sortlist;
+	}
+
+	public void setSortlist(List<String> sortlist) {
+		this.sortlist = sortlist;
+	}
 
 	public int getLimit() {
 		return limit;

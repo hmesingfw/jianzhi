@@ -1,7 +1,6 @@
 package com.thinkgem.jeesite.front.web;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,14 +19,20 @@ import org.springframework.web.multipart.MultipartFile;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.FileUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.hm.dao.test_question.ZtestQuestionDao;
 import com.thinkgem.jeesite.modules.hm.entity.course.Zcourse;
 import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
 import com.thinkgem.jeesite.modules.hm.entity.doc.Zdoc;
 import com.thinkgem.jeesite.modules.hm.entity.docsort.ZdocSort;
 import com.thinkgem.jeesite.modules.hm.entity.news.Znew;
 import com.thinkgem.jeesite.modules.hm.entity.order.ZcourseOrder;
+import com.thinkgem.jeesite.modules.hm.entity.question.Zquestion;
+import com.thinkgem.jeesite.modules.hm.entity.question_answer.ZquestionAnswer;
+import com.thinkgem.jeesite.modules.hm.entity.test.Ztest;
+import com.thinkgem.jeesite.modules.hm.entity.test_question.ZtestQuestion;
 import com.thinkgem.jeesite.modules.hm.entity.user.Zuser;
 import com.thinkgem.jeesite.modules.hm.entity.userdoc.ZuserDoc;
+import com.thinkgem.jeesite.modules.hm.entity.usertest.ZuserTest;
 import com.thinkgem.jeesite.modules.hm.service.aboutus.TaboutUsService;
 import com.thinkgem.jeesite.modules.hm.service.banner.ZbannerService;
 import com.thinkgem.jeesite.modules.hm.service.course.ZcourseService;
@@ -36,8 +41,12 @@ import com.thinkgem.jeesite.modules.hm.service.doc.ZdocService;
 import com.thinkgem.jeesite.modules.hm.service.docsort.ZdocSortService;
 import com.thinkgem.jeesite.modules.hm.service.news.ZnewService;
 import com.thinkgem.jeesite.modules.hm.service.order.ZcourseOrderService;
+import com.thinkgem.jeesite.modules.hm.service.question.ZquestionService;
+import com.thinkgem.jeesite.modules.hm.service.question_answer.ZquestionAnswerService;
+import com.thinkgem.jeesite.modules.hm.service.test.ZtestService;
 import com.thinkgem.jeesite.modules.hm.service.user.ZuserService;
 import com.thinkgem.jeesite.modules.hm.service.userdoc.ZuserDocService;
+import com.thinkgem.jeesite.modules.hm.service.usertest.ZuserTestService;
 
 /**
  * 前端展示页面
@@ -79,6 +88,21 @@ public class FrontController {
 //	课程订单信息
 	@Autowired
 	private ZcourseOrderService zcourseOrderService;
+//	试题管理
+	@Autowired
+	private ZquestionService zquestionService;
+//	試題答案管理
+	@Autowired
+	private ZquestionAnswerService zquestionAnswerService;
+//	试题卷管理
+	@Autowired
+	private ZtestService ztestService;
+//	用户测试记录
+	@Autowired
+	private ZuserTestService zuserTestService;
+//	试卷试题管理
+	@Autowired
+	private ZtestQuestionDao ztestQuestionDao;
 	/**
 	 * 首页管理
 	 * 
@@ -378,9 +402,11 @@ public class FrontController {
 	 * @return
 	 */
 	@RequestMapping(value ="login")
-	public String login(Zuser zuser,HttpServletRequest request, HttpServletResponse response, Model model){
-		List<Zuser> userlist = zuserService.findList(zuser);
+	public String login(Zuser zuser,HttpServletRequest request, HttpServletResponse response, Model model){		
+		
+		List<Zuser> userlist = zuserService.findidcode(zuser);
 		if(userlist!=null && userlist.size()==1){
+			
 			Zuser user = userlist.get(0);
 			if("1".equals(user.getDelFlag())){
 				model.addAttribute("msg", "账户不存在");
@@ -397,14 +423,9 @@ public class FrontController {
 				return "front/login";
 			}
 			request.getSession().setAttribute("sessionMyinfo", user);
-		}else{
-			if(userlist!=null && userlist.size()>1){
-				model.addAttribute("msg", "输入异常，请重新输入");
-				return "front/login";
-			}else{
-				model.addAttribute("msg", "账户密码错误，请重新输入");
-				return "front/login";
-			}			
+		}else{			
+			model.addAttribute("msg", "账户密码错误，请重新输入");
+			return "front/login";						
 		}		
 		return "redirect:myinfo";
 	}
@@ -561,7 +582,7 @@ public class FrontController {
 	 * @return
 	 */
 	@RequestMapping( value= "questionlist")
-	public String questionlist(HttpServletRequest request, HttpServletResponse response, Model model){
+	public String questionlist(Ztest test, HttpServletRequest request, HttpServletResponse response, Model model){
 		model.addAttribute("mendId", "3");	
 		
 		//选择的分类的列表
@@ -601,11 +622,272 @@ public class FrontController {
 			sortlist.add(sort3);
 		}
 		
+		test.setSortlist(sortlist);
+		Page<Ztest> page = ztestService.findPage(new Page<Ztest>(request, response), test);
+		model.addAttribute("page", page);
+		model.addAttribute("test", test);
+		
 		model.addAttribute("classflyone", sort1);
 		model.addAttribute("classflytwo", sort2);
 		model.addAttribute("classflythr", sort3);
 		return "front/questionlist";
 	}
 
-
+	/**
+	 * 进入考试
+	 * @param test
+	 * @return
+	 */
+	@RequestMapping( value= "gotoquestion")
+	public String gotoquestion(Ztest test, HttpServletRequest request, HttpServletResponse response, Model model){
+		model.addAttribute("mendId", "3");	
+		
+		Zuser user = (Zuser)request.getSession().getAttribute("sessionMyinfo");
+		if(user==null || StringUtils.isBlank(user.getId())) {
+			model.addAttribute("msg", "请登陆.");
+			return "front/login";
+		}
+		
+		test = ztestService.get(test.getId());
+		model.addAttribute("testid", test.getId());
+		model.addAttribute("test", test);
+		ZuserTest usertest = new ZuserTest();
+		usertest.setUserid(user.getId());
+		usertest.setTestid(test.getId());		
+		usertest.setDelFlag("0");	
+		
+		zuserTestService.deleteUesrtest(usertest); 		//删除用户考试记录
+		
+		//查找出当前试卷的所有题目
+		ZtestQuestion ztestQuestion = new ZtestQuestion();
+		ztestQuestion.setTestid(test.getId());
+		ztestQuestion.setDelFlag("0");
+		List<ZtestQuestion> testquestionlist = ztestQuestionDao.findList(ztestQuestion);
+		
+		//添加用户需要考试题的记录
+		int sort = 1;
+		for (ZtestQuestion ztestQuestion2 : testquestionlist) {
+			ZuserTest insertTest = new ZuserTest();
+			insertTest.setUserid(user.getId());
+			insertTest.setTestid(test.getId());
+			insertTest.setQuestionid(ztestQuestion2.getQuestion());
+			insertTest.setSort(sort);
+			sort++;
+			zuserTestService.save(insertTest);
+		}
+		
+		myTestlist(test.getId(), user.getId(), model, "yes");		
+		
+		String time = test.getTesttime();
+		if(StringUtils.isNumeric(time)){
+			model.addAttribute("time", Integer.parseInt(time)*60);
+		}
+		
+		return "front/test";
+	}
+	
+	/**
+	 * 用户需要考试的题目
+	 * @param testid	考试卷编号
+	 * @param userid	用户编号
+	 * @param isOne		是否为第一题			yes or no
+	 * @param model
+	 */
+	public void myTestlist(String testid, String userid, Model model, String isOne){
+		ZuserTest usertest = new ZuserTest();
+		usertest.setTestid(testid);		
+		usertest.setUserid(userid);
+		usertest.setDelFlag("0");	
+		
+		List<ZuserTest> list = zuserTestService.findList(usertest);
+		model.addAttribute("mytestlist", list);
+		
+		if("yes".equals(isOne)){
+			if(list!=null && list.size()>0){
+				currentTest(list.get(0).getId(), model);				
+			}
+		}
+	}
+	
+	/**
+	 * 当前测试题
+	 * @param usertestid
+	 * @param model
+	 */
+	public void currentTest(String usertestid, Model model){	
+		//当前用户测试记录的编号
+		ZuserTest usertest = zuserTestService.get(usertestid);
+		model.addAttribute("myusertestid", usertestid);
+		
+		
+		Zquestion zquestion = zquestionService.get(usertest.getQuestionid());
+		//下一题的编号
+		List<ZuserTest> nexttest = zuserTestService.findNextTest(usertest);		
+		if(nexttest!=null && nexttest.size()>0){
+			model.addAttribute("nextusertestid", nexttest.get(0).getId());
+		}
+		
+		
+		
+		ZquestionAnswer zquestionAnswer = new ZquestionAnswer();
+		zquestionAnswer.setQuesId(zquestion.getId());
+		zquestionAnswer.setDelFlag("0");
+		
+		List<ZquestionAnswer> answerList = zquestionAnswerService.findList(zquestionAnswer);
+		
+		model.addAttribute("zquestion", zquestion);
+		model.addAttribute("answerList", answerList);
+		
+	}
+	
+	
+	/**
+	 *  跳转到某题
+	 */
+	@RequestMapping( value= "gotoQuestion")
+	public String bleow(HttpServletRequest request, HttpServletResponse response, Model model){
+		model.addAttribute("mendId", "3");	
+		
+		Zuser user = (Zuser)request.getSession().getAttribute("sessionMyinfo");
+		if(user==null || StringUtils.isBlank(user.getId())) {
+			model.addAttribute("msg", "请登陆.");
+			return "front/login";
+		}
+		
+		String mytestid = request.getParameter("mytestid");		//跳转到当前题
+		String testid   = request.getParameter("testid");
+		
+		model.addAttribute("testid", testid);		
+		model.addAttribute("test", ztestService.get(testid));
+		model.addAttribute("time", request.getParameter("time"));
+		
+		myTestlist(testid, user.getId(), model, "");	
+		currentTest(mytestid, model);
+		
+		return "front/test";
+	}
+	
+	
+	/**
+	 * 答题处理
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping( value= "answer")
+	public String answer(HttpServletRequest request, HttpServletResponse response, Model model){
+		model.addAttribute("mendId", "3");	
+		
+		Zuser user = (Zuser)request.getSession().getAttribute("sessionMyinfo");
+		if(user==null || StringUtils.isBlank(user.getId())) {
+			model.addAttribute("msg", "请登陆.");
+			return "front/login";
+		}
+		String testid = request.getParameter("testid"); 				//当前试卷
+		model.addAttribute("testid", testid);		
+		model.addAttribute("test", ztestService.get(testid));
+		
+		String currentanswer = request.getParameter("currentanswer");	//当前答案		
+		String myusertestid = request.getParameter("myusertestid");		//当前答题记录的编号
+		String isCorrect = request.getParameter("isCorrect");
+		
+		String nextusertestid = request.getParameter("nextusertestid");	//下一题题目的编号
+		ZuserTest usertest = zuserTestService.get(myusertestid);		
+		usertest.setAnswerid(currentanswer);
+		usertest.setIsselected("1");
+		usertest.setIstrue(isCorrect);
+		zuserTestService.save(usertest);
+		
+		String time = request.getParameter("time");
+		model.addAttribute("time", time);
+		//是否完成答卷
+		if(nextusertestid!=null && !"".equals(nextusertestid)){
+			myTestlist(testid, user.getId(), model, "");	
+			currentTest(nextusertestid, model);
+			return "front/test";
+		}else{
+//			myTestlist(testid, user.getId(), model, "");
+			System.out.println(testid);
+			ZuserTest myusertest = new ZuserTest();
+			usertest.setTestid(testid);		
+			usertest.setUserid(user.getId());
+			usertest.setDelFlag("0");	
+			List<ZuserTest> list = zuserTestService.findList(myusertest);		
+			
+			
+			
+			//白忙活
+//			int iscorrect = 0;			//答对题数
+//			int fraction = 0;			//答对分数
+//			for (ZuserTest zuserTest : list) {
+//				Zquestion question = zquestionService.get(zuserTest.getQuestionid());
+//				if(question!=null){
+//					//单选     判断
+//					if("1".equals(question) || "3".equals(question)){
+//						String answers[] = zuserTest.getAnswerid().split(",");
+//						if(answers!=null && answers.length>0){
+//							//是否正确
+//							ZquestionAnswer answer = zquestionAnswerService.get(answers[0]);
+//							if(answer!=null && "1".equals(answer.getIsCorrect())){
+//								iscorrect++;
+//								//分数
+//								if(StringUtils.isNumeric(question.getDefaultFraction())){
+//									fraction += Integer.parseInt(question.getDefaultFraction());
+//								}
+//							}
+//						}
+//					}
+//					//多选
+//					if("2".equals(question)){
+//						String answers[] = zuserTest.getAnswerid().split(",");
+//						boolean isanswer = true;
+//						for (String string : answers) {
+//							ZquestionAnswer answer = zquestionAnswerService.get(string);
+//							if(answer==null || !"1".equals(answer.getIsCorrect())){
+//								isanswer = false;
+//							}
+//							break;
+//						}
+//						if(isanswer){
+//							iscorrect++;
+//							//分数
+//							if(StringUtils.isNumeric(question.getDefaultFraction())){
+//								fraction += Integer.parseInt(question.getDefaultFraction());
+//							}
+//						}						
+//					}
+//				}
+//			}
+//			model.addAttribute("iscorrect", iscorrect);
+//			model.addAttribute("fraction", fraction);
+			
+			
+			
+			
+			
+			model.addAttribute("mytestlist", list);
+			Ztest currenttest = ztestService.get(testid);
+			model.addAttribute("test", currenttest);
+			return "front/testcurrent";
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

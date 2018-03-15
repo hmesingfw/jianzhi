@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.hm.entity.test;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -21,13 +23,33 @@ public class Ztest extends DataEntity<Ztest> {
 	private String sum;		// 题目数量
 	private String testtype;		// 测试题目类型
 	private String fraction;		// 总分数
+	private String testtime;		//测试时长
 	
+	private List<String> sortlist;	
 	public Ztest() {
 		super();
 	}
 
 	public Ztest(String id){
 		super(id);
+	}
+	
+	
+
+	public String getTesttime() {
+		return testtime;
+	}
+
+	public void setTesttime(String testtime) {
+		this.testtime = testtime;
+	}
+
+	public List<String> getSortlist() {
+		return sortlist;
+	}
+
+	public void setSortlist(List<String> sortlist) {
+		this.sortlist = sortlist;
 	}
 
 	@Length(min=0, max=3000, message="试题卷名称长度必须介于 0 和 3000 之间")
