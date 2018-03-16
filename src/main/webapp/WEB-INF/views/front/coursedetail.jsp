@@ -18,7 +18,7 @@
    	<div class="courseView" style="margin-bottom: 50px;">
    		<div class="page-width">
 	   		<div class="posnav">
-			<a href="http://me.cs.com/cl.aspx?id-9">职业资格</a><em>&gt;</em> <a href="http://me.cs.com/cl.aspx?id-130">项目管理</a><em>&gt;</em> 浏览课程
+			<a href="${ctxF}/courseList">全部课程</a><em>&gt;</em>${zcourse.title}
 			</div>
 	    
 	    	<div class="box bd-all">
@@ -39,12 +39,10 @@
 	                    </div>
 						<div class="button">	                    
 							<c:if test="${ispay == 'nopay'}">
-
 	                    		<input type="button" onclick="" class="hb-ui-btn1" value="购买" />	
 	                    	</c:if>     
 	                    	<c:if test="${ispay == 'yespay'}">
-
-	                    		<input type="button" onclick="" class="hb-ui-btn1" value="购买" />	
+	                    		<input type="button" onclick="gotolookcourse()" class="hb-ui-btn1" value="观看" />	
 	                    	</c:if>    
 	                    </div>
 	                </div>
@@ -64,7 +62,11 @@
     		<li onclick="goTop()"><span>返回<br />头部</span><i class="edufont e-icon-top"></i></li>
     	</ul>
     </aside>  
-	
-</script>
+	<script type="text/javascript">
+		function gotolookcourse(){
+			window.location.href="${ctxF}/gotolookcourse?id=${zcourse.id}";
+		}
+	</script>	
+
 </body>
 </html>

@@ -78,6 +78,23 @@
 		</choose>
 	</select>
 	
+	
+	<select id="findMyorderByid" resultType="ZcourseOrder">
+		SELECT 
+			<include refid="zcourseOrderColumns"/>
+		FROM zcourse_order a
+		<include refid="zcourseOrderJoins"/>
+			<where>
+				a.del_flag = #{DEL_FLAG_NORMAL}
+				<if test="courseid != null and courseid != ''">
+					AND a.courseid = #{courseid}
+				</if>
+				<if test="userid != null and userid != ''">
+					AND a.userid = #{userid}
+				</if>	
+			</where>	
+	</select>
+	
 	<insert id="insert">
 		INSERT INTO zcourse_order(
 			id,

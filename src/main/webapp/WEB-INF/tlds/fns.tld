@@ -332,6 +332,8 @@
     <example>${fns:getCourse(id)}</example>  
   </function>
 
+
+
   <function>
     <description>试题列表</description>
     <name>getQuestionList</name>
@@ -348,6 +350,31 @@
     <example>${fns:getQuestion(id)}</example>  
   </function>
 
+
+
+ <function>
+    <description>试题答案列表</description>
+    <name>getQuestionAnswerList</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZquestionAnswerUtils</function-class>
+    <function-signature>java.util.List getQuestionAnswerList()</function-signature>
+    <example>${fns:getQuestionAnswerList()}</example>  
+  </function>
+
+  <function>
+    <description>试题答案信息</description>
+    <name>getQuestionAnswer</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZquestionAnswerUtils</function-class>
+    <function-signature>com.thinkgem.jeesite.modules.hm.entity.question_answer.ZquestionAnswer getQuestionAnswer(java.lang.String)</function-signature>
+    <example>${fns:getQuestionAnswer(id)}</example>  
+  </function>
+
+  <function>
+    <description>一道题信息</description>
+    <name>getQuestionAnswerByQuestion</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZquestionAnswerUtils</function-class>
+    <function-signature>java.util.List getQuestionAnswerByQuestion(java.lang.String)</function-signature>
+    <example>${fns:getQuestionAnswerByQuestion(id)}</example>  
+  </function>
 
 
 </taglib>

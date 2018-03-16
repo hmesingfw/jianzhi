@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.hm.service.order;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,9 @@ import com.thinkgem.jeesite.modules.hm.dao.order.ZcourseOrderDao;
 @Transactional(readOnly = true)
 public class ZcourseOrderService extends CrudService<ZcourseOrderDao, ZcourseOrder> {
 
+	@Autowired
+	private ZcourseOrderDao zcourseOrderDao;
+	
 	public ZcourseOrder get(String id) {
 		return super.get(id);
 	}
@@ -42,6 +46,10 @@ public class ZcourseOrderService extends CrudService<ZcourseOrderDao, ZcourseOrd
 	@Transactional(readOnly = false)
 	public void delete(ZcourseOrder zcourseOrder) {
 		super.delete(zcourseOrder);
+	}
+	
+	public List<ZcourseOrder> findMyorderByid(ZcourseOrder zcourseOrder){
+		return zcourseOrderDao.findMyorderByid(zcourseOrder);
 	}
 	
 }

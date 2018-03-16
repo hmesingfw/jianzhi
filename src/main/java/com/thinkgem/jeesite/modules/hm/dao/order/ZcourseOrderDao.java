@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.hm.dao.order;
 
+import java.util.List;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.hm.entity.order.ZcourseOrder;
@@ -15,4 +17,5 @@ import com.thinkgem.jeesite.modules.hm.entity.order.ZcourseOrder;
 @MyBatisDao
 public interface ZcourseOrderDao extends CrudDao<ZcourseOrder> {
 	
+	public List<ZcourseOrder> findMyorderByid(ZcourseOrder zcourseOrder);
 }

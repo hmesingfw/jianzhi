@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.hm.dao.course_user.ZcourseUserDao">
+    
+	<sql id="zcourseUserColumns">
+		a.id AS "id",
+		a.courseid AS "courseid",
+		a.userid AS "userid",
+		a.coursetime AS "coursetime",
+		a.usertime AS "usertime",
+		a.lasttime AS "lasttime",
+		a.islooksuc AS "islooksuc",
+		a.create_date AS "createDate",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="zcourseUserJoins">
+	</sql>
+    
+	<select id="get" resultType="ZcourseUser">
+		SELECT 
+			<include refid="zcourseUserColumns"/>
+		FROM zcourse_user a
+		<include refid="zcourseUserJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZcourseUser">
+		SELECT 
+			<include refid="zcourseUserColumns"/>
+		FROM zcourse_user a
+		<include refid="zcourseUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="courseid != null and courseid != ''">
+				AND a.courseid = #{courseid}
+			</if>
+			<if test="userid != null and userid != ''">
+				AND a.userid = #{userid}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZcourseUser">
+		SELECT 
+			<include refid="zcourseUserColumns"/>
+		FROM zcourse_user a
+		<include refid="zcourseUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zcourse_user(
+			id,
+			courseid,
+			userid,
+			coursetime,
+			usertime,
+			lasttime,
+			islooksuc,
+			create_date,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{courseid},
+			#{userid},
+			#{coursetime},
+			#{usertime},
+			#{lasttime},
+			#{islooksuc},
+			#{createDate},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zcourse_user SET 	
+			courseid = #{courseid},
+			userid = #{userid},
+			coursetime = #{coursetime},
+			usertime = #{usertime},
+			lasttime = #{lasttime},
+			islooksuc = #{islooksuc},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="updateUsertime">
+		UPDATE zcourse_user SET 	
+			usertime = usertime+5,			
+			update_date = #{updateDate}			
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE zcourse_user SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

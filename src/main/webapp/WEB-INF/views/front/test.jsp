@@ -138,11 +138,12 @@
         </div>
     </div>
     <script type="text/javascript">
+        var questiontype = '${zquestion.type == 2?"2":"1"}';
         function gotoQuestion(mytestid, testid){
             var time = $('.fen').html();
             window.location.href='${ctxF}/gotoQuestion?mytestid='+mytestid+'&testid='+testid+'&time='+time;
         }
-
+        var iscurret = true;        //单选 多选  节点判断
         $(function(){
             var time = '${time}';
             setInterval(function(){
@@ -156,8 +157,17 @@
                         if($(this).is(":checked")){
                             answer += $(this).val() +';';
 
-                            if('1'==$(this).attr('iscurret')){
-                                $("#isCorrect").val('1');
+                            if(1==questiontype){
+                                if('1'==$(this).attr('iscurret')){
+                                    $("#isCorrect").val('1');
+                                }
+                            }else{
+                                if('1'==$(this).attr('iscurret') && iscurret){
+                                    $("#isCorrect").val('1');
+                                }else{
+                                    iscurret = false;
+                                    $("#isCorrect").val('');
+                                }
                             }
                         }                
                     })
@@ -169,16 +179,26 @@
         })
 
         function xiayiti(nextusertestid){
-
+            
             var answer = '';
             var s = $("input[name='questioninfo']");
             $.each(s,function(){
                 if($(this).is(":checked")){
                     answer += $(this).val() +';';
 
-                    if('1'==$(this).attr('iscurret')){
-                        $("#isCorrect").val('1');
+                    if(1==questiontype){
+                        if('1'==$(this).attr('iscurret')){
+                            $("#isCorrect").val('1');
+                        }
+                    }else{
+                        if('1'==$(this).attr('iscurret') && iscurret){
+                            $("#isCorrect").val('1');
+                        }else{
+                            iscurret = false;
+                            $("#isCorrect").val('');
+                        }
                     }
+                    
                 }                
             })
 

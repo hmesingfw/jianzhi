@@ -60,31 +60,48 @@
                                     <div class="sjlist" id="xt151921">
                                         <div class="ex-text"> 
                                             <div class="xtcontentclass">
-                                                <p>答对：${iscorrect}题，总得分：${fraction}</p>
-                                            </div>
-
-
-                                            <div class="xtcontentclass">
-                                                <p>${zquestion.title}</p>
-                                            </div>
-                                            <div class="blank10 clear"></div>
-                                            <div id="t151921" class="ta">
-                                                <div class="ex-text-option ex-option-radio">
-                                                    <c:forEach items="${answerList}" var="info" varStatus="list">
-                                                        <label class="dx_button">
-                                                            <input type="${zquestion.type == 2?'checkbox':'radio'}" name="questioninfo" value="${info.id}" >${info.answer}
-                                                        </label>
-                                                    </c:forEach>                                     
-                                                </div>                                              
-                                            </div>                                          
+                                                <p>本次考试共答对：${iscorrect}题，总得分：${fraction}</p>
+                                            </div>                               
                                         </div>
                                     </div>
+
+
+
+
+                                    <c:forEach items="${mytestlist}" var="info" varStatus="list">
+                                        <div class="blank10 clear" id="reclear"></div>
+                                        <div class="sjlist">
+                                            <div class="ex-text">
+                                                <div class="xttitleclass">
+                                                    <strong>第<span class="xihao">${info.sort}</span> 题：</strong>
+                                                </div>
+                                                <div class="xtcontentclass">
+                                                    <p>${fns:getQuestion(info.questionid).title}</p>
+                                                </div>
+                                                <div class="blank10 clear"></div>
+                                                <div class="ta">
+                                                    <div class="ex-text-option ex-option-radio">
+                                                        <c:forEach items="${fns:getQuestionAnswerByQuestion(info.questionid)}" var="answer">
+                                                            <label class="dx_button">
+                                                                <input type="${fns:getQuestion(info.questionid).type == 2?'checkbox':'radio'}"  name="${info.questionid}"${fn:indexOf(info.answerid, answer.id) != -1?'checked':''} >
+                                                                <span style="${answer.isCorrect == 1?'color:#5aff5a':''}">${answer.answer}</span>
+                                                            </label>
+                                                        </c:forEach>
+                                                    </div>                                               
+                                                </div>
+                                                <div class="sttj">
+                                                    <label class="ctb">
+                                                        解析：${fns:getQuestion(info.questionid).analytical}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+
+
                                 </div>
                             </div>
-
-
-                        </div>
-                    
+                        </div>                    
                     <!-- // END -->
                     <div class="clear"></div>
                 </div>
