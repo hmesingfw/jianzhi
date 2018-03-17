@@ -54,11 +54,10 @@
 										<fmt:formatDate value="${info.createDate}" pattern="yyyy-MM-dd"/>
 									</p>
 									<div class="userxian">
-										<div class="userxian1"><span class="userxian2"></span></div>
-										<label>已学习40%</label>
+										购买状态：${fns:getDictLabel(info.paystatus, 'pay_status', '')}
 									</div>
 								</div>
-								<a href="" class="usercuo">×</a>
+								<!-- <a href="" class="usercuo">×</a> -->
 							</li>
 						</c:forEach>	
 					</ul>

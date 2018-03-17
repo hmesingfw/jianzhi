@@ -1,9 +1,14 @@
 package com.thinkgem.jeesite.front.web;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,9 +21,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.FileUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.utils.pay.alipay.config.AlipayConfig;
 import com.thinkgem.jeesite.modules.hm.dao.test_question.ZtestQuestionDao;
 import com.thinkgem.jeesite.modules.hm.entity.course.Zcourse;
 import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
@@ -641,6 +650,186 @@ public class FrontController {
 		return "front/coursedetail";
 	}
 	
+	/**
+	 * 进入课程购买
+	 * @param zcourse
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping( value= "gotopaycourse")
+	public String gotopaycourse(Zcourse zcourse, HttpServletRequest request, HttpServletResponse response, Model model){
+		model.addAttribute("mendId", "2");			
+		Zuser user = (Zuser)request.getSession().getAttribute("sessionMyinfo");
+		if(user==null || StringUtils.isBlank(user.getId())) {
+			model.addAttribute("msg", "请登陆.");
+			return "front/login";
+		}
+		
+		zcourse = zcourseService.get(zcourse.getId());
+		model.addAttribute("zcourse", zcourse);		
+		return "front/pay";		
+	}
+	
+	
+	/**
+	 * 课程购买
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "payCourse")
+	public String payCourse(String id, HttpServletRequest request, HttpServletResponse response, Model model) {
+		PrintWriter out =null;
+		try {
+			/** 验证是否登录*/
+			Zuser user = (Zuser)request.getSession().getAttribute("sessionMyinfo");
+			if(user==null || StringUtils.isBlank(user.getId())) {
+				model.addAttribute("msg", "请登陆.");
+				return "front/login";
+			}		
+			Zcourse zcourse = zcourseService.get(id);
+			
+			long orderid = new Date().getTime();
+			
+			ZcourseOrder zcourseOrder = new ZcourseOrder();
+			zcourseOrder.setCourseid(zcourse.getId());
+			zcourseOrder.setUserid(user.getId());
+			zcourseOrder.setDelFlag("0");
+			List<ZcourseOrder> orderlist = zcourseOrderService.findMyorderByid(zcourseOrder);
+			if(orderlist!=null && orderlist.size()>0){
+				zcourseOrder = orderlist.get(0);
+				zcourseOrder.setPayid(orderid+"");
+				zcourseOrder.setPaytype("1");
+				zcourseOrderService.save(zcourseOrder);	
+			}else{			
+				zcourseOrder.setPayid(orderid+"");
+				zcourseOrder.setPaytype("1");
+				zcourseOrderService.save(zcourseOrder);		
+			}
+			String actualcost = zcourse.getPrice();			//价格
+			/** 支付宝支付*/
+			//获得初始化的AlipayClient
+			AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id, AlipayConfig.merchant_private_key, "json", AlipayConfig.charset, AlipayConfig.alipay_public_key, AlipayConfig.sign_type);
+			//设置请求参数
+			
+			AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();
+			alipayRequest.setReturnUrl(AlipayConfig.return_url);
+			alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
+			alipayRequest.setBizContent("{\"out_trade_no\":\""+ orderid +"\"," 
+					+ "\"total_amount\":\""+ actualcost +"\"," 
+					+ "\"subject\":\""+ zcourse.getTitle() +"\"," 
+					+ "\"body\":\""+ zcourse.getTitle() +"\"," 
+					+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
+			//请求
+			String result = alipayClient.pageExecute(alipayRequest).getBody();
+			/** 设置回传格式*/
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=UTF-8");
+			out = response.getWriter();
+			//输出
+			out.write(result);//直接将完整的表单html输出到页面
+			
+//			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally{
+			if(null!=out){
+				out.flush();
+				out.close();
+			}
+		}		
+		return null;
+	}
+	
+	
+	/**
+	 * 支付宝充值回调
+	 */
+	@ResponseBody
+	@RequestMapping(value = "alipayaNotify")
+	public String alipayaNotify(HttpServletRequest request, HttpServletResponse response, Model model) {
+		PrintWriter out =null;
+		try {
+			System.out.println("支付宝回调：----------------------------------");
+			/** 设置回传格式*/
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=UTF-8");
+			out = response.getWriter();
+			Map<String, String> params = new HashMap<String, String>();
+	        Map<String,String[]> requestParams = request.getParameterMap();
+	        for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
+	        	String name = (String) iter.next();
+	            String[] values = (String[]) requestParams.get(name);
+	            String valueStr = "";
+	            for (int i = 0; i < values.length; i++) {
+	                valueStr = (i == values.length - 1) ? valueStr + values[i]
+	                        : valueStr + values[i] + ",";
+	            }
+	            //乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
+//	            valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+	            params.put(name, valueStr);
+	        }
+//	        boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.alipay_public_key, AlipayConfig.charset, AlipayConfig.sign_type); //调用SDK验证签名
+	        boolean signVerified = true;
+	        if(signVerified) {//验证成功
+	        	//商户订单号
+//	    		String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
+	    		String out_trade_no = request.getParameter("out_trade_no");
+	    		//支付宝交易号
+//	    		String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
+	    		String trade_no = request.getParameter("trade_no");
+	    		//交易状态
+//	    		String trade_status = new String(request.getParameter("trade_status").getBytes("ISO-8859-1"),"UTF-8");
+	    		String trade_status = request.getParameter("trade_status");
+	    		//交易状态
+//	    		String body = new String(request.getParameter("body").getBytes("ISO-8859-1"),"UTF-8");
+	    		String body = request.getParameter("body");
+	    		//订单金额
+//	    		String total_amount = new String(request.getParameter("total_amount").getBytes("ISO-8859-1"),"UTF-8");
+	    		String total_amount = request.getParameter("total_amount");
+		        System.out.println("支付宝通知信息："+out_trade_no+"--------"+trade_no+"--------"+trade_status+"--------"+body+"--------"+total_amount);
+		        /** 查询订单信息*/
+		        ZcourseOrder orders = new ZcourseOrder();
+		        orders.setPayid(out_trade_no);
+		        //跟据订单号查询订单信息		      
+		        List<ZcourseOrder> list = zcourseOrderService.findList(orders);       
+
+		        if(list!=null && list.size()>0){
+		        	orders = list.get(0);
+		        }
+		        String total_fee = total_amount;
+		        if(total_fee!=null && !"".equals(total_fee)){
+			        //支付金额
+			        BigDecimal fee = new BigDecimal(total_fee);	 
+			        orders.setPayprice(fee+"");
+		        }	       
+				
+				// 判断是否支付成功				
+				orders.setPaystatus("2");	
+				orders.setPaytime(new Date());
+				zcourseOrderService.save(orders);	
+				
+	    		out.println("success");
+	        } else {//验证失败
+	    		out.println("fail");
+	    	}
+		} catch (Exception e) {
+			 e.printStackTrace();
+		} finally {
+			if(out!=null){
+				out.close(); 
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * 支付宝通知返回
+	 */
+	@RequestMapping(value = "alipayReturn")
+	public String alipayReturn(HttpServletRequest request, HttpServletResponse response, Model model) {
+		// 重定向到我的订单
+		return "redirect:myCourseOrder";
+	}
 	
 	/**
 	 * 课程观看
@@ -677,6 +866,7 @@ public class FrontController {
 		zcourseUser.setUserid(user.getId());
 		zcourseUser.setCourseid(zcourse.getId());
 		zcourseUser.setDelFlag("0");
+		zcourseUser.setUsertime("0");
 		List<ZcourseUser> culist = zcourseUserService.findList(zcourseUser);
 		if(culist!=null && culist.size()>0){				
 		}else{
@@ -690,25 +880,42 @@ public class FrontController {
 	
 	
 	/**
-     * 课程观看记录
+     * 
      * @param path
      */
+	
+	/**
+	 * 课程观看记录
+	 * @param courseid	课程编号
+	 * @param current	当前播放时间
+	 * @param duration	视频总时长
+	 */
     @ResponseBody
     @RequestMapping(value = "courseLookRecord")
-    public String courseLookRecord(@RequestParam(required=false, value="courseid")String courseid,HttpServletRequest request, HttpServletResponse response) {
-    	System.out.println("looking........."+courseid);
+    public String courseLookRecord(@RequestParam(required=false, value="courseid")String courseid,
+    		@RequestParam(required=false, value="current")String current,
+    		@RequestParam(required=false, value="duration")String duration,HttpServletRequest request, HttpServletResponse response) {
+    	 
+    	System.out.println("look......."+duration+"........"+current);
+    	
     	Zuser user = (Zuser)request.getSession().getAttribute("sessionMyinfo");
-		if(user!=null && StringUtils.isBlank(user.getId())) {
+		if(user!=null && !StringUtils.isBlank(user.getId())) {
 			
 			 ZcourseUser zcourseUser = new ZcourseUser();
-			 zcourseUser.setUserid(user.getId());
+			 zcourseUser.setUserid(user.getId());	
 			 zcourseUser.setCourseid(courseid);
-			 zcourseUser.setDelFlag("0");
+			 zcourseUser.setDelFlag("0");			
+			 
 			 List<ZcourseUser> culist = zcourseUserService.findList(zcourseUser);
 			 if(culist!=null && culist.size()>0){
+				 
 				 zcourseUser = new ZcourseUser();
-				 zcourseUser.setId(culist.get(0).getId());
-				 zcourseUserService.updateUsertime(zcourseUser);		
+				 zcourseUser.setId(culist.get(0).getId());				 
+				 zcourseUser.setCoursetime(duration);
+				 zcourseUser.setLasttime(current);
+				 zcourseUser.setUpdateDate(new Date());
+				 zcourseUserService.updateUsertime(zcourseUser);
+				
 			 }
 		}
 		

@@ -34,21 +34,7 @@
 					        
 					    </div>
 					</li>
-				</c:forEach>
-				 
-				<li>
-				    <div class="li-box">
-				        <div class="class-img">
-				            <a href="http://me.cs.com/rv-37.aspx" target="_blank">
-				                <img src="${ctxStatic}/jianzhi/img/U131502621568402.jpg" alt="特效后期班" class="m-img" />
-				            </a>
-				        </div>
-				        <div class="name"><span class="price">￥56.00</span><a href="http://me.cs.com/rv-37.aspx" target="_blank">特效后期班</a></div>
-				       
-				    </div>
-				</li>
-
-  
+				</c:forEach>	
 	        </ul>
 	    </div>
 	</section>

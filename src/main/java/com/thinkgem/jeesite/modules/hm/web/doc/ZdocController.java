@@ -103,7 +103,7 @@ public class ZdocController extends BaseController {
 					System.out.println(sile);
 					
 					sile = sile.replaceAll("\\\\", "/");
-					zdoc.setFiles("/jianzhi"+sile);
+					zdoc.setFiles(sile);
 				}
 			}			
 		}

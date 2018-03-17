@@ -112,7 +112,9 @@
 	
 	<update id="updateUsertime">
 		UPDATE zcourse_user SET 	
-			usertime = usertime+5,			
+			coursetime = #{coursetime},
+			usertime = usertime+5,	
+			lasttime = #{lasttime},		
 			update_date = #{updateDate}			
 		WHERE id = #{id}
 	</update>

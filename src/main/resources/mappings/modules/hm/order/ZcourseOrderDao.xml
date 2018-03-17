@@ -49,6 +49,9 @@
 			<if test="paystatus != null and paystatus != ''">
 				AND a.paystatus = #{paystatus}
 			</if>
+			<if test="payid != null and payid != ''">
+				AND a.payid = #{payid}
+			</if>			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

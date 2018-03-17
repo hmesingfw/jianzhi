@@ -577,6 +577,16 @@
 		</dependency>
 		<!-- CKFinder end -->
 		
+		<!-- alipay start -->
+		<dependency>
+			<groupId>com.alipay</groupId>
+			<artifactId>alipay</artifactId>
+			<version>17.3.24</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/alipay-sdk-java20170324180803.jar</systemPath>
+		</dependency>
+		<!-- alipay end -->
+		
 		<!-- offic -->
 		<dependency>
 			<groupId>com.jacob</groupId>

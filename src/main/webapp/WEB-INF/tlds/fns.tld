@@ -377,4 +377,14 @@
   </function>
 
 
+
+  <function>
+    <description>学习进度条</description>
+    <name>getCourseSchedule</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZcourseUserUtils</function-class>
+    <function-signature>java.lang.Integer getCourseSchedule(java.lang.String, java.lang.String)</function-signature>
+    <example>${fns:getCourseSchedule(usertime, coursetime)}</example>  
+  </function>
+
+
 </taglib>

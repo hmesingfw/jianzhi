@@ -39,7 +39,7 @@
 	                    </div>
 						<div class="button">	                    
 							<c:if test="${ispay == 'nopay'}">
-	                    		<input type="button" onclick="" class="hb-ui-btn1" value="购买" />	
+	                    		<input type="button" onclick="gotopaycourse()" class="hb-ui-btn1" value="购买" />	
 	                    	</c:if>     
 	                    	<c:if test="${ispay == 'yespay'}">
 	                    		<input type="button" onclick="gotolookcourse()" class="hb-ui-btn1" value="观看" />	
@@ -63,6 +63,9 @@
     	</ul>
     </aside>  
 	<script type="text/javascript">
+		function gotopaycourse(){
+			window.location.href="${ctxF}/gotopaycourse?id=${zcourse.id}";
+		}
 		function gotolookcourse(){
 			window.location.href="${ctxF}/gotolookcourse?id=${zcourse.id}";
 		}

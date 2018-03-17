@@ -8,11 +8,27 @@
     		$(".head1-center").height($(window).height()-$(".head1").height());
 
             setInterval(function(){
-                $.post('${ctxF}/courseLookRecord',{courseid:'${zcourse.id}'},function(){
+                var currentTime = $("#current").text();     //当前播放时间
+                var duration = $("#duration").text();       //视频总时长
+                $.post('${ctxF}/courseLookRecord',{courseid:'${zcourse.id}',current:currentTime,duration:duration},function(){
 
                 })
             },5000)
+
+
+            $("#video").on(
+            "timeupdate", 
+            function(event){
+                onTrackedVideoFrame(this.currentTime, this.duration);
+            });
+
+            function onTrackedVideoFrame(currentTime, duration){
+              
+                $("#current").text(Math.floor(currentTime));
+                $("#duration").text(Math.floor(duration));
+            }
     	})
+
 
         
     </script>
@@ -63,12 +79,14 @@
     </style>
 </head>
 <body>
+    <div style="display: none;" id="current"></div>
+    <div style="display: none;" id="duration"></div>
 	<div class="head1">
 		<div class="head1-lt"><h1>${zcourse.title}</h1></div>
 		<div class="head1-rt"><img src="${sessionMyinfo.img}"/><span>${sessionMyinfo.name}</span></div>
 	</div>
 	<div class="head1-center">
-		<video controls="controls" src="${zcourse.files}"></video>
+		<video controls="controls" id="video" src="${zcourse.files}"></video>
 	</div>
 	
 </body>

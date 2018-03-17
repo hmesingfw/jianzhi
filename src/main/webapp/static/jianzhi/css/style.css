@@ -784,3 +784,64 @@ margin-top: 20px;
 	color: #4076D4;
 	
 }
+.pay1{
+	height: 40px;
+	background: #e6e6e6;
+}
+.pay1 label input{
+	float: left;
+	margin-left: 20px;
+	margin-top: 10px;
+}
+.pay1 label{
+	display: inline-block;
+	text-align: center;
+	line-height: 40px;
+	font-size: 16px;
+}
+.pay2 input{
+	float: left;
+	margin-left: 20px;
+	margin-top: 40px;
+}
+.pay1-la1{
+	width: 10%;
+}
+.pay1-la2{
+	width: 68%;
+	
+}
+.pay1-la3,.pay1-la4{
+	width: 10%
+}
+.pay2{
+	margin-top: 10px;
+	overflow: hidden;
+	border: 1px solid #eeeeee;
+	padding: 20px 0px;
+}
+.pay2 img{
+	height: 80px;
+	margin-left: 20px;
+	float: left;
+	width: 110px;
+}
+.pay2-div{
+	float: left;
+	margin-left: 20px;
+	width: 55%;
+}
+.pay2-div h1{
+	font-size: 16px;
+	font-weight: normal;
+	margin-top: 20px;
+}
+.pay2-div p{
+	font-size: 14px;
+}
+.pay2 label{
+	display: inline-block;
+	text-align: center;
+	line-height: 80px;
+	font-size: 16px;
+}

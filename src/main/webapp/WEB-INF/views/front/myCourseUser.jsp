@@ -41,20 +41,7 @@
 			<div class="myuser-rt">
 				<div class="user2">
 					<ul class="user2-ul1">
-						<li>
-							<div class="user2-lt">
-								<img src="img/1131502615121213.jpg" />
-							</div>
-							<div class="user2-rt">
-								<h1>建筑钢结构工程技术复习试题</h1>
-								<p>学习时间：2017 05 02 01：17</p>
-								<div class="userxian">
-									<div class="userxian1"><span class="userxian2"></span></div>
-									<label>已学习40%</label>
-								</div>
-							</div>
-							<a href="" class="usercuo">×</a>
-						</li>					
+										
 
 
 						<c:forEach items="${page.list}" var="info">
@@ -68,8 +55,8 @@
 										<fmt:formatDate value="${info.updateDate}" pattern="yyyy-MM-dd"/>
 									</p>
 									<div class="userxian">
-										<div class="userxian1"><span class="userxian2"></span></div>
-										<label>已学习40%</label>
+										<div class="userxian1"><span class="userxian2" style="width: ${fns:getCourseSchedule(info.usertime, info.coursetime)}%"></span></div>
+										<label>已学习${fns:getCourseSchedule(info.usertime, info.coursetime)}%</label>
 									</div>
 								</div>
 								<a href="" class="usercuo">×</a>
