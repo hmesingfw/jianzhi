@@ -8,6 +8,7 @@
 			display: none !important;
 		}
 	</style>
+	<link href="${ctxStatic}/jianzhi/layui/css/layui.css" rel="stylesheet">
 <body>
 	<jsp:include page="include/ifie.jsp" />
 	
@@ -34,39 +35,45 @@
 			<jsp:include page="include/myleft.jsp" />
 			
 
-			<div class="myuser-rt">
-				<div class="user1">
-					<div class="user1-img">
-						<h1>+</h1>
-						<p>头像上传</p>
-						<input type="file" />
-					</div>
-					<div class="user1-input">
-						<input type="text" placeholder="修改登陆密码"/>
-					</div>
-					<div class="user1-input">
-						<input type="text" placeholder="报名专业" value="${sessionMyinfo.xmajor}" />
-					</div>
-					<div class="user1-input user1-input1">
-						<input type="text" placeholder="姓名" value="${sessionMyinfo.name}" />
-						<select>
-							<option>学历</option>
-							<option>学历</option>
-							<option>学历</option>
-							<option>学历</option>
-						</select>
-					</div>
-					<div class="user1-input user1-input1">
-						<input type="text" placeholder="工作单位"/>
-						<select>
-							<option>工作经验</option>
-							<option>工作经验</option>
-							<option>工作经验</option>
-							<option>工作经验</option>
-						</select>
+			<form action="${ctxF}/register" id="inputForm" method="post" onsubmit="return update()" enctype="multipart/form-data">
+				<input type="hidden" name="id" value="${sessionMyinfo.id}">
+				<input type="hidden" name="infotype" value="2">
+				<div class="myuser-rt">
+					<div class="user1">
+						<div class="user1-img">
+							<h1>+</h1>
+							<p>头像上传</p>
+							<input id="upload" name="file" accept="image/*" type="file"/>
+						</div>
+						<div class="user1-input">
+							<input type="text" name="password" placeholder="修改登陆密码" value="${sessionMyinfo.password}" />
+						</div>
+						<div class="user1-input">
+							<input type="text" name="xmajor" placeholder="所学专业" value="${sessionMyinfo.xmajor}" />
+						</div>
+						<div class="user1-input user1-input1">
+							<input type="text" placeholder="姓名" name="truename" value="${sessionMyinfo.truename}" />
+							<select name="education">
+								<c:forEach items="${fns:getDictList('user_education')}" var="info">
+									<option value="${info.value}" ${info.value == sessionMyinfo.education ? 'selected':''}>${info.label}</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="user1-input user1-input1">
+							<input type="text" placeholder="工作单位" name="employer" value="${sessionMyinfo.employer}" />
+							<select name="worklength">							 
+								<c:forEach items="${fns:getDictList('user_worklength')}" var="info">
+									<option value="${info.value}" ${info.value == sessionMyinfo.worklength ? 'selected':''}>${info.label}</option>
+								</c:forEach>
+							</select>
+						</div>
+						<div class="user1-input">
+							<button class="layui-btn layui-btn-normal">保存</button>
+						</div>
+
 					</div>
 				</div>
-			</div>
+			</form>
 		</div>
 	</div>
 	

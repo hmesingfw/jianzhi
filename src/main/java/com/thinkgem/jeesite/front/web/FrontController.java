@@ -380,7 +380,7 @@ public class FrontController {
 	 * @return
 	 */
 	@RequestMapping(value ="register")
-	public String register(Zuser zuser,@RequestParam(required=false ,value="file")MultipartFile file, HttpServletRequest request, HttpServletResponse response, Model model){
+	public String register(Zuser zuser,String infotype,@RequestParam(required=false ,value="file")MultipartFile file, HttpServletRequest request, HttpServletResponse response, Model model){
 		
 		try {
 			// 判断用户是否上传头像，如果上传头像，则保存头像信息
@@ -395,10 +395,30 @@ public class FrontController {
 				file.transferTo(savefile);
 				zuser.setImg("/static/userfile/"+fileName);
 			}
-			zuserService.save(zuser);
-			model.addAttribute("msg", "注册成功，请等待管理人员审核");
-			model.addAttribute("sessionMyinfo", zuser);
-			return "redirect:myinfo";
+			//判断当前用户是注册还是修改个人信息
+			if("2".equals(infotype)){
+				
+				Zuser updateuser = zuserService.get(zuser.getId());
+				updateuser.setPassword(zuser.getPassword());
+				updateuser.setImg(zuser.getImg());
+				updateuser.setXmajor(zuser.getXmajor());
+				updateuser.setTruename(zuser.getTruename());
+				updateuser.setEducation(zuser.getEducation());
+				updateuser.setEmployer(zuser.getEmployer());
+				updateuser.setWorklength(zuser.getWorklength());
+				
+				zuserService.save(updateuser);	
+				request.getSession().setAttribute("sessionMyinfo", updateuser);
+				return "redirect:myinfo?isreg=2";
+				
+			}else{
+				zuserService.save(zuser);
+				model.addAttribute("msg", "注册成功，请等待管理人员审核");
+				model.addAttribute("sessionMyinfo", zuser);
+				return "redirect:myinfo";
+			}
+			
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -450,12 +470,16 @@ public class FrontController {
 	 * @return
 	 */
 	@RequestMapping(value ="myinfo")
-	public String myinfo(Zuser zuser,HttpServletRequest request, HttpServletResponse response, Model model){
+	public String myinfo(Zuser zuser, String isreg, HttpServletRequest request, HttpServletResponse response, Model model){
 		
 		Zuser user = (Zuser)request.getSession().getAttribute("sessionMyinfo");
 		if(user==null || StringUtils.isBlank(user.getId())) {
 			model.addAttribute("msg", "请登陆.");
 			return "front/login";
+		}
+		
+		if("2".equals(isreg)){
+			model.addAttribute("msg", "修改人个信息成功");			
 		}
 		
 		return "front/myinfo";
@@ -1161,10 +1185,11 @@ public class FrontController {
 		}else{
 			System.out.println(testid);
 			ZuserTest myusertest = new ZuserTest();
-			usertest.setTestid(testid);		
-			usertest.setUserid(user.getId());
-			usertest.setDelFlag("0");	
-			List<ZuserTest> list = zuserTestService.findList(myusertest);		
+			myusertest.setTestid(testid);		
+			myusertest.setUserid(user.getId());
+			myusertest.setDelFlag("0");	
+			System.out.println("------------------------usertest");
+			List<ZuserTest> list = zuserTestService.findMyUserTest(myusertest);		
 			
 			int iscorrect = 0;			//答对题数
 			int fraction = 0;			//答对分数	

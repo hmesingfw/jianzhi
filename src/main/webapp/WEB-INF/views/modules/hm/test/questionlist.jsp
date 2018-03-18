@@ -34,8 +34,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/hm/test/ztest/">试卷管理列表</a></li>
-		<li class="active"><a href="${ctx}/hm/test/ztest/form?id=${ztest.id}">试卷管理<shiro:hasPermission name="hm:test:ztest:edit">${not empty ztest.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="hm:test:ztest:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/hm/test/ztest/">试卷列表</a></li>
+		<li class="active"><a href="${ctx}/hm/test/ztest/form?id=${ztest.id}">试卷<shiro:hasPermission name="hm:test:ztest:edit">${not empty ztest.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="hm:test:ztest:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="ztest" action="${ctx}/hm/test/ztest/questlistsave" method="post" class="form-horizontal">
 	

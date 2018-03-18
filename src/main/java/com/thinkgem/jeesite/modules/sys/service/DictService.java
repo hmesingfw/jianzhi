@@ -30,7 +30,13 @@ public class DictService extends CrudService<DictDao, Dict> {
 	public List<String> findTypeList(){
 		return dao.findTypeList(new Dict());
 	}
-
+	/**
+	 * 查询标签对应的编号
+	 */
+	public List<Dict> findLabel(Dict dict){
+		return dao.findLabel(dict);
+	}
+	
 	@Transactional(readOnly = false)
 	public void save(Dict dict) {
 		super.save(dict);

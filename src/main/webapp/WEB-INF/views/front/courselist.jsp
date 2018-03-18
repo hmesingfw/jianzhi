@@ -113,9 +113,18 @@
 							<div class="course-list-img"><img src="${info.img}" class="m-img imgLoad" /></div>
 
 							<div class="course-list-title"><a href="${ctxF}/coursedetail?id=${info.id}">${info.title}</a></div>
-							<div class="course-list-info">${info.teacher}</div> 
+							<div class="course-list-info" style="display: none;">${info.teacher}</div> 
 							<div class="reg3"><p>1200名学生正在学习...</p></div>
-							<div class="course-list-price"><span><font>¥</font>${info.price}</span></div>
+							<div class="course-list-price">
+								<span>
+									<c:if test="${info.type == 1}">
+										免费
+									</c:if>
+									<c:if test="${info.type != 1}">
+										<font>¥</font>${info.price}
+									</c:if>									
+								</span>
+							</div>
 							<div class="course-list-button"><a href="${ctxF}/coursedetail?id=${info.id}">马上学习</a></div>
 							
 						</li>

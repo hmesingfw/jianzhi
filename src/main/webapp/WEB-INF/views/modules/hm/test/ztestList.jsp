@@ -18,8 +18,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/hm/test/ztest/">试卷管理列表</a></li>
-		<shiro:hasPermission name="hm:test:ztest:edit"><li><a href="${ctx}/hm/test/ztest/form">试卷管理添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/hm/test/ztest/">试卷列表</a></li>
+		<shiro:hasPermission name="hm:test:ztest:edit"><li><a href="${ctx}/hm/test/ztest/form">试卷添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="ztest" action="${ctx}/hm/test/ztest/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

@@ -33,7 +33,7 @@
 	<form:form id="inputForm" modelAttribute="zuser" action="${ctx}/hm/user/zuser/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
-		<div class="control-group">
+		<div class="control-group" style="display: none;">
 			<label class="control-label">名称：</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="200" class="input-xlarge "/>

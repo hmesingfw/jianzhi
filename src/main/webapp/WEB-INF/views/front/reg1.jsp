@@ -7,8 +7,10 @@
 		.Hhide{
 			display: none !important;
 		}
-	</style> 
+	</style>
+	<link href="${ctxStatic}/jianzhi/layui/css/layui.css" rel="stylesheet">
 	<script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
+	<script src="${ctxStatic}/jianzhi/layui/layui.js"></script>
 	<script type="text/javascript">
 
 		// $(function(){
@@ -23,7 +25,7 @@
 		function update(){
 			var truename = $("#truename").val();
 			var phone = $("#phone").val();
-			if(!truename){
+			if(!truename){ 
 				layer.msg("请输入真实姓名"); 
 				return false; 
 			}
@@ -31,7 +33,21 @@
 				layer.msg("请输入联系方式"); 
 				return false; 
 			}
+			
+			var email = $("#email").val();
+			var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+			if(!reg.test(email)){
+				layer.msg("请输入正确邮箱地址"); 
+				return false; 
+			}
+
+			var length = phone.length;
+			if(length != 11 || !/^(((13[0-9]{1})|(15[0-9]{1}))+\d{8})$/.test(phone)){
+				layer.msg("请输入正确联系方式"); 
+				return false; 
+			} 
 		}
+
 	</script>
 <body>
 
@@ -82,7 +98,7 @@
 			<li>
 				
 				<label>出生年月：</label>
-				<input type="text" name="age" value="" maxlength="100" />
+					<input type="text" name="age" value="" id="datetime" maxlength="100" />
 			</li>
 			<li>
 				
@@ -138,8 +154,8 @@
 			</li>
 			<li>
 				
-				<label>电子邮箱：</label>
-				<input type="text" name="email" value="" maxlength="50" />
+				<label><span>＊</span>电子邮箱：</label>
+				<input type="text" name="email" id="email" value="" maxlength="50" />
 			</li>
 			
 		</ul>
@@ -148,6 +164,18 @@
 		</div>
 	</form>
 </div>
+<script type="text/javascript">
+	$(function(){
+		layui.use('laydate', function(){
+		  	var laydate = layui.laydate;
+		  
+		  	//执行一个laydate实例
+		  	laydate.render({
+		    	elem: '#datetime' //指定元素
+		  	});
+		});
+	})
+</script>
 
 </body>
 </html>

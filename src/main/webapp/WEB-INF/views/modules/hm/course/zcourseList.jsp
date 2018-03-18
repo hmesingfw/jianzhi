@@ -28,7 +28,7 @@
 			<li><label>标题：</label>
 				<form:input path="title" htmlEscape="false" maxlength="200" class="input-medium"/>
 			</li>
-			<li><label>老师名称：</label>
+			<li style="display: none;"><label>老师名称：</label>
 				<form:input path="teacher" htmlEscape="false" maxlength="100" class="input-medium"/>
 			</li>
 			<li><label>类型：</label>
@@ -52,7 +52,7 @@
 		<thead>
 			<tr>
 				<th>标题</th>
-				<th>老师名称</th>
+				<th style="display: none;">老师名称</th>
 				<th>类型</th>
 				<th>特价</th>
 				<th>价格</th>
@@ -69,7 +69,7 @@
 				<td><a href="${ctx}/hm/course/zcourse/form?id=${zcourse.id}">
 					${zcourse.title}
 				</a></td>
-				<td>
+				<td style="display: none;">
 					${zcourse.teacher}
 				</td>
 				<td>

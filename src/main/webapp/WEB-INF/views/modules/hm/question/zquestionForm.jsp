@@ -36,8 +36,7 @@
 			})
 			$("#correts").val(corret)		 
 		}
-		function addcorret(){
-			console.log(1)
+		function addcorret(){ 
 			var str = '';
 			str += '<div class="control-group">';
 			str += '	<label class="control-label">答案选项：</label>';
@@ -45,10 +44,14 @@
 			str += '		<input type="text" name="answer" class="required"/>';
 			str += '		<input type="checkbox" name="corret" value="1" />';
 			str += '		<span>是否为正确答案</span>';
+			str += '		<a href="javascript:;" onclick="del(this)" style="margin-left: 20px;">删除这行</a>'
 			str += '	</div>';
-			str += '</div>';
-			console.log(2)
+			str += '</div>'; 
 			$(".addhtml").append(str);
+		}
+
+		function del(obj){
+			$(obj).parent().parent().remove();
 		}
 	</script>
 </head>
@@ -107,6 +110,7 @@
 						<input type="text" name="answer" class="required" value="${info.answer}" />
 						<input type="checkbox" name="corret" value="1" ${info.isCorrect == 1 ? 'checked' : ''} />
 						<span>是否为正确答案</span>
+						<a href="javascript:;" onclick="del(this)" style="margin-left: 20px;">删除这行</a>
 					</div>
 				</div>
 			</c:forEach>
@@ -118,6 +122,7 @@
 						<input type="text" name="answer" class="required"/>
 						<input type="checkbox" name="corret" value="1" />
 						<span>是否为正确答案</span>
+						<a href="javascript:;" onclick="del(this)" style="margin-left: 20px;">删除这行</a>
 					</div>
 				</div>
 				<div class="control-group">
@@ -126,6 +131,7 @@
 						<input type="text" name="answer" class="required"/>
 						<input type="checkbox" name="corret" value="1" />
 						<span>是否为正确答案</span>
+						<a href="javascript:;" onclick="del(this)" style="margin-left: 20px;">删除这行</a>
 					</div>
 				</div>
 			</c:if>

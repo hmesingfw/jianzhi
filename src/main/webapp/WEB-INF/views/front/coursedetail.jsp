@@ -33,9 +33,16 @@
 	                	</div> 					 
 						${zcourse.introduce}	
 																	
-	                    <div class="price">	                       
-							<span class="price-info"><span><span class="qgbg">抢购</span><font>¥</font>${zcourse.price}</span></span>
-	                        <span class="money">¥${zcourse.sale}</span>	                    	
+	                    <div class="price">	      
+	                    	<c:if test="${zcourse.type == 1}">
+								免费
+							</c:if>
+							<c:if test="${zcourse.type != 1}">
+								<span class="price-info"><span>
+									<span class="qgbg">抢购</span><font>¥</font>${zcourse.price}</span>
+								</span>
+								<span class="money">¥${zcourse.sale}</span>	   
+							</c:if>		                                        	
 	                    </div>
 						<div class="button">	                    
 							<c:if test="${ispay == 'nopay'}">

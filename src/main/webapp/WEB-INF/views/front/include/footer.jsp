@@ -19,14 +19,11 @@
 				<h3>经营范围</h3>
 				<ul>
 					<li>
-						<a href="/v-1-4457.aspx" target="_blank">在线学习</a>
+						<a href="${ctxF}/courseList" target="_blank">全部课程</a>
 					</li>
 					<li>
-						<a href="/v-1-4456.aspx" target="_blank">在线测试</a>
-					</li>
-					<li>
-						<a href="/v-1-4455.aspx" target="_blank"> 在线文档</a>
-					</li>
+						<a href="${ctxF}/questionlist" target="_blank">在线测试</a>
+					</li>					
 				</ul>
 			</div>
 			<div class="link-item ">

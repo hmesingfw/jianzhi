@@ -27,8 +27,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/hm/banner/zbanner/">轮播图列表</a></li>
-		<li class="active"><a href="${ctx}/hm/banner/zbanner/form?id=${zbanner.id}">轮播图<shiro:hasPermission name="hm:banner:zbanner:edit">${not empty zbanner.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="hm:banner:zbanner:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/hm/banner/zbanner/">图片列表</a></li>
+		<li class="active"><a href="${ctx}/hm/banner/zbanner/form?id=${zbanner.id}">图片<shiro:hasPermission name="hm:banner:zbanner:edit">${not empty zbanner.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="hm:banner:zbanner:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="zbanner" action="${ctx}/hm/banner/zbanner/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>

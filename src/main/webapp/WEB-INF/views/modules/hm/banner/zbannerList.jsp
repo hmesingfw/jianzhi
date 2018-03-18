@@ -18,8 +18,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/hm/banner/zbanner/">轮播图列表</a></li>
-		<shiro:hasPermission name="hm:banner:zbanner:edit"><li><a href="${ctx}/hm/banner/zbanner/form">轮播图添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/hm/banner/zbanner/">图片列表</a></li>
+		<shiro:hasPermission name="hm:banner:zbanner:edit"><li><a href="${ctx}/hm/banner/zbanner/form">图片添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="zbanner" action="${ctx}/hm/banner/zbanner/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

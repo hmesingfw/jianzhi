@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.hm.entity.user;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 
 /**
  * 用户信息Entity
@@ -63,6 +64,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=200, message="密码长度必须介于 0 和 200 之间")
+	@ExcelField(title="用户状态", align=2, sort=170)
 	public String getPassword() {
 		return password;
 	}
@@ -81,6 +83,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=64, message="专业长度必须介于 0 和 64 之间")
+	@ExcelField(title="所属专业", align=2, sort=10)
 	public String getMajor() {
 		return major;
 	}
@@ -90,6 +93,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=18, message="身份证长度必须介于 0 和 18 之间")
+	@ExcelField(title="身份证号码", align=2, sort=20)
 	public String getIdcode() {
 		return idcode;
 	}
@@ -99,6 +103,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=100, message="真实姓名长度必须介于 0 和 100 之间")
+	@ExcelField(title="真实姓名", align=2, sort=30)
 	public String getTruename() {
 		return truename;
 	}
@@ -108,6 +113,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=10, message="性别长度必须介于 0 和 10 之间")
+	@ExcelField(title="性别", align=2, sort=40)
 	public String getSex() {
 		return sex;
 	}
@@ -117,6 +123,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=100, message="出生年月长度必须介于 0 和 100 之间")
+	@ExcelField(title="出生年月", align=2, sort=50)
 	public String getAge() {
 		return age;
 	}
@@ -126,6 +133,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=10, message="民族长度必须介于 0 和 10 之间")
+	@ExcelField(title="民族", align=2, sort=60)
 	public String getEthnic() {
 		return ethnic;
 	}
@@ -135,6 +143,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=300, message="所学专业长度必须介于 0 和 300 之间")
+	@ExcelField(title="所学专业", align=2, sort=70)
 	public String getXmajor() {
 		return xmajor;
 	}
@@ -144,6 +153,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=20, message="学历长度必须介于 0 和 20 之间")
+	@ExcelField(title="学历", align=2, sort=80)
 	public String getEducation() {
 		return education;
 	}
@@ -153,6 +163,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=300, message="工作单位长度必须介于 0 和 300 之间")
+	@ExcelField(title="工作单位", align=2, sort=90)
 	public String getEmployer() {
 		return employer;
 	}
@@ -162,6 +173,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=20, message="工作年限长度必须介于 0 和 20 之间")
+	@ExcelField(title="工作年限", align=2, sort=100)
 	public String getWorklength() {
 		return worklength;
 	}
@@ -171,6 +183,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=200, message="地址长度必须介于 0 和 200 之间")
+	@ExcelField(title="地址", align=2, sort=110)
 	public String getAdress() {
 		return adress;
 	}
@@ -180,6 +193,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=20, message="邮政编码长度必须介于 0 和 20 之间")
+	@ExcelField(title="邮政编号", align=2, sort=120)
 	public String getAdresscode() {
 		return adresscode;
 	}
@@ -189,6 +203,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=20, message="联系电话长度必须介于 0 和 20 之间")
+	@ExcelField(title="联系电话", align=2, sort=130)
 	public String getPhone() {
 		return phone;
 	}
@@ -198,6 +213,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=50, message="邮箱长度必须介于 0 和 50 之间")
+	@ExcelField(title="邮箱", align=2, sort=140)
 	public String getEmail() {
 		return email;
 	}
@@ -207,6 +223,7 @@ public class Zuser extends DataEntity<Zuser> {
 	}
 	
 	@Length(min=0, max=20, message="用户类型长度必须介于 0 和 20 之间")
+	@ExcelField(title="用户类型", align=2, sort=150)
 	public String getType() {
 		return type;
 	}

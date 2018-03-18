@@ -26,6 +26,20 @@
 		ORDER BY type, sort, update_date DESC
 	</select>
 	
+	<select id="findLabel" resultType="Dict">
+		SELECT 
+			* 
+		FROM sys_dict 
+		WHERE del_flag = #{DEL_FLAG_NORMAL} 
+		<if test="type != null and type != ''">
+			AND type = #{type}
+		</if>
+		<if test="label != null and label != ''">
+			AND label = #{label}
+		</if>
+		ORDER BY type, sort, update_date DESC
+	</select>
+	
 	<select id="findAllList" resultType="Dict">
 		SELECT 
 			* 

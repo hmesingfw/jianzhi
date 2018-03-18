@@ -109,7 +109,7 @@ public class ZdocController extends BaseController {
 		}
 		
 		zdocService.save(zdoc);
-		addMessage(redirectAttributes, "保存文档中心成功");
+		addMessage(redirectAttributes, "保存文档成功");
 		return "redirect:"+Global.getAdminPath()+"/hm/doc/zdoc/?repage";
 	}
 	
@@ -117,7 +117,7 @@ public class ZdocController extends BaseController {
 	@RequestMapping(value = "delete")
 	public String delete(Zdoc zdoc, RedirectAttributes redirectAttributes) {
 		zdocService.delete(zdoc);
-		addMessage(redirectAttributes, "删除文档中心成功");
+		addMessage(redirectAttributes, "删除文档成功");
 		return "redirect:"+Global.getAdminPath()+"/hm/doc/zdoc/?repage";
 	}
 

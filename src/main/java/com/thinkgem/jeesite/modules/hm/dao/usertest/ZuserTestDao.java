@@ -19,4 +19,6 @@ public interface ZuserTestDao extends CrudDao<ZuserTest> {
 	public void deleteUesrtest(ZuserTest zuserTest);
 	
 	public List<ZuserTest> findNextTest(ZuserTest zuserTest);
+	
+	public List<ZuserTest> findMyUserTest(ZuserTest zuserTest);
 }

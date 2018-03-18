@@ -56,4 +56,8 @@ public class ZuserTestService extends CrudService<ZuserTestDao, ZuserTest> {
 	public List<ZuserTest> findNextTest(ZuserTest zuserTest){
 		return zuserTestDao.findNextTest(zuserTest);
 	}
+	
+	public List<ZuserTest> findMyUserTest(ZuserTest zuserTest){
+		return zuserTestDao.findMyUserTest(zuserTest);
+	}
 }

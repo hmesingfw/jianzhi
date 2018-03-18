@@ -6,7 +6,10 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			
+			$("#btnImport").click(function(){
+				$.jBox($("#importBox").html(), {title:"导入数据", buttons:{"关闭":true}, 
+					bottomText:"导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"});
+			});
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -14,9 +17,20 @@
 			$("#searchForm").submit();
         	return false;
         }
+        
+
 	</script>
 </head>
 <body>
+	<div id="importBox" class="hide">
+		<form id="importForm" action="${ctx}/hm/user/zuser/import" method="post" enctype="multipart/form-data"
+			class="form-search" style="padding-left:20px;text-align:center;" onsubmit="loading('正在导入，请稍等...');"><br/>
+			<input id="uploadFile" name="file" type="file" style="width:330px"/><br/><br/>　　
+			<input id="btnImportSubmit" class="btn btn-primary" type="submit" value="   导    入   "/>
+			<a href="${ctx}/sys/user/import/template">下载模板</a>
+		</form>
+	</div>
+
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/hm/user/zuser/">用户信息列表</a></li>
 		<shiro:hasPermission name="hm:user:zuser:edit"><li><a href="${ctx}/hm/user/zuser/form">用户信息添加</a></li></shiro:hasPermission>
@@ -24,10 +38,7 @@
 	<form:form id="searchForm" modelAttribute="zuser" action="${ctx}/hm/user/zuser/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
-		<ul class="ul-form">
-			<li><label>真实名称：</label>
-				<form:input path="truename" htmlEscape="false" maxlength="200" class="input-medium"/>
-			</li>
+		<ul class="ul-form">			
 			<li><label>身份证：</label>
 				<form:input path="idcode" htmlEscape="false" maxlength="18" class="input-medium"/>
 			</li>
@@ -51,15 +62,17 @@
 					<form:options items="${fns:getDictList('user_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</li> 
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="btns">
+				<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+				<input id="btnImport" class="btn btn-primary" type="button" value="导入"/></li>
+			</li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
 	<sys:message content="${message}"/>
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
-			<tr>
-				<th>名称</th>
+			<tr>				
 				<th>身份证</th>
 				<th>真实姓名</th>
 				<th>联系电话</th>
@@ -72,11 +85,8 @@
 		<c:forEach items="${page.list}" var="zuser">
 			<tr>
 				<td><a href="${ctx}/hm/user/zuser/form?id=${zuser.id}">
-					${zuser.name}
-				</a></td>
-				<td>
 					${zuser.idcode}
-				</td>
+				</td></a>
 				<td>
 					${zuser.truename}
 				</td>

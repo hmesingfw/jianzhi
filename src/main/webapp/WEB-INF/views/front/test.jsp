@@ -9,7 +9,8 @@
     }
 
     .border{
-        border: 1px solid red;
+        background: #3d72d1 !important;
+        color: #fff;
     }
     input[type="radio"]{
         background-image: url(${ctxStatic}/jianzhi/img/radio.png);
@@ -122,7 +123,7 @@
                                         </div>
                                         <div class="ft">
                                             <div class="btn-1" id="page-btn-next" onclick="xiayiti('${nextusertestid}')">下一题</div>
-                                            <div class="btn-2" id="page-btn-submit">交卷</div>
+                                            <div class="btn-2" id="page-btn-submit" onclick="succurrent('1')">交卷</div>
                                         </div>
                                     </div>
                                 </div>
@@ -149,31 +150,8 @@
             setInterval(function(){
                 time--;
                 $('.fen').html(time);
-
                 if(time==0){
-                    var answer = '';
-                    var s = $("input[name='questioninfo']");
-                    $.each(s,function(){
-                        if($(this).is(":checked")){
-                            answer += $(this).val() +';';
-
-                            if(1==questiontype){
-                                if('1'==$(this).attr('iscurret')){
-                                    $("#isCorrect").val('1');
-                                }
-                            }else{
-                                if('1'==$(this).attr('iscurret') && iscurret){
-                                    $("#isCorrect").val('1');
-                                }else{
-                                    iscurret = false;
-                                    $("#isCorrect").val('');
-                                }
-                            }
-                        }                
-                    })
-
-                    $("#currentanswer").val(answer);
-                    $("#myform").submit();
+                    succurrent('2');
                 }
             },1000)
         })
@@ -220,8 +198,49 @@
                 }, function(index){
                   //按钮【按钮二】的回调
                 });
+            }            
+        }
+
+        function succurrent(type){
+            if('1'==type){
+                layer.confirm('答题已完成，是否完成答卷', {
+                    btn: ['确定', '取消'] //可以无限个按钮                    
+                }, function(index, layero){
+                  //按钮【按钮一】的回调
+                    gotosuc();
+                }, function(index){
+                  //按钮【按钮二】的回调
+                });
+            }else{
+                gotosuc();
             }
             
+
+            
+        }
+        function gotosuc(){
+            var answer = '';
+            var s = $("input[name='questioninfo']");
+            $.each(s,function(){
+                if($(this).is(":checked")){
+                    answer += $(this).val() +';';
+
+                    if(1==questiontype){
+                        if('1'==$(this).attr('iscurret')){
+                            $("#isCorrect").val('1');
+                        }
+                    }else{
+                        if('1'==$(this).attr('iscurret') && iscurret){
+                            $("#isCorrect").val('1');
+                        }else{
+                            iscurret = false;
+                            $("#isCorrect").val('');
+                        }
+                    }
+                }                
+            })
+            $("#currentanswer").val(answer);
+            $("#myform").submit();
         }
     </script>
     <jsp:include page="include/footer.jsp" />

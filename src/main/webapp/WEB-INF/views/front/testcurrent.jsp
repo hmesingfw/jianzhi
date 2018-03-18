@@ -73,7 +73,7 @@
                                         <div class="sjlist">
                                             <div class="ex-text">
                                                 <div class="xttitleclass">
-                                                    <strong>第<span class="xihao">${info.sort}</span> 题：</strong>
+                                                    <strong>第<span class="xihao">${list.index + 1}</span> 题：</strong>
                                                 </div>
                                                 <div class="xtcontentclass">
                                                     <p>${fns:getQuestion(info.questionid).title}</p>

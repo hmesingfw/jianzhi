@@ -63,6 +63,19 @@
 		</choose>
 	</select>
 	
+	<select id="findMyUserTest" resultType="ZuserTest">
+		SELECT 
+			<include refid="zuserTestColumns"/>
+		FROM zuser_test a
+		<include refid="zuserTestJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}		
+			AND a.userid = #{userid}		
+			AND a.testid = #{testid}					
+		</where>		
+		ORDER BY a.update_date DESC,a.sort		
+	</select>
+	
 	<select id="findAllList" resultType="ZuserTest">
 		SELECT 
 			<include refid="zuserTestColumns"/>

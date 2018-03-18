@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>文档中心管理</title>
+	<title>文档管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -27,8 +27,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/hm/doc/zdoc/">文档中心列表</a></li>
-		<li class="active"><a href="${ctx}/hm/doc/zdoc/form?id=${zdoc.id}">文档中心<shiro:hasPermission name="hm:doc:zdoc:edit">${not empty zdoc.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="hm:doc:zdoc:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/hm/doc/zdoc/">文档列表</a></li>
+		<li class="active"><a href="${ctx}/hm/doc/zdoc/form?id=${zdoc.id}">文档<shiro:hasPermission name="hm:doc:zdoc:edit">${not empty zdoc.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="hm:doc:zdoc:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="zdoc" action="${ctx}/hm/doc/zdoc/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
@@ -66,7 +66,7 @@
 			<div class="controls"> 
 
 				<form:select path="usertype" class="input-xlarge ">
-					<form:option value="2" label="注册会员"/>
+					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('user_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
 			</div>
@@ -88,13 +88,13 @@
 			</div>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label">浏览器：</label>
+		<div class="control-group" style="display: none;">
+			<label class="control-label">浏览量：</label>
 			<div class="controls">
 				<form:input path="look" htmlEscape="false" maxlength="11" class="input-xlarge "/><span style="margin-left: 30px;color: red">只能输入数字</span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group" style="display: none;">
 			<label class="control-label">下载量：</label>
 			<div class="controls">
 				<form:input path="down" htmlEscape="false" maxlength="11" class="input-xlarge "/><span style="margin-left: 30px;color: red">只能输入数字</span>
@@ -102,7 +102,7 @@
 		</div>
 
 
-		<div class="control-group">
+		<div class="control-group" style="display: none;">
 			<label class="control-label">关键字：</label>
 			<div class="controls">
 				<form:input path="keyword" htmlEscape="false" maxlength="200" class="input-xlarge "/>
