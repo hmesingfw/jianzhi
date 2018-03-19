@@ -80,7 +80,14 @@
 		FROM zquestion a
 		<include refid="zquestionJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL} AND a.type = #{type}					
+			a.del_flag = #{DEL_FLAG_NORMAL} 
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>			 
+			<if test="parentid != null and parentid != ''">
+				AND a.parentid = #{parentid}
+			</if>
+								
 		</where>	
 		order by rand() limit #{limit}	
 	</select>

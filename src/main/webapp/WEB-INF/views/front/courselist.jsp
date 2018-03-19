@@ -9,6 +9,7 @@
 		}
 	</style>
 	<link href="${ctxStatic}/jianzhi/css/course.css" rel="stylesheet" />
+	
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var msg = "${message}";
@@ -136,6 +137,12 @@
         	${page.frontToString() }
         </div>	
 	</div> 
+
+
+
+	
+
+
 	<jsp:include page="include/footer.jsp" /> 
 <!--//footer-->
 

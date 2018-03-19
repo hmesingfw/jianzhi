@@ -18,6 +18,9 @@ public class AboutConfig {
 		
 //		备案号
 		map.put("aboutIpc", "4");
+		
+//		注册相关条约
+		map.put("aboutReg", "5");
 	}
 	
 	

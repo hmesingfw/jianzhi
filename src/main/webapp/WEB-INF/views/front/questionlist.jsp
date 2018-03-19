@@ -10,6 +10,8 @@
   </style>
   <link href="${ctxStatic}/jianzhi/css/subfont.css" rel="stylesheet" />
   <link href="${ctxStatic}/jianzhi/css/exam.css" rel="stylesheet">
+
+  <script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
       var msg = "${message}";
@@ -38,6 +40,28 @@
             $("#classflythr").val(id);
           }
           $("#searchForm").submit();
+        }
+
+
+
+        function randomtest(){
+            if(!$("#classflyone").val() && !$("#classflytwo").val() && !$("#classflythr").val()){
+                layer.msg('请选择类型');
+                return false;
+            }
+
+            var type = $("#classflythr").val() || $("#classflytwo").val() || $("#classflyone").val();
+            
+            layer.prompt({
+                title: '请输入测试题目，输入值超过最大值时取最大题目数量',
+            }, function(value, index, elem){      
+                console.log(value)
+                window.location.href='${ctxF}/gotoquestionRandom?type='+type+'&value='+value;             
+
+                layer.close(index);
+            });
+
+                     
         }
   </script>
 <body>
@@ -84,7 +108,7 @@
       	
     	<div class="myteam3">
     		<h1>随机组题<span>▶</span></h1>
-    		<a href="">开始测试</a>
+    		<a href="javascript:;" onclick="randomtest()">开始测试</a>
     	</div>
   	</div>
     <form id="searchForm" action="${ctxF}/questionlist" method="post" >            
@@ -109,7 +133,7 @@
                             <div class="liinfo">
                                 <span>时间：${info.testtime}分钟</span>
                                 <span>总分：${!empty info.fraction ? info.fraction : '0'}分</span>
-                                <span>0人参与考试</span>
+                                <!-- <span>0人参与考试</span> -->
                                 <span><fmt:formatDate value="${info.updateDate}" pattern="yyyy-MM-dd"/></span>
                             </div>
                         </li>           

@@ -39,12 +39,25 @@
 				<form:input path="dir" htmlEscape="false" maxlength="200" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">内容：</label>
-			<div class="controls">
-				<form:textarea path="content" htmlEscape="false" rows="4" maxlength="2000" class="input-xxlarge "/>
+
+		<c:if test="${taboutUs.id != 5}">
+			<div class="control-group">
+				<label class="control-label">内容：</label>
+				<div class="controls">
+					<form:textarea path="content" htmlEscape="false" rows="4" maxlength="2000" class="input-xxlarge "/>
+				</div>
 			</div>
-		</div>
+		</c:if>
+		<c:if test="${taboutUs.id == 5}">
+			<div class="control-group">
+				<label class="control-label">内容:</label>
+				<div class="controls">
+					<form:textarea id="content" htmlEscape="true" path="content" rows="4" maxlength="200" class="input-xxlarge"/>
+					<sys:ckeditor replace="content" uploadPath="/cms/article" />
+				</div>
+			</div>
+		</c:if>
+
 		<div class="control-group">
 			<label class="control-label">文件路径：</label>
 			<div class="controls"> 

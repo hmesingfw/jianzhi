@@ -152,6 +152,13 @@ public class FrontController {
 		model.addAttribute("zoctoplist", zoctoplist);
 		return "front/index";
 	}
+	
+	@RequestMapping(value={"reginfo"})
+	public String reginfo(HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		return "front/reginfo";
+	}
+	
 	/**
 	 * 新闻列表
 	 * @param znew
@@ -527,13 +534,33 @@ public class FrontController {
 			model.addAttribute("msg", "请登陆.");
 			return "front/login";
 		}
+		//1为内部用户		为内部用户添加课程
+		if("1".equals(user.getType())){
+			Zcourse zcourse = new Zcourse();
+			zcourse.setParentid(user.getMajor());
+			zcourse.setDelFlag("0");
+			List<Zcourse> courselist = zcourseService.findList(zcourse);
+			for (Zcourse zcourse2 : courselist) {
+				ZcourseOrder order = new ZcourseOrder();
+				order.setUserid(user.getId());
+				order.setCourseid(zcourse2.getId());
+				order.setPaystatus("4");
+				List<ZcourseOrder> orderlist = zcourseOrderService.findList(order);
+				if(orderlist!=null && orderlist.size()>0){
+				}else{
+					zcourseOrderService.save(order);
+				}
+				
+			}
+		}
+		
+		
 		ZcourseOrder order = new ZcourseOrder();
 		order.setUserid(user.getId());
 		order.setDelFlag("0");
 		
 		Page<ZcourseOrder> pages = new Page<ZcourseOrder>();
-		pages.setPageSize(10);
-		
+		pages.setPageSize(10);		
 		
 		Page<ZcourseOrder> page = zcourseOrderService.findPage(pages, order);
 		model.addAttribute("page", page);
@@ -653,7 +680,11 @@ public class FrontController {
 		
 		if(orderlist!=null && orderlist.size()==1){
 			zcourseOrder = orderlist.get(0);
-			if("2".equals(zcourseOrder.getPaystatus())){
+			if("4".equals(zcourseOrder.getPaystatus())){
+				System.out.println("5");
+				model.addAttribute("ispay", "yespay");
+				
+			}else if("2".equals(zcourseOrder.getPaystatus())){
 				System.out.println("1");
 				model.addAttribute("ispay", "yespay");
 			}else{
@@ -1061,6 +1092,73 @@ public class FrontController {
 		
 		return "front/test";
 	}
+	
+	/**
+	 * 进入随机考试题
+	 * @param test
+	 * @return
+	 */
+	@RequestMapping( value= "gotoquestionRandom")
+	public String gotoquestionRandom(HttpServletRequest request, HttpServletResponse response, Model model){
+		model.addAttribute("mendId", "3");	
+		
+		Zuser user = (Zuser)request.getSession().getAttribute("sessionMyinfo");
+		if(user==null || StringUtils.isBlank(user.getId())) {
+			model.addAttribute("msg", "请登陆.");
+			return "front/login";
+		}
+		
+		String type = request.getParameter("type");			//专业类型
+		String value = request.getParameter("value");		//题目数量 
+		if(!StringUtils.isNumeric(value)){			
+			model.addAttribute("message", "请输入正确的题目数量");
+			return "front/questionlist";
+		}
+		
+		Ztest test = new Ztest();
+		test.setTitle("随机测试题");
+		test.setTesttime("60");
+		test.setSum(value);
+		test.setParentid(type);	 
+		ztestService.save(test);
+		
+		model.addAttribute("testid", test.getId());
+		model.addAttribute("test", test);
+						
+		
+		//查找出当前试卷的所有题目
+		Zquestion zquestion = new Zquestion();
+		zquestion.setParentid(type);
+		if(StringUtils.isNumeric(value)){			
+			zquestion.setLimit(Integer.parseInt(value));
+		}
+		List<Zquestion> questionlist = zquestionService.findRandList(zquestion);
+		
+		//添加用户需要考试题的记录
+		int sort = 1;
+		for (Zquestion ztestQuestion2 : questionlist) {
+			ZuserTest insertTest = new ZuserTest();
+			insertTest.setUserid(user.getId());
+			insertTest.setTestid(test.getId());
+			insertTest.setQuestionid(ztestQuestion2.getId());
+			insertTest.setSort(sort);
+			sort++;
+			zuserTestService.save(insertTest);
+		}
+		
+		myTestlist(test.getId(), user.getId(), model, "yes");		
+		
+		String time = test.getTesttime();
+		if(StringUtils.isNumeric(time)){
+			model.addAttribute("time", Integer.parseInt(time)*60);
+		}
+		
+		return "front/test";
+	}
+	
+	
+	
+	
 	
 	/**
 	 * 用户需要考试的题目

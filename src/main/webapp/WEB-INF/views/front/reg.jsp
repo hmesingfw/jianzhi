@@ -71,7 +71,10 @@
 					<input type="password" name="password" id="password1" placeholder="密码"/>
 					<input type="password" name="" id="password2" placeholder="再次输入密码"/>
 					<div class="batlogin1-bottom">
-						<p><a href="javascript:;" id="batbox" onclick="batbox(this)" class="batbox1"></a>同意阅读相关条款</p>					
+						<p>
+							<a href="javascript:;" id="batbox" onclick="batbox(this)" class="batbox1"></a>
+							<span onclick="window.location.href='${ctxF}/reginfo'" style="cursor:pointer">同意阅读相关条款</span>
+						</p>					
 					</div>
 					<button class="batlogin1-button">点击注册</button>
 				</div>	

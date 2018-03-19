@@ -19,6 +19,7 @@
         	return false;
         }
 	</script>
+	<link href="${ctxStatic}/jianzhi/layui/css/layui.css" rel="stylesheet">
 <body>
 	<jsp:include page="include/ifie.jsp" />
 	
@@ -57,7 +58,13 @@
 										购买状态：${fns:getDictLabel(info.paystatus, 'pay_status', '')}
 									</div>
 								</div>
-								<!-- <a href="" class="usercuo">×</a> -->
+								<!-- ×</a> -->
+								<c:if test="${info.paystatus == 2 || info.paystatus==4}">
+									<a href="" class="usercuo">
+										<button class="layui-btn layui-btn-normal" type="button" onclick="window.location.href='${ctxF}/gotolookcourse?id=${info.id}'">观看</button>
+									</a>
+								</c:if>
+
 							</li>
 						</c:forEach>	
 					</ul>

@@ -50,7 +50,7 @@
 					${taboutUs.dir}
 				</td>
 				<td> 
-					${taboutUs.content}
+					${fns:abbr(taboutUs.content, 100)}
 				</td>
 				<td>
 					<fmt:formatDate value="${taboutUs.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

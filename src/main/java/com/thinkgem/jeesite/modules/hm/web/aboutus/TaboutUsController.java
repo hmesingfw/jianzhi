@@ -9,6 +9,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -72,6 +73,12 @@ public class TaboutUsController extends BaseController {
 		if (!beanValidator(model, taboutUs)){
 			return form(taboutUs, model);
 		}
+		
+		if("5".equals(taboutUs.getId())){
+			if (taboutUs.getContent()!=null){
+				taboutUs.setContent(StringEscapeUtils.unescapeHtml4(taboutUs.getContent()));
+			}
+		}			
 		taboutUsService.save(taboutUs);
 		taboutUsService.flashAboutConfig();
 		addMessage(redirectAttributes, "保存关于我们信息成功");
