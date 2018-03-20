@@ -37,6 +37,9 @@
 			<label class="control-label">试题卷名称：</label>
 			<div class="controls">
 				<form:input path="title" htmlEscape="false" maxlength="3000" class="input-xlarge "/>
+
+				<sys:treeselect id="office" name="office.id" value="${office.id}" labelName="office.name" labelValue="${office.name}"
+					title="课程分类" url="/hm/course_sort/zcourseSort/treeData" cssClass="required"/>
 			</div>
 		</div>
 		<div class="control-group">
