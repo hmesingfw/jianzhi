@@ -3,10 +3,11 @@
  */
 package com.thinkgem.jeesite.modules.hm.web.question_answer;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +18,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.hm.entity.question_answer.ZquestionAnswer;
 import com.thinkgem.jeesite.modules.hm.service.question_answer.ZquestionAnswerService;
+import com.thinkgem.jeesite.modules.hm.utils.ZquestionAnswerUtils;
 
 /**
  * 试题答案管理Controller
@@ -50,6 +53,13 @@ public class ZquestionAnswerController extends BaseController {
 	public String list(ZquestionAnswer zquestionAnswer, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<ZquestionAnswer> page = zquestionAnswerService.findPage(new Page<ZquestionAnswer>(request, response), zquestionAnswer); 
 		model.addAttribute("page", page);
+		
+		
+		ZquestionAnswer sort = new ZquestionAnswer();
+		sort.setDelFlag("0");
+		List<ZquestionAnswer> list = zquestionAnswerService.findList(sort);
+		CacheUtils.put(ZquestionAnswerUtils.CACHE_zquestionAnswer_LIST, list);
+		
 		return "modules/hm/question_answer/zquestionAnswerList";
 	}
 

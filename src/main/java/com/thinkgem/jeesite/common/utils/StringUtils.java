@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.common.utils;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +29,23 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 	
     private static final char SEPARATOR = '_';
     private static final String CHARSET_NAME = "UTF-8";
+    
+    
+    /**
+  	 * 生成随机数
+  	 * 
+  	 * @author dj
+  	 * @param length 随机数长度
+  	 * @return
+  	 */
+  	public static String getRandom(int length) {
+  		Random random = new Random();
+  		String result="";
+  		for(int i=0;i<length;i++){
+  			result+=random.nextInt(10);
+  		}
+  		return result;
+  	}
     
     /**
      * 转换为字节数组

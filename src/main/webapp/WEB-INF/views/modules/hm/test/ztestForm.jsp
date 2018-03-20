@@ -61,7 +61,7 @@
 		<div class="control-group">
 			<label class="control-label">测试时长：</label>
 			<div class="controls">
-				<form:input path="testtype" htmlEscape="false" maxlength="20" class="required digits"/>
+				<form:input path="testtime" htmlEscape="false" maxlength="20" class="required digits"/>
 				<span style="margin-left: 30px;color: red;">单位（分）</span>
 			</div>
 		</div>
@@ -76,12 +76,11 @@
 		<div class="control-group">
 			<label class="control-label">测试题目类型：</label>
 			<div class="controls"> 
-
-				<form:select path="testtype" class="input-xlarge ">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('question_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-				<span style="margin-left: 30px;color: red;">试题卷类型为自动时，请选择题目类型</span>
+				<c:forEach items="${fns:getDictList('question_type')}" var="info"> 
+					<input type="checkbox" name="testtype" value="${info.value}"  ${fn:indexOf(ztest.testtype, info.value) != -1? 'checked':''  }    >${info.label}
+				</c:forEach>
+				 
+				<span style="margin-left: 30px;color: red;">试题卷类型为自动时，请选择题目类型，不勾选时，默认为全选</span>
 			</div>
 		</div>
 		<div class="control-group" style="display: none;">

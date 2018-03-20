@@ -47,9 +47,9 @@
 				<div class="batlogin1-center">
 					<input type="text" name="idcode" id="IDcode" placeholder="身份证号"/>
 					<input type="password" name="password" id="password" placeholder="密码"/>
-					<div class="batlogin1-bottom" style="display: none;">
-						<p><a href="javascript:;" id="batbox" onclick="batbox(this)"></a>记住登录<label></label></p>
-						<a href="" class="batlogin1-a">忘记密码？</a>
+					<div class="batlogin1-bottom" >
+						<!-- <p><a href="javascript:;" id="batbox" onclick="batbox(this)"></a>记住登录<label></label></p> -->
+						<a href="${ctxF}/fotgetpassword" class="batlogin1-a">忘记密码？</a>
 					</div>
 					<button class="batlogin1-button" type="submit">立即登陆</button>
 				</div>

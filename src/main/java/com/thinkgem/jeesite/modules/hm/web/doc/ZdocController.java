@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.hm.web.doc;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,10 +21,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.hm.entity.doc.Zdoc;
 import com.thinkgem.jeesite.modules.hm.service.doc.ZdocService;
+import com.thinkgem.jeesite.modules.hm.utils.ZdocUtils;
 import com.thinkgem.jeesite.modules.hm.utils.offeic.filetools.DocChangePdf;
 
 /**
@@ -55,6 +58,12 @@ public class ZdocController extends BaseController {
 	public String list(Zdoc zdoc, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<Zdoc> page = zdocService.findPage(new Page<Zdoc>(request, response), zdoc); 
 		model.addAttribute("page", page);
+		
+		Zdoc sort = new Zdoc();
+		sort.setDelFlag("0");
+		List<Zdoc> list = zdocService.findList(sort);
+		CacheUtils.put(ZdocUtils.CACHE_ZdocDao_LIST, list);
+		
 		return "modules/hm/doc/zdocList";
 	}
 

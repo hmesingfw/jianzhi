@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
@@ -30,6 +31,7 @@ import com.thinkgem.jeesite.modules.hm.entity.question_answer.ZquestionAnswer;
 import com.thinkgem.jeesite.modules.hm.service.course_sort.ZcourseSortService;
 import com.thinkgem.jeesite.modules.hm.service.question.ZquestionService;
 import com.thinkgem.jeesite.modules.hm.service.question_answer.ZquestionAnswerService;
+import com.thinkgem.jeesite.modules.hm.utils.ZquestionUtils;
 
 /**
  * 试题管理Controller
@@ -65,6 +67,13 @@ public class ZquestionController extends BaseController {
 	public String list(Zquestion zquestion, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<Zquestion> page = zquestionService.findPage(new Page<Zquestion>(request, response), zquestion); 
 		model.addAttribute("page", page);
+		
+		
+		Zquestion sort = new Zquestion();
+		sort.setDelFlag("0");
+		List<Zquestion>	list = zquestionService.findList(sort);
+		CacheUtils.put(ZquestionUtils.CACHE_ZquestionSort_LIST, list);
+		
 		return "modules/hm/question/zquestionList";
 	}
 

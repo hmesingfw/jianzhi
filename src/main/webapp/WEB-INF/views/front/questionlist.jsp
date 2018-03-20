@@ -73,7 +73,7 @@
   <section class="i-banner" id="banner">
     <ul>
       <c:forEach items="${aboutBanner}" var="banner" end="4">
-            <a href="${banner.url}" target="_blank"><li style="background:url(${banner.filepath}) no-repeat 50% 50%; "></li> </a>
+            <li style="background:url(${banner.filepath}) no-repeat 50% 50%; " onclick="window.location.href='${banner.url}'"></li>
       </c:forEach>
     </ul>
   </section>
@@ -106,9 +106,8 @@
             </div>
         </div>
       	
-    	<div class="myteam3">
-    		<h1>随机组题<span>▶</span></h1>
-    		<a href="javascript:;" onclick="randomtest()">开始测试</a>
+    	<div class="myteam3"> 
+    		<a href="javascript:;" onclick="randomtest()">开始随机测试</a>
     	</div>
   	</div>
     <form id="searchForm" action="${ctxF}/questionlist" method="post" >            
@@ -147,5 +146,34 @@
 	    
 
     <jsp:include page="include/footer.jsp" /> 
+
+
+    <script src="${ctxStatic}/jianzhi/js/imgload.js"></script>
+    <script src="${ctxStatic}/jianzhi/js/cs.assembly.js"></script>
+    <!--执行页面加载js-->
+    <script src="${ctxStatic}/jianzhi/js/page.index.js"></script>
+    <script src="${ctxStatic}/jianzhi/js/page.load.js"></script>
+    <script src="${ctxStatic}/jianzhi/js/page.main.js"></script>
+    <script>
+
+    //轮播图
+    $('#banner').carousel({
+          object:'li',
+          scrollType:'slide',
+          width:'100%',
+          height:'500',
+          arrow:true,
+          autoPlay:true,
+          dots:1,
+          speed:400,
+          interval:4000,
+          
+
+    });
+    //懒加载
+    imgLoad('m-img','/tp/PC/skin055/images/common/none.png');
+
+
+    </script>
 </body>
 </html>

@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
-import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.hm.entity.docsort.ZdocSort;
 import com.thinkgem.jeesite.modules.hm.service.docsort.ZdocSortService;
-import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.hm.utils.ZdocSortUtils;
 
 /**
  * 文档分类Controller
@@ -58,6 +58,13 @@ public class ZdocSortController extends BaseController {
 		ZdocSort.sortList(list, sortlist, "0", true);
 		
 		model.addAttribute("list", list);		
+		
+		
+		ZdocSort sort = new ZdocSort();
+		sort.setDelFlag("0");
+		List<ZdocSort> listsort = zdocSortService.findList(sort);
+		CacheUtils.put(ZdocSortUtils.CACHE_docsort_LIST, listsort);
+		
 		return "modules/hm/docsort/zdocSortList";
 	}
 

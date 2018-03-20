@@ -585,6 +585,22 @@
 			<scope>system</scope>
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/alipay-sdk-java20170324180803.jar</systemPath>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.alipaycore</groupId>
+			<artifactId>alipaycore</artifactId>
+			<version>3.2.3</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/aliyun-java-sdk-core-3.2.3.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.alipay</groupId>
+			<artifactId>dysmsapi</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/aliyun-java-sdk-dysmsapi-1.0.0-SANPSHOT.jar</systemPath>
+		</dependency>
 		<!-- alipay end -->
 		
 		<!-- offic -->

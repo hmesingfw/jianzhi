@@ -65,7 +65,7 @@
                                     <div class="sjlist" id="xt151921">
                                         <div class="ex-text"> 
                                             <div class="xttitleclass">
-                                                <strong>第<span class="xihao"></span> 题：(${fns:getDictLabel(zquestion.type, 'question_type', '')})</strong>
+                                                <strong>第<span class="xihao">${usertest.sort}</span> 题：(${fns:getDictLabel(zquestion.type, 'question_type', '')})</strong>
                                             </div>
                                             <div class="xtcontentclass">
                                                 <p>${zquestion.title}</p>
@@ -150,7 +150,7 @@
             setInterval(function(){
                 time--;
                 $('.fen').html(time);
-                if(time==0){
+                if((time-0)<0){
                     succurrent('2');
                 }
             },1000)
@@ -190,7 +190,7 @@
             if(nextusertestid!=''){               
                 $("#myform").submit();
             }else{
-                layer.confirm('答题已完成，是否完成答卷', {
+                layer.confirm('是否完成答卷', {
                     btn: ['确定', '取消'] //可以无限个按钮                    
                 }, function(index, layero){
                   //按钮【按钮一】的回调
@@ -203,7 +203,7 @@
 
         function succurrent(type){
             if('1'==type){
-                layer.confirm('答题已完成，是否完成答卷', {
+                layer.confirm('是否完成答卷', {
                     btn: ['确定', '取消'] //可以无限个按钮                    
                 }, function(index, layero){
                   //按钮【按钮一】的回调

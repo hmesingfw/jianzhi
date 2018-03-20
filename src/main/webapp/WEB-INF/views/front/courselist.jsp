@@ -49,7 +49,7 @@
 	<section class="i-banner" id="banner">
 		<ul>
 			<c:forEach items="${aboutBanner}" var="banner" end="4">
-	       		<a href="${banner.url}" target="_blank"><li style="background:url(${banner.filepath}) no-repeat 50% 50%; "></li> </a>
+	       		<li style="background:url(${banner.filepath}) no-repeat 50% 50%; " onclick="window.location.href='${banner.url}'"></li>
 			</c:forEach>
 		</ul>
 	</section>
@@ -153,7 +153,35 @@
     		<li><span>关注<br />微信</span><i class="edufont e-icon-wechat"></i><div class="code-box"><em></em><img src="img/wechat-code.png" /><p>关注微信公众号</p></div></li>
     		<li onclick="goTop()"><span>返回<br />头部</span><i class="edufont e-icon-top"></i></li>
     	</ul>
-    </aside>  
+    </aside>   
 
+
+    <script src="${ctxStatic}/jianzhi/js/imgload.js"></script>
+    <script src="${ctxStatic}/jianzhi/js/cs.assembly.js"></script>
+    <!--执行页面加载js-->
+    <script src="${ctxStatic}/jianzhi/js/page.index.js"></script>
+    <script src="${ctxStatic}/jianzhi/js/page.load.js"></script>
+    <script src="${ctxStatic}/jianzhi/js/page.main.js"></script>
+    <script>
+
+    //轮播图
+    $('#banner').carousel({
+          object:'li',
+          scrollType:'slide',
+          width:'100%',
+          height:'500',
+          arrow:true,
+          autoPlay:true,
+          dots:1,
+          speed:400,
+          interval:4000,
+          
+
+    });
+    //懒加载
+    imgLoad('m-img','/tp/PC/skin055/images/common/none.png');
+
+
+    </script>
 </body>
 </html>

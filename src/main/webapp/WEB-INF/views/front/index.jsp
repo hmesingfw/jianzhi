@@ -7,7 +7,7 @@
 		.Hhide{
 			display: none !important;
 		}
-	</style>
+	</style>	 
 <body>
 	<jsp:include page="include/ifie.jsp" />
 	
@@ -116,6 +116,7 @@
     </aside>  
 
 
+
 <script src="${ctxStatic}/jianzhi/js/imgload.js"></script>
 <script src="${ctxStatic}/jianzhi/js/cs.assembly.js"></script>
 <!--执行页面加载js-->
@@ -123,6 +124,7 @@
 <script src="${ctxStatic}/jianzhi/js/page.load.js"></script>
 <script src="${ctxStatic}/jianzhi/js/page.main.js"></script>
 <script>
+
 //轮播图
 $('#carousel').carousel({
 	  object:'li',
@@ -133,8 +135,13 @@ $('#carousel').carousel({
 	  autoPlay:true,
 	  dots:1,
 	  speed:400,
-	  interval:4000
+	  interval:4000,
+	  
+
 });
+//懒加载
+imgLoad('m-img','/tp/PC/skin055/images/common/none.png');
+
 
 </script>
 </body>

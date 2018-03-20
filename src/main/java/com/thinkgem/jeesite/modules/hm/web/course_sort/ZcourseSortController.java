@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
 import com.thinkgem.jeesite.modules.hm.service.course_sort.ZcourseSortService;
+import com.thinkgem.jeesite.modules.hm.utils.ZcourseSortUtils;
 
 /**
  * 专业分类Controller
@@ -57,6 +59,12 @@ public class ZcourseSortController extends BaseController {
 		ZcourseSort.sortList(list, sortlist, "0", true);
 		
 		model.addAttribute("list", list);
+		
+		
+		ZcourseSort sort = new ZcourseSort();
+		sort.setDelFlag("0");
+		List<ZcourseSort> courselist = zcourseSortService.findList(sort);
+		CacheUtils.put(ZcourseSortUtils.CACHE_zcourseSort_LIST, courselist);
 		
 		return "modules/hm/course_sort/zcourseSortList";
 	}

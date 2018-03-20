@@ -83,7 +83,15 @@
 			a.del_flag = #{DEL_FLAG_NORMAL} 
 			<if test="type != null and type != ''">
 				AND a.type = #{type}
-			</if>			 
+			</if>
+			
+			<if test="sortlist != null and sortlist.size > 0">
+				AND a.type in
+				<foreach collection="sortlist" item="item" open="(" separator="," close=")">
+		            #{item}
+		        </foreach>
+			</if>
+						 
 			<if test="parentid != null and parentid != ''">
 				AND a.parentid = #{parentid}
 			</if>

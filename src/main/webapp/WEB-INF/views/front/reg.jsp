@@ -48,8 +48,7 @@
 			if(!password1){
 				layer.msg("请输入密码"); 
 				return false; 
-			}
-			console.log(323)
+			} 
 			if(password1!=password2){
 				layer.msg("两次密码不匹配"); 
 				return false; 

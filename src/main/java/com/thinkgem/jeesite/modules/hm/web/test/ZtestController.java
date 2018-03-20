@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.hm.web.test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,6 +78,8 @@ public class ZtestController extends BaseController {
 		if (!beanValidator(model, ztest)){
 			return form(ztest, model);
 		}
+		 
+		System.out.println(ztest.getTesttype());
 		ztestService.save(ztest);
 		
 		//自动组卷
@@ -84,7 +87,16 @@ public class ZtestController extends BaseController {
 			
 			int limit = StringUtils.isNumeric(ztest.getSum()) ? Integer.parseInt(ztest.getSum()) : 1;
 			Zquestion ztion = new Zquestion();
-			ztion.setType(ztest.getType());
+			List<String> sortlist = new ArrayList<>();
+			if(ztest.getTesttype()!=null && !"".equals(ztest.getTesttype())){
+				String[] types = ztest.getTesttype().split(",");
+				for (String string : types) {
+					if(StringUtils.isNotBlank(string)){
+						sortlist.add(string);
+					}
+				}
+				ztion.setSortlist(sortlist);				
+			}			
 			ztion.setLimit(limit);
 			ztion.setDelFlag("0");
 			List<Zquestion> questionlist = zquestionService.findRandList(ztion);		//获取随机题目列表
@@ -112,7 +124,7 @@ public class ZtestController extends BaseController {
 				ztestService.save(ztest);
 			}
 		}
-		
+	
 		addMessage(redirectAttributes, "保存试卷成功");
 		return "redirect:"+Global.getAdminPath()+"/hm/test/ztest/?repage";
 	}

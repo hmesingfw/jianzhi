@@ -4,7 +4,7 @@
 <section id="carousel" class="index-carousel">
   	<ul>
   		<c:forEach items="${aboutBanner}" var="banner" end="4">
-       		<a href="${banner.url}" target="_blank"><li style="background:url(${banner.filepath}) no-repeat 50% 50%; "></li> </a>
+       		<li style="background:url(${banner.filepath}) no-repeat 50% 50%; "  onclick="window.location.href='${banner.url}'"></li>
 		</c:forEach>
   	</ul>
 </section>

@@ -13,14 +13,15 @@
 	<script src="${ctxStatic}/jianzhi/layui/layui.js"></script>
 	<script type="text/javascript">
 
-		// $(function(){
-		// 	$("#upload").on("change",function(){
-	 //        	var objUrl = getObjectURL(this.files[0]) ; //获取图片的路径，该路径不是图片在本地的路径
-	 //        	if (objUrl) {
-	 //        		$("#pic").attr("src", objUrl) ; //将图片路径存入src中，显示出图片
-	 //        	}
-  //       	});
-		// })
+		$(function(){
+			$("#upload").on("change",function(){
+	        	var objUrl = getObjectURL(this.files[0]) ; //获取图片的路径，该路径不是图片在本地的路径
+	        	if (objUrl) {
+	        		$(".user1-img").css("background", 'url('+objUrl+')');//将图片路径存入src中，显示出图片
+	        		$(".user1-img").css("background-size","100% 100%");
+	        	}
+        	});
+		})
 
 		function update(){
 			var truename = $("#truename").val();
@@ -48,6 +49,19 @@
 			} 
 		}
 
+		//建立一個可存取到該file的url
+        function getObjectURL(file) {
+        	var url = null ;
+        	if (window.createObjectURL!=undefined) { // basic
+        		url = window.createObjectURL(file) ;
+        	} else if (window.URL!=undefined) { // mozilla(firefox)
+        		url = window.URL.createObjectURL(file) ;
+        	} else if (window.webkitURL!=undefined) { // webkit or chrome
+        		url = window.webkitURL.createObjectURL(file) ;
+        	}
+        	return url ;
+    	}
+
 	</script>
 <body>
 
@@ -57,7 +71,7 @@
 	</div>
 	<form action="${ctxF}/register" id="inputForm" method="post" onsubmit="return update()" enctype="multipart/form-data">
 		<div style="text-align: center;">
-			<div class="user1-img">
+			<div class="user1-img" >
 				<h1>+</h1>
 				<p>头像上传</p>
 				<input id="upload" name="file" accept="image/*" type="file"/>

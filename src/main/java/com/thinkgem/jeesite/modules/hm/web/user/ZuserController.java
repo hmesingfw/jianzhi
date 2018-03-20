@@ -21,14 +21,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
-import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
-import com.thinkgem.jeesite.modules.hm.entity.question.Zquestion;
-import com.thinkgem.jeesite.modules.hm.entity.question_answer.ZquestionAnswer;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.hm.entity.user.Zuser;
 import com.thinkgem.jeesite.modules.hm.service.user.ZuserService;
+import com.thinkgem.jeesite.modules.hm.utils.ZuserUtils;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.service.DictService;
 
@@ -63,6 +62,12 @@ public class ZuserController extends BaseController {
 	public String list(Zuser zuser, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<Zuser> page = zuserService.findPage(new Page<Zuser>(request, response), zuser); 
 		model.addAttribute("page", page);
+		
+		zuser = new Zuser();
+		zuser.setDelFlag("0");
+		List<Zuser> userlist = zuserService.findList(zuser);
+		CacheUtils.put(ZuserUtils.CACHE_Zuser_LIST, userlist);
+		
 		return "modules/hm/user/zuserList";
 	}
 

@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.hm.web.course;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,10 +19,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.hm.entity.course.Zcourse;
 import com.thinkgem.jeesite.modules.hm.service.course.ZcourseService;
+import com.thinkgem.jeesite.modules.hm.utils.ZcourseUtils;
 
 /**
  * 课程信息管理Controller
@@ -51,6 +55,12 @@ public class ZcourseController extends BaseController {
 	public String list(Zcourse zcourse, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<Zcourse> page = zcourseService.findPage(new Page<Zcourse>(request, response), zcourse); 
 		model.addAttribute("page", page);
+		
+		Zcourse sort = new Zcourse();
+		sort.setDelFlag("0");
+		List<Zcourse> list = zcourseService.findList(sort);
+		CacheUtils.put(ZcourseUtils.CACHE_zcourse_LIST, list);
+		
 		return "modules/hm/course/zcourseList";
 	}
 

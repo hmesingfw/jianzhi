@@ -28,6 +28,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.FileUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.pay.alipay.config.AlipayConfig;
+import com.thinkgem.jeesite.common.utils.sms.tool.SmsAliTool;
 import com.thinkgem.jeesite.modules.hm.dao.test_question.ZtestQuestionDao;
 import com.thinkgem.jeesite.modules.hm.entity.course.Zcourse;
 import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
@@ -242,7 +243,9 @@ public class FrontController {
 			zdocSort.setParent(sort1);
 			docsort = zdocSortService.findList(zdocSort);
 			model.addAttribute("docsort2", docsort);
-			
+			for (ZdocSort zdocSort2 : docsort) {
+				sortlist.add(zdocSort2.getId());
+			}
 			sortlist.add(sort1);
 		}
 		if(sort2!=null && !"".equals(sort2)){
@@ -250,7 +253,9 @@ public class FrontController {
 			zdocSort.setParent(sort2);
 			docsort = zdocSortService.findList(zdocSort);
 			model.addAttribute("docsort3", docsort);
-			
+			for (ZdocSort zdocSort2 : docsort) {
+				sortlist.add(zdocSort2.getId());
+			}
 			sortlist.add(sort2);	
 		}
 		if(sort3!=null && !"".equals(sort3)){
@@ -332,6 +337,38 @@ public class FrontController {
         return null;
     }
 	
+    
+    @ResponseBody
+    @RequestMapping(value = "docDownUsermodel")
+    public String docDownUsermodel(HttpServletRequest request, HttpServletResponse response) {
+    		
+		String path = "/static/userModel.xlsx";
+    	try{
+            if(!path.contains("http") && !path.contains("HTTP")) {
+                path = request.getSession().getServletContext().getRealPath(path);
+            }
+            FileUtils.downFile(new File(path), request, response);            
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "docDownTestmodel")
+    public String docDownTestmodel(HttpServletRequest request, HttpServletResponse response) {
+    		
+		String path = "/static/testModel.xlsx";
+    	try{
+            if(!path.contains("http") && !path.contains("HTTP")) {
+                path = request.getSession().getServletContext().getRealPath(path);
+            }
+            FileUtils.downFile(new File(path), request, response);            
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 	
 	/**
 	 * 跳转登陆页面 
@@ -626,6 +663,9 @@ public class FrontController {
 			sortlist1 = zcourseSortService.findList(sort);
 			model.addAttribute("sortlist2", sortlist1);
 			
+			for (ZcourseSort zcourseSort : sortlist1) {
+				sortlist.add(zcourseSort.getId());
+			}			
 			sortlist.add(sort1);
 		}
 		if(sort2!=null && !"".equals(sort2)){
@@ -633,6 +673,10 @@ public class FrontController {
 			sort.setParentId(sort2);
 			sortlist1 = zcourseSortService.findList(sort);
 			model.addAttribute("sortlist3", sortlist1);
+			
+			for (ZcourseSort zcourseSort : sortlist1) {
+				sortlist.add(zcourseSort.getId());
+			}	
 			sortlist.add(sort2);	
 		}
 		
@@ -1013,7 +1057,9 @@ public class FrontController {
 			sort.setParentId(sort1);
 			sortlist1 = zcourseSortService.findList(sort);
 			model.addAttribute("sortlist2", sortlist1);
-			
+			for (ZcourseSort zcourseSort : sortlist1) {
+				sortlist.add(zcourseSort.getId());
+			}
 			sortlist.add(sort1);
 		}
 		if(sort2!=null && !"".equals(sort2)){
@@ -1021,6 +1067,9 @@ public class FrontController {
 			sort.setParentId(sort2);
 			sortlist1 = zcourseSortService.findList(sort);
 			model.addAttribute("sortlist3", sortlist1);
+			for (ZcourseSort zcourseSort : sortlist1) {
+				sortlist.add(zcourseSort.getId());
+			}
 			sortlist.add(sort2);	
 		}
 		
@@ -1191,6 +1240,7 @@ public class FrontController {
 	public void currentTest(String usertestid, Model model){	
 		//当前用户测试记录的编号
 		ZuserTest usertest = zuserTestService.get(usertestid);
+		model.addAttribute("usertest", usertest);
 		model.addAttribute("myusertestid", usertestid);
 		
 		
@@ -1313,12 +1363,94 @@ public class FrontController {
 	
 	
 	
+	/**
+	 * 忘记密码
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping( value= "fotgetpassword")
+	public String fotgetpassword(HttpServletRequest request, HttpServletResponse response, Model model){
+		
+		return "front/fotgetpassword";
+	}
 	
 	
+	/**
+	 * 找回密码
+	 */	
+	@RequestMapping( value= "forgetPwd")
+	public String forgetPwd(HttpServletRequest request, HttpServletResponse response, Model model){
+		String phone = request.getParameter("phone");
+		String password = request.getParameter("password");
+		
+		Zuser user = new Zuser();
+		user.setPhone(phone);
+		user.setDelFlag("0");
+		
+		List<Zuser> list = zuserService.findList(user);
+		if(list!=null && list.size()>0){
+			user = list.get(0);
+		}
+		user.setPassword(password);
+		zuserService.save(user);
+		
+		request.getSession().setAttribute("sessionMyinfo", user);
+		return "front/myinfo";
+	}
 	
-	
-	
-	
+	/**
+	 * 获取短信验证码
+	 */
+	@ResponseBody
+	@RequestMapping(value = "getValidate")
+	public String getValidate(HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		String phone = request.getParameter("phone");
+		System.out.println(phone);
+		Zuser finduser = new Zuser();
+		finduser.setPhone(phone);
+		finduser.setDelFlag("0");
+		
+		PrintWriter out = null;
+		try {
+			/** 设置回传格式*/
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html;charset=UTF-8");
+			out = response.getWriter();
+			String templateid = request.getParameter("templateid"); // 短信模版ID
+			List<Zuser> list = zuserService.findList(finduser); // 根据手机号查询用户
+			if(templateid.trim().equals(SmsAliTool.ZCYZ_MOULD_ID) || templateid.trim().equals(SmsAliTool.BDSJ_MOULD_ID)) { // 注册/找回密码验证码
+				if(list!=null && list.size()>0) {
+					out.println("EXIST"); // 手机号已注册或者绑定
+				} else {
+					// 生成随机数验证码
+					String random = StringUtils.getRandom(6); 
+					SmsAliTool.sendSms(templateid, phone, "{\"code\":\""+random+"\"}");
+					out.println(random);
+				}
+			} else { // 找回/重置密码验证码
+				if(list==null || list.size()<1) {
+					out.println("NOEXIST"); // 手机号已注册或者绑定
+				} else {
+					// 生成随机数验证码
+					String random = StringUtils.getRandom(6); 
+					SmsAliTool.sendSms(templateid, phone, "{\"code\":\""+random+"\"}");
+					out.println(random);
+				}
+			}
+		} catch (Exception e) {
+			out.println("ERROR");
+			e.printStackTrace();
+		} finally{
+			if(null!=out){
+				out.flush();
+				out.close();
+			}
+		}
+		return null;
+	}
 	
 	
 	

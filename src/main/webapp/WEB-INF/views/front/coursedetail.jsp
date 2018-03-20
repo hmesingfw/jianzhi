@@ -49,7 +49,9 @@
 	                    		<input type="button" onclick="gotopaycourse()" class="hb-ui-btn1" value="购买" />	
 	                    	</c:if>     
 	                    	<c:if test="${ispay == 'yespay'}">
-	                    		<input type="button" onclick="gotolookcourse()" class="hb-ui-btn1" value="观看" />	
+	                    		<a href="${ctxF}/gotolookcourse?id=${zcourse.id}"  target="_blank">
+	                    			<input type="button" class="hb-ui-btn1" value="观看" />	
+	                    		</a>
 	                    	</c:if>    
 	                    </div>
 	                </div>
@@ -58,7 +60,9 @@
 			</div>	        
         </div>
     </div> 
-
+    <p id="lookid">
+    1</a>
+	</p>
 	<jsp:include page="include/footer.jsp" /> 
 
     <aside class="aside-operate">
@@ -73,9 +77,7 @@
 		function gotopaycourse(){
 			window.location.href="${ctxF}/gotopaycourse?id=${zcourse.id}";
 		}
-		function gotolookcourse(){
-			window.location.href="${ctxF}/gotolookcourse?id=${zcourse.id}";
-		}
+		
 	</script>	
 
 </body>
