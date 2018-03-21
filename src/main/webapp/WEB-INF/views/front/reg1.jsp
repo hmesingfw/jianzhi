@@ -11,6 +11,8 @@
 	<link href="${ctxStatic}/jianzhi/layui/css/layui.css" rel="stylesheet">
 	<script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
 	<script src="${ctxStatic}/jianzhi/layui/layui.js"></script>
+	<link href="${ctxStatic}/jquery-jbox/2.3/Skins/Bootstrap/jbox.min.css" rel="stylesheet" />
+	<script src="${ctxStatic}/jquery-jbox/2.3/jquery.jBox-2.3.min.js" type="text/javascript"></script>
 	<script type="text/javascript">
 
 		$(function(){
@@ -84,11 +86,7 @@
 		<ul class="reg2">
 			<li>			
 				<label><span>＊</span>报考专业：</label>
-				<select name="major">
-					<c:forEach items="${fns:getCourseSortList()}" var="info">
-						<option value="${info.id}">${info.name}</option>
-					</c:forEach>
-				</select>
+				<sys:treeselectF id="office" name="major" value="${office.id}" labelName="office.name" labelValue="${office.name}" title="课程分类" url="/treeData" />
 			</li>
 			<li>
 				

@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.hm.web.docsort;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,12 +17,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.hm.dao.doc.ZdocDao;
+import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
 import com.thinkgem.jeesite.modules.hm.entity.docsort.ZdocSort;
 import com.thinkgem.jeesite.modules.hm.service.docsort.ZdocSortService;
 import com.thinkgem.jeesite.modules.hm.utils.ZdocSortUtils;
@@ -95,4 +101,37 @@ public class ZdocSortController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/hm/docsort/zdocSort/?repage";
 	}
 
+	
+	
+	/**
+	 * 获取机构JSON数据。
+	 * @param extId 排除的ID
+	 * @param type	类型（1：公司；2：部门/小组/其它：3：用户）
+	 * @param grade 显示级别
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "treeData")
+	public List<Map<String, Object>> treeData(@RequestParam(required=false) String extId, @RequestParam(required=false) String type,
+			@RequestParam(required=false) Long grade, @RequestParam(required=false) Boolean isAll, HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		
+		ZdocSort sort = new ZdocSort();
+		sort.setDelFlag("0");
+		List<ZdocSort> list = zdocSortService.findList(sort);
+		
+		for (int i=0; i<list.size(); i++){
+			ZdocSort e = list.get(i);
+			if ((StringUtils.isBlank(extId) || (extId!=null && !extId.equals(e.getId())))){
+				Map<String, Object> map = Maps.newHashMap();
+				map.put("id", e.getId());
+				map.put("pId", e.getParent());
+				map.put("pIds", e.getParentIds());
+				map.put("name", e.getName());				
+				mapList.add(map);
+			}
+		}
+		return mapList;
+	}
 }

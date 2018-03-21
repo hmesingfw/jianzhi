@@ -24,7 +24,6 @@ public class TagController extends BaseController {
 	/**
 	 * 树结构选择标签（treeselect.tag）
 	 */
-	@RequiresPermissions("user")
 	@RequestMapping(value = "treeselect")
 	public String treeselect(HttpServletRequest request, Model model) {
 		model.addAttribute("url", request.getParameter("url")); 	// 树结构数据URL
@@ -39,7 +38,6 @@ public class TagController extends BaseController {
 	/**
 	 * 图标选择标签（iconselect.tag）
 	 */
-	@RequiresPermissions("user")
 	@RequestMapping(value = "iconselect")
 	public String iconselect(HttpServletRequest request, Model model) {
 		model.addAttribute("value", request.getParameter("value"));

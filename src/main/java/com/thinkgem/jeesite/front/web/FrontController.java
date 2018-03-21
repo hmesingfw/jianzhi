@@ -24,11 +24,14 @@ import org.springframework.web.multipart.MultipartFile;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.FileUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.pay.alipay.config.AlipayConfig;
 import com.thinkgem.jeesite.common.utils.sms.tool.SmsAliTool;
+import com.thinkgem.jeesite.modules.hm.dao.test.ZtestDao;
 import com.thinkgem.jeesite.modules.hm.dao.test_question.ZtestQuestionDao;
 import com.thinkgem.jeesite.modules.hm.entity.course.Zcourse;
 import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
@@ -245,6 +248,13 @@ public class FrontController {
 			model.addAttribute("docsort2", docsort);
 			for (ZdocSort zdocSort2 : docsort) {
 				sortlist.add(zdocSort2.getId());
+								
+				//第三级
+				zdocSort.setParent(zdocSort2.getId());
+				List<ZdocSort> sortlist12 = zdocSortService.findList(zdocSort);
+				for (ZdocSort zcourseSort2 : sortlist12) {
+					sortlist.add(zcourseSort2.getId());
+				}	
 			}
 			sortlist.add(sort1);
 		}
@@ -665,7 +675,16 @@ public class FrontController {
 			
 			for (ZcourseSort zcourseSort : sortlist1) {
 				sortlist.add(zcourseSort.getId());
-			}			
+				
+				//第三级
+				sort.setParentId(zcourseSort.getId());
+				List<ZcourseSort> sortlist12 = zcourseSortService.findList(sort);
+				for (ZcourseSort zcourseSort2 : sortlist12) {
+					sortlist.add(zcourseSort2.getId());
+				}
+				
+			}						
+			
 			sortlist.add(sort1);
 		}
 		if(sort2!=null && !"".equals(sort2)){
@@ -842,8 +861,7 @@ public class FrontController {
 	
 	/**
 	 * 支付宝充值回调
-	 */
-	@ResponseBody
+	 */	
 	@RequestMapping(value = "alipayaNotify")
 	public String alipayaNotify(HttpServletRequest request, HttpServletResponse response, Model model) {
 		PrintWriter out =null;
@@ -894,18 +912,19 @@ public class FrontController {
 
 		        if(list!=null && list.size()>0){
 		        	orders = list.get(0);
+		        	
+		        	String total_fee = total_amount;
+			        if(total_fee!=null && !"".equals(total_fee)){
+				        //支付金额
+				        BigDecimal fee = new BigDecimal(total_fee);	 
+				        orders.setPayprice(fee+"");
+			        }
+					// 判断是否支付成功				
+					orders.setPaystatus("2");	
+					orders.setPaytime(new Date());
+					zcourseOrderService.save(orders);	
 		        }
-		        String total_fee = total_amount;
-		        if(total_fee!=null && !"".equals(total_fee)){
-			        //支付金额
-			        BigDecimal fee = new BigDecimal(total_fee);	 
-			        orders.setPayprice(fee+"");
-		        }	       
-				
-				// 判断是否支付成功				
-				orders.setPaystatus("2");	
-				orders.setPaytime(new Date());
-				zcourseOrderService.save(orders);	
+		        
 				
 	    		out.println("success");
 	        } else {//验证失败
@@ -1059,6 +1078,13 @@ public class FrontController {
 			model.addAttribute("sortlist2", sortlist1);
 			for (ZcourseSort zcourseSort : sortlist1) {
 				sortlist.add(zcourseSort.getId());
+				
+				//第三级
+				sort.setParentId(zcourseSort.getId());
+				List<ZcourseSort> sortlist12 = zcourseSortService.findList(sort);
+				for (ZcourseSort zcourseSort2 : sortlist12) {
+					sortlist.add(zcourseSort2.getId());
+				}	
 			}
 			sortlist.add(sort1);
 		}
@@ -1079,6 +1105,7 @@ public class FrontController {
 		}
 		
 		test.setSortlist(sortlist);
+		test.setRemarks("yes");
 		Page<Ztest> page = ztestService.findPage(new Page<Ztest>(request, response), test);
 		model.addAttribute("page", page);
 		model.addAttribute("test", test);
@@ -1164,12 +1191,26 @@ public class FrontController {
 			return "front/questionlist";
 		}
 		
+		
+		
+		
 		Ztest test = new Ztest();
 		test.setTitle("随机测试题");
 		test.setTesttime("60");
+		test.setType("4");		
+		List<Ztest> list = ztestService.findList(test);
+		for (Ztest ztest : list) {
+			ZuserTest usertest = new ZuserTest();
+			usertest.setUserid(user.getId());
+			usertest.setTestid(ztest.getId());		
+			zuserTestService.deleteUesrtest(usertest); 		//删除用户考试记录	
+		}
+			
+		
+		
 		test.setSum(value);
 		test.setParentid(type);	 
-		ztestService.save(test);
+		ztestService.save(test);			//创建试题
 		
 		model.addAttribute("testid", test.getId());
 		model.addAttribute("test", test);
@@ -1456,7 +1497,60 @@ public class FrontController {
 	
 	
 	
+	/**
+	 * 获取机构JSON数据。
+	 * @param extId 排除的ID
+	 * @param type	类型（1：公司；2：部门/小组/其它：3：用户）
+	 * @param grade 显示级别
+	 * @param response
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "treeData")
+	public List<Map<String, Object>> treeData(@RequestParam(required=false) String extId, @RequestParam(required=false) String type,
+			@RequestParam(required=false) Long grade, @RequestParam(required=false) Boolean isAll, HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		
+		ZcourseSort sort = new ZcourseSort();
+		sort.setDelFlag("0");
+		List<ZcourseSort> list = zcourseSortService.findList(sort);
+		
+		for (int i=0; i<list.size(); i++){
+			ZcourseSort e = list.get(i);
+			if ((StringUtils.isBlank(extId) || (extId!=null && !extId.equals(e.getId())))){
+				Map<String, Object> map = Maps.newHashMap();
+				map.put("id", e.getId());
+				map.put("pId", e.getParentId());
+				map.put("pIds", e.getParentIds());
+				map.put("name", e.getName());				
+				mapList.add(map);
+			}
+		}
+		return mapList;
+	}
 	
+	/**
+	 * 树结构选择标签（treeselect.tag）
+	 */
+	@RequestMapping(value = "treeselect")
+	public String treeselect(HttpServletRequest request, Model model) {
+		model.addAttribute("url", request.getParameter("url")); 	// 树结构数据URL
+		model.addAttribute("extId", request.getParameter("extId")); // 排除的编号ID
+		model.addAttribute("checked", request.getParameter("checked")); // 是否可复选
+		model.addAttribute("selectIds", request.getParameter("selectIds")); // 指定默认选中的ID
+		model.addAttribute("isAll", request.getParameter("isAll")); 	// 是否读取全部数据，不进行权限过滤
+		model.addAttribute("module", request.getParameter("module"));	// 过滤栏目模型（仅针对CMS的Category树）
+		return "modules/sys/tagTreeselectF";
+	}
+	
+	/**
+	 * 图标选择标签（iconselect.tag）
+	 */
+	@RequestMapping(value = "iconselect")
+	public String iconselect(HttpServletRequest request, Model model) {
+		model.addAttribute("value", request.getParameter("value"));
+		return "modules/sys/tagIconselect";
+	}
 	
 	
 }

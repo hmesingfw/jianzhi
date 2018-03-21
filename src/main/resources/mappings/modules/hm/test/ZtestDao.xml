@@ -36,13 +36,22 @@
 		FROM ztest a
 		<include refid="ztestJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
+			a.del_flag = #{DEL_FLAG_NORMAL} 
+			<if test="remarks == 'yes'">
+				and title != '随机测试题'
+			</if>			
+			
 			<if test="title != null and title != ''">
 				AND a.title LIKE 
 					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
 					<if test="dbName == 'mssql'">'%'+#{title}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{title},'%')</if>
 			</if>
+			
+			<if test="type != null and type != ''">
+				AND a.type = #{type}
+			</if>
+			
 			<if test="parentid != null and parentid != ''">
 				AND a.parentid = #{parentid}
 			</if>

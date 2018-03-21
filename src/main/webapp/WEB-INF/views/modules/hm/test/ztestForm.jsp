@@ -3,7 +3,7 @@
 <html>
 <head>
 	<title>试卷管理管理</title>
-	<meta name="decorator" content="default"/>
+	<meta name="decorator" content="default"/>	
 	<script type="text/javascript">
 		$(document).ready(function() {
 			//$("#name").focus();
@@ -38,18 +38,20 @@
 			<div class="controls">
 				<form:input path="title" htmlEscape="false" maxlength="3000" class="input-xlarge "/>
 
-				<sys:treeselect id="office" name="office.id" value="${office.id}" labelName="office.name" labelValue="${office.name}"
-					title="课程分类" url="/hm/course_sort/zcourseSort/treeData" cssClass="required"/>
+				
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">所属专业：</label>
 			<div class="controls">
-
+				<%--
 				<form:select path="parentid" class="input-xlarge ">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getCourseSortList()}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
+				--%>
+				<sys:treeselect id="office" name="parentid" value="${office.id}" labelName="office.name" labelValue="${office.name}"
+					title="课程分类" url="/hm/course_sort/zcourseSort/treeData" cssClass="required"/>
 			</div>
 		</div>
 		<div class="control-group">

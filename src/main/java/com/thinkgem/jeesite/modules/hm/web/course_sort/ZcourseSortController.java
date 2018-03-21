@@ -109,7 +109,6 @@ public class ZcourseSortController extends BaseController {
 	 * @param response
 	 * @return
 	 */
-	@RequiresPermissions("user")
 	@ResponseBody
 	@RequestMapping(value = "treeData")
 	public List<Map<String, Object>> treeData(@RequestParam(required=false) String extId, @RequestParam(required=false) String type,

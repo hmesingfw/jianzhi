@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.hm.web.user;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -120,6 +121,10 @@ public class ZuserController extends BaseController {
 				System.out.println(list.size()+"------------------------>");
 				Zuser zuser = list.get(i);
 				if(StringUtils.isNoneBlank(zuser.getIdcode())){
+					
+					 
+					String phone = zuser.getPhone().replaceAll("-", "");  
+					zuser.setPhone(phone);
 					//字黄类型
 					Dict dict = new Dict();
 					dict.setType("user_ethnic");
