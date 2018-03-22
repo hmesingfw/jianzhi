@@ -25,7 +25,7 @@ import com.sun.pdfview.PDFPage;
  * doc docx格式转换
  */
 public class DocConverter {
-	private static final int environment = 1;// 环境 1：windows 2:linux
+	private static final int environment = 2;// 环境 1：windows 2:linux
 	private String fileString;// (只涉及pdf2swf路径问题)
 	private String outputPath = "";// 输入路径 ，如果不设置就输出在默认的位置
 	private String fileName;
@@ -66,9 +66,11 @@ public class DocConverter {
 	 * @param file
 	 */
 	private void doc2pdf(String viewfilename) throws Exception {
+		System.out.println("...........................69");
 		if (docFile.exists()) {
 			if (!pdfFile.exists()) {
-				OpenOfficeConnection connection = new SocketOpenOfficeConnection("127.0.0.1",8100);
+				System.out.println("------------------------------72");
+				OpenOfficeConnection connection = new SocketOpenOfficeConnection("172.18.0.4",8100);
 //				OpenOfficeConnection connection = new SocketOpenOfficeConnection(8100);
 				try {
 					connection.connect();
@@ -268,6 +270,7 @@ public class DocConverter {
 			System.out.println("****swf转换器开始工作，当前设置运行环境linux****");
 		}
 		try {
+			System.out.println("--------------------271");
 			//转换至PDF
 			doc2pdf(viewfilename);
 			//获取截图

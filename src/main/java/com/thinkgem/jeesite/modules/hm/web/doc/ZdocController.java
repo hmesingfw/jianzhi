@@ -88,8 +88,12 @@ public class ZdocController extends BaseController {
 				//string 为当前要转换的文件
 				String name = string.substring(string.lastIndexOf("/"), string.lastIndexOf("."));
 				String filetype = string.substring(string.lastIndexOf(".") + 1, string.length());
+				System.out.println("name:------>"+name);
+				System.out.println("filetype:------>"+filetype);
 
-				String path = string.substring(9, string.lastIndexOf("/"));
+				
+				String path = string.substring(1, string.lastIndexOf("/"));
+				System.out.println("path:------>"+path);
 				try {
 					name = java.net.URLDecoder.decode(name, "utf-8");
 				} catch (UnsupportedEncodingException e) {
@@ -100,9 +104,11 @@ public class ZdocController extends BaseController {
 				String filepath = request.getSession().getServletContext().getRealPath("/") + dfile; 		//当前文件的绝对路径		
 				
 				File file = new File(filepath);
+				System.out.println(filepath+"------------->file"+ file.exists());
 				String savefilepath = request.getSession().getServletContext().getRealPath("/");
 				if ("docx".equals(filetype) || "doc".equals(filetype) || "xls".equals(filetype)
 						|| "xlsx".equals(filetype) || "ppt".equals(filetype) || "pptx".equals(filetype)) {
+					System.out.println("goto doc");
 					String filepathname = DocChangePdf.changefiles(savefilepath + path, file, name + "." + filetype);	
 					System.out.println("----------");
 					System.out.println(savefilepath);

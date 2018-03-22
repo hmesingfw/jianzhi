@@ -11,6 +11,7 @@ public class DocChangePdf {
 	public static String changefiles(String saveDirectory,File f,String fileName){
 		String image = "";
 		if(f!=null && f.exists()){
+			System.out.println("----------------------->1");
 	         //获取上传文件的扩展名
 	         String extName=fileName.substring(fileName.lastIndexOf(".")+1);
 	         //文件全路径
@@ -22,7 +23,7 @@ public class DocChangePdf {
 	         //调用转换类DocConverter,并将需要转换的文件传递给该类的构造方法
 	         DocConverter d = new DocConverter(converfilename,viewfilename);
 	         //调用conver方法开始转换，先执行doc2pdf()将office文件转换为pdf;再执行pdf2swf()将pdf转换为swf;
-	         
+	         System.out.println("----------------26");
 	         image = d.conver(viewfilename);
 	     	 //调用getswfPath()方法，打印转换后的swf文件路径
 	         //System.out.println(d.getswfPath());

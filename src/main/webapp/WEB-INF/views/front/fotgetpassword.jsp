@@ -97,7 +97,7 @@
 	<div class="batlogin">
 		<div class="batlogin1">
 			<div class="batlogin1-top">
-				<a href="$">找回密码</a>
+				<a href="javascript:;">找回密码</a>
 				<a href="${ctxF}/gotologin">登陆</a>
 			</div>
 			<form action="${ctxF}/forgetPwd" id="inputForm" method="post" onsubmit="return update()">
