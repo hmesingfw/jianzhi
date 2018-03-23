@@ -684,6 +684,15 @@
 			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/fontbox-1.8.13.jar</systemPath>
 		</dependency> 
 		
+		<!-- aspose -->
+		<dependency>
+			<groupId>com.aspose</groupId>
+			<artifactId>words</artifactId>
+			<version>16.8.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/words-sdk-16.8.0-jdk16.jar</systemPath>
+		</dependency>
+		
 		<!-- offic end -->
 		<!-- TEST begin -->
 		<dependency>
