@@ -33,7 +33,7 @@
 	                	</div> 					 
 						${zcourse.introduce}	
 																	
-	                    <div class="price">	      
+	                    <!-- <div class="price">	      
 	                    	<c:if test="${zcourse.type == 1}">
 								免费
 							</c:if>
@@ -43,7 +43,7 @@
 								</span>
 								<span class="money">¥${zcourse.sale}</span>	   
 							</c:if>		                                        	
-	                    </div>
+	                    </div> -->
 						<div class="button">	                    
 							<c:if test="${ispay == 'nopay'}">
 	                    		<input type="button" onclick="gotopaycourse()" class="hb-ui-btn1" value="购买" />	
@@ -61,7 +61,7 @@
         </div>
     </div> 
     <p id="lookid">
-    1</a>
+    
 	</p>
 	<jsp:include page="include/footer.jsp" /> 
 

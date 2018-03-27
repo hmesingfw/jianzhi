@@ -22,6 +22,8 @@
 		<thead>
 			<tr>
 				<th>名称</th>
+				<th>价格</th>
+				<th>有效期</th>
 				<th>排序</th>
 				<th>更新时间</th>
 				<th>备注信息</th>
@@ -36,6 +38,12 @@
 				<td><a href="${ctx}/hm/course_sort/zcourseSort/form?id=${zcourseSort.id}">
 					${zcourseSort.name}
 				</a></td>
+				<td>
+					${zcourseSort.price}
+				</td>
+				<td>
+					${zcourseSort.validity}
+				</td>
 				<td>
 					${zcourseSort.sort}
 				</td>

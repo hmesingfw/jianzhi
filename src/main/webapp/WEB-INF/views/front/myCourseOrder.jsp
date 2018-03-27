@@ -47,10 +47,10 @@
 						<c:forEach items="${page.list}" var="info">
 							<li>
 								<div class="user2-lt">
-									<img src="${fns:getCourse(info.courseid).img}" />
+									<%-- <img src="${fns:getCourseSort(info.courseid).img}" /> --%>
 								</div>
 								<div class="user2-rt">
-									<h1>${fns:getCourse(info.courseid).title}</h1>
+									<h1>${fns:getCourseSort(info.courseid).name}</h1>
 									<p>创建时间：
 										<fmt:formatDate value="${info.createDate}" pattern="yyyy-MM-dd"/>
 									</p>
@@ -59,12 +59,13 @@
 									</div>
 								</div>
 								<!-- ×</a> -->
+								<%--
 								<c:if test="${info.paystatus == 2 || info.paystatus==4}">
 									<a href="" class="usercuo">
 										<button class="layui-btn layui-btn-normal" type="button" onclick="window.location.href='${ctxF}/gotolookcourse?id=${info.id}'">观看</button>
 									</a>
 								</c:if>
-
+								--%>
 							</li>
 						</c:forEach>	
 					</ul>

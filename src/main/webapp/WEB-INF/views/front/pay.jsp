@@ -4,6 +4,7 @@
 <html>
 	<jsp:include page="include/head.jsp" />
 	<link rel="stylesheet" href="${ctxStatic}/jianzhi/css/iconfont.css"  />
+	<link href="${ctxStatic}/jianzhi/layui/css/layui.css" rel="stylesheet">
 
 	<style type="text/css">
 		.Hhide{
@@ -18,23 +19,23 @@
 	<div class="clear blank20"></div>
     <div class="page-width" style="width: 800px;">
 		<div class="pay1">
-			<label class="pay1-la1"></label>
-			<label class="pay1-la2">课程名</label>
-			<label class="pay1-la3">小计</label>
+			<label class="pay1-la2">专业名</label>
+			<label class="pay1-la3">有效期</label>
 			<label class="pay1-la4">实付</label>
 		</div>
-		<div class="pay2">
-			<img src="${zcourse.img}" />
-			<div class="pay2-div">
-				<h1>${zcourse.title}</h1> 
-			</div>
-			<label class="pay1-la3">￥${zcourse.sale}</label>
-			<label class="pay1-la3">￥${zcourse.price}</label>
+
+
+		<div class="pay1">
+			<label class="pay1-la2">${fns:getCourseSort(zcourse.parentid).name}</label>
+			<label class="pay1-la3">${fns:getCourseSort(zcourse.parentid).validity}(天)</label>
+			<label class="pay1-la4">￥${fns:getCourseSort(zcourse.parentid).price}</label>
 		</div>
+
+		 
   		<form action="${ctxF }/payCourse" id="submitForm" method="post">
   			<input type="hidden" name="id" value="${zcourse.id}">
 	  		<div style="position: relative;height: 60px;">
-	  			<button style="float: right">结算</button>
+	  			<button style="float: right" class="layui-btn layui-btn-normal">结算</button>
 	  		</div>
   		</form>
 	</div>

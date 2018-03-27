@@ -8,6 +8,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 
 /**
  * 用户课程订单Entity
@@ -25,6 +26,8 @@ public class ZcourseOrder extends DataEntity<ZcourseOrder> {
 	private String paystatus;		// 购买状态
 	private String courseprice;		// 购买时价格
 	private String payid;		// 支付编号
+	private int buynum;			//支付次数
+	private String exptime;		//到期时间
 	
 	public ZcourseOrder() {
 		super();
@@ -43,6 +46,24 @@ public class ZcourseOrder extends DataEntity<ZcourseOrder> {
 		this.courseid = courseid;
 	}
 	
+	
+	
+	public String getExptime() {
+		return exptime;
+	}
+
+	public void setExptime(String exptime) {
+		this.exptime = exptime;
+	}
+
+	public int getBuynum() {		 
+		return buynum;
+	}
+
+	public void setBuynum(int buynum) {
+		this.buynum = buynum;
+	}
+
 	@Length(min=0, max=64, message="用户编号长度必须介于 0 和 64 之间")
 	public String getUserid() {
 		return userid;

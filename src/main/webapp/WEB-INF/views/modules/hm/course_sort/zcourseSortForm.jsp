@@ -48,7 +48,7 @@
 		<div class="control-group">
 			<label class="control-label">名称：</label>
 			<div class="controls">
-				<form:input path="name" htmlEscape="false" maxlength="100" class="input-xlarge "/>
+				<form:input path="name" htmlEscape="false" maxlength="100" class="required"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -63,7 +63,23 @@
 				<form:input path="code" htmlEscape="false" maxlength="100" class="input-xlarge "/>
 			</div>
 		</div>
+
 		<div class="control-group">
+			<label class="control-label">价格：</label>
+			<div class="controls">
+				<form:input path="price" htmlEscape="false" maxlength="100" class="required number "/>
+				<span style="margin-left: 40px;color: red">参考格式：  100.00</span>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">有效期：</label>
+			<div class="controls">
+				<form:input path="validity" htmlEscape="false" maxlength="100" class="required digits "/>
+				<span style="margin-left: 40px;color: red">单位：（天）</span>
+			</div>
+		</div>
+
+		<div class="control-group" style="display: none;">
 			<label class="control-label">类型：</label>
 			<div class="controls">
 				<form:input path="type" htmlEscape="false" maxlength="1" class="input-xlarge "/>

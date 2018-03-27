@@ -82,7 +82,7 @@
 		</div>
 		<input type="hidden" name="password" value="${zuser.password}">
 		<input type="hidden" name="type" value="2">
-		<input type="hidden" name="status" value="3">
+		<input type="hidden" name="status" value="1">
 		<ul class="reg2">
 			<li>			
 				<label><span>＊</span>报考专业：</label>

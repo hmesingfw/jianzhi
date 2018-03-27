@@ -23,6 +23,8 @@ public class ZcourseSort extends DataEntity<ZcourseSort> {
 	private String name;		// 名称
 	private String sort;		// 排序
 	private String code;		// 编码
+	private String price;		// 价格
+	private String validity;	// 有效期天数
 	private String type;		// 类型
 	
 	public ZcourseSort() {
@@ -41,7 +43,24 @@ public class ZcourseSort extends DataEntity<ZcourseSort> {
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
+		
 	
+	public String getPrice() {
+		return price;
+	}
+
+	public void setPrice(String price) {
+		this.price = price;
+	}
+
+	public String getValidity() {
+		return validity;
+	}
+
+	public void setValidity(String validity) {
+		this.validity = validity;
+	}
+
 	@Length(min=0, max=2000, message="所有父级编号长度必须介于 0 和 2000 之间")
 	public String getParentIds() {
 		return parentIds;
