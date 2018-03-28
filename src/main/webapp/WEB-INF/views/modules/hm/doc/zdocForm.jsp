@@ -80,8 +80,9 @@
 					<form:options items="${fns:getDocSortList()}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
 				--%>
-				<sys:treeselect id="office" name="sortid" value="${office.id}" labelName="office.name" labelValue="${office.name}"
+				<sys:treeselect id="office" name="sortid" value="${zdoc.sortid}" labelName="${fns:getDocSort(zdoc.sortid).name}" labelValue="${fns:getDocSort(zdoc.sortid).name}"
 					title="课程分类" url="/hm/docsort/zdocSort/treeData" cssClass="required"/>
+					 
 			</div>
 		</div>
 		<div class="control-group" style="display: none;">

@@ -58,7 +58,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC,a.sort
+				ORDER BY a.sort
 			</otherwise>
 		</choose>
 	</select>
@@ -73,7 +73,7 @@
 			AND a.userid = #{userid}		
 			AND a.testid = #{testid}					
 		</where>		
-		ORDER BY a.update_date DESC,a.sort		
+		ORDER BY a.sort		
 	</select>
 	
 	<select id="findAllList" resultType="ZuserTest">
@@ -89,7 +89,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC,a.sort
+				ORDER BY a.sort
 			</otherwise>
 		</choose>
 	</select>
@@ -99,8 +99,14 @@
 			<include refid="zuserTestColumns"/>
 		FROM zuser_test a
 		<include refid="zuserTestJoins"/>
-		<where>
+		<where>			
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="userid != null and userid!= ''">
+				AND a.userid = #{userid}
+			</if>
+			<if test="testid != null and testid != ''">
+				AND a.testid = #{testid}
+			</if>
 			AND sort &gt; #{sort} order by sort LIMIT 1
 		</where>		
 		 

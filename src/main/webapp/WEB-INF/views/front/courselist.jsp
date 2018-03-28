@@ -9,12 +9,18 @@
 		}
 	</style>
 	<link href="${ctxStatic}/jianzhi/css/course.css" rel="stylesheet" />
+	<script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
 			var msg = "${message}";
 			if(msg!='') {
 				layer.msg(msg);
+			}
+
+			var ispay = "${ispay}";
+			if('nopay' == ispay){
+				randomtest();
 			}
 		});
 		
@@ -25,6 +31,8 @@
         	return false;
         }
         function sortclick(id, type){
+        	$("#currentclick").val(id);
+
         	if(type == '1'){
         		$("#classflyone").val(id);
         		$("#classflytwo").val('');
@@ -38,6 +46,38 @@
         		$("#classflythr").val(id);
         	}
         	$("#searchForm").submit();
+        }
+
+
+        function randomtest(){
+            
+
+            // var type = $("#classflythr").val() || $("#classflytwo").val() || $("#classflyone").val();
+            
+            // layer.prompt({
+            //     title: '当前专业为购买，是否购买',
+            // }, function(value, index, elem){      
+            //     console.log(value)
+            //     window.location.href='${ctxF}/gotoquestionRandom?type='+type+'&value='+value;             
+
+            //     layer.close(index);
+            // });
+
+            layer.confirm('当前专业为购买，是否购买', {
+			  	btn: ['确定', '取消'] //可以无限个按钮
+			  	,btn3: function(index, layero){
+			    //按钮【按钮三】的回调
+			  	}
+			}, function(index, layero){
+			  	//按钮【按钮一】的回调 
+			  	var id = '${currentclick}';
+			  	window.location.href='${ctxF}/gotopaycourse?type=2&id='+id;
+
+			}, function(index){
+			  	//按钮【按钮二】的回调
+			
+			});
+                     
         }
 	</script>
 <body>
@@ -96,6 +136,8 @@
 				<input type="hidden" name="classflyone" id="classflyone" value="${classflyone}">
 				<input type="hidden" name="classflytwo" id="classflytwo" value="${classflytwo}">
 				<input type="hidden" name="classflythr" id="classflythr" value="${classflythr}">
+
+				<input type="hidden" name="currentclick" id="currentclick" value="">
 
 	  			<input type="text" placeholder="输入课程名称" name="title" value="${zcourse.title}" />
 	  			<button>搜索</button>

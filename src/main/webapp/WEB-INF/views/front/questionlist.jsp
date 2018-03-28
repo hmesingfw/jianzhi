@@ -18,6 +18,22 @@
       if(msg!='') {
         layer.msg(msg);
       }
+
+
+        var isnottest = '${isnottest}';
+        if('yes'==isnottest){
+            layer.confirm('当前试卷没有测试题，请返回试卷列表重新选择', {
+                btn: ['确定'] //可以无限个按钮
+                ,btn3: function(index, layero){
+                //按钮【按钮三】的回调
+                }
+            }, function(index, layero){
+                //按钮【按钮一】的回调 
+                window.location.href='${ctxF}/questionlist';
+            });
+        }
+        
+
     });
     
     function page(n,s){

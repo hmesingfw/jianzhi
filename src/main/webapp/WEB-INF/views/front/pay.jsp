@@ -10,6 +10,7 @@
 		.Hhide{
 			display: none !important;
 		}
+		 
 	</style>
 <body>
 	<jsp:include page="include/ifie.jsp" />
@@ -26,16 +27,16 @@
 
 
 		<div class="pay1">
-			<label class="pay1-la2">${fns:getCourseSort(zcourse.parentid).name}</label>
-			<label class="pay1-la3">${fns:getCourseSort(zcourse.parentid).validity}(天)</label>
-			<label class="pay1-la4">￥${fns:getCourseSort(zcourse.parentid).price}</label>
+			<label class="pay1-la2">${fns:getCourseSort(id).name}</label>
+			<label class="pay1-la3">${fns:getCourseSort(id).validity}(天)</label>
+			<label class="pay1-la4">￥${fns:getCourseSort(id).price}</label>
 		</div>
 
 		 
   		<form action="${ctxF }/payCourse" id="submitForm" method="post">
-  			<input type="hidden" name="id" value="${zcourse.id}">
-	  		<div style="position: relative;height: 60px;">
-	  			<button style="float: right" class="layui-btn layui-btn-normal">结算</button>
+  			<input type="hidden" name="id" value="${id}">
+	  		<div style="position: relative;height: 60px;line-height: 60px;text-align: center;">
+	  			<button class="layui-btn layui-btn-normal">结算</button>
 	  		</div>
   		</form>
 	</div>

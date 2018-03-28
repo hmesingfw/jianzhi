@@ -58,9 +58,13 @@ public class ZcourseSortUtils {
 	 * 专业是否到期
 	 * date  购买时间
 	 * num 	 专业到期天数
-	 * @return	true 到期     false没到期
+	 * @return	true 没到期     false 到期
 	 */
-	public static boolean isExp(Date date, int num){		
+	public static boolean isExp(Date date, int num){	
+		if(date==null){
+			System.out.println("小于");
+			return false;
+		}
 		try {
 			String pay = plusDay(date, num); //到期时间			
 		
@@ -68,12 +72,12 @@ public class ZcourseSortUtils {
 			Date day=new Date();   					 
 			Date dt1 = df.parse(pay);
 			
-			if(dt1.getTime()>day.getTime()){
-				System.out.println("大于");
-				return true;
-			}else{
+			if(dt1.getTime()<day.getTime()){
 				System.out.println("小于");
 				return false;
+			}else{
+				System.out.println("大于");
+				return true;
 			}
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

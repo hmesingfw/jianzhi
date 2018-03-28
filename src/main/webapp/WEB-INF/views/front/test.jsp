@@ -114,7 +114,7 @@
                                                     <dd class="panel-order">
 
                                                         <c:forEach items="${mytestlist}" var="info" varStatus="list">
-                                                            <a href="javascript:;" onclick="gotoQuestion('${info.id}','${test.id}')" class="page-card-item ${info.isselected == 1 ? 'border' : ''}" >${list.index + 1}</a>
+                                                            <a href="javascript:;" onclick="gotoQuestion('${info.id}','${test.id}')" class="page-card-item ${info.isselected == 1 ? 'border' : ''}" >${info.sort}</a>
                                                         </c:forEach>
                                                     </dd>
                                                 </dl>
@@ -242,6 +242,9 @@
             $("#currentanswer").val(answer);
             $("#myform").submit();
         }
+
+
+        
     </script>
     <jsp:include page="include/footer.jsp" />
 </body>

@@ -22,6 +22,15 @@
 					}
 				}
 			});
+
+			$("#type").on('change',function(){
+				var option = $(this).find('option:selected').val();
+				if(option==2){
+					$('.coursetype').hide();
+				}else{
+					$('.coursetype').show();
+				}
+			})
 		});
 	</script>
 </head>
@@ -50,7 +59,7 @@
 					<form:options items="${fns:getCourseSortList()}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
 				--%>
-				<sys:treeselect id="office" name="parentid" value="${office.id}" labelName="office.name" labelValue="${office.name}"
+				<sys:treeselect id="office" name="parentid" value="${ztest.parentid}" labelName="${fns:getCourseSort(ztest.parentid).name}" labelValue="${fns:getCourseSort(ztest.parentid).name}"
 					title="课程分类" url="/hm/course_sort/zcourseSort/treeData" cssClass="required"/>
 			</div>
 		</div>
@@ -71,14 +80,14 @@
 			</div>
 		</div>
 
-		<div class="control-group">
+		<div class="control-group coursetype">
 			<label class="control-label">题目数量：</label>
 			<div class="controls">
 				<form:input path="sum" htmlEscape="false" maxlength="20" class="input-xlarge "/>
 				<span style="margin-left: 30px;color: red;">试题卷类型为自动时，请输入题目数量</span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group coursetype">
 			<label class="control-label">测试题目类型：</label>
 			<div class="controls"> 
 				<c:forEach items="${fns:getDictList('question_type')}" var="info"> 

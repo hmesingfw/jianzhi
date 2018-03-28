@@ -23,6 +23,10 @@
 	        		$(".user1-img").css("background-size","100% 100%");
 	        	}
         	});
+
+
+        	var code = '${zuser.idcode}';
+        	$("#datetime").val(getBirthdatByIdNo(code));
 		})
 
 		function update(){
@@ -63,6 +67,21 @@
         	}
         	return url ;
     	}
+
+    	function getBirthdatByIdNo(iIdNo) {
+            var tmpStr = "";
+            var strReturn = "";  
+            if (iIdNo.length == 15) {
+                tmpStr = iIdNo.substring(6, 12);
+                tmpStr = "19" + tmpStr;
+                tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6)
+                return tmpStr;
+            }else {
+                tmpStr = iIdNo.substring(6, 14);
+                tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6)
+                return tmpStr;
+            }
+        }
 
 	</script>
 <body>

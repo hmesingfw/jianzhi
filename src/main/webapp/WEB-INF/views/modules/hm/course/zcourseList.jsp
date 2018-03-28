@@ -53,9 +53,9 @@
 			<tr>
 				<th>标题</th>
 				<th style="display: none;">老师名称</th>
-				<th>类型</th>
-				<th>特价</th>
-				<th>价格</th>
+				<!-- <th>类型</th> -->
+				<!-- <th>特价</th> -->
+				<!-- <th>价格</th> -->
 				<th>权重</th>
 				<th>推荐</th>
 				<th>更新时间</th>
@@ -72,6 +72,7 @@
 				<td style="display: none;">
 					${zcourse.teacher}
 				</td>
+				<%--
 				<td>
 					${fns:getDictLabel(zcourse.type, 'course_type', '')}
 				</td>
@@ -81,6 +82,7 @@
 				<td>
 					${zcourse.price}
 				</td>
+				--%>
 				<td>
 					${zcourse.weight}
 				</td>
