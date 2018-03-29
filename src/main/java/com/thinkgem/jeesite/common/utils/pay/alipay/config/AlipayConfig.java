@@ -22,7 +22,7 @@ public class AlipayConfig {
     public static String alipay_public_key="MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyh+2sd+SVbhQ/vnOJKdVTxgXTrm3B+Ru114R+kUITH/t2Om6UF5vqzjqjnAGZH8gpHGDqNP6940BqVGX/5LmZ7PsGkFwxTBocxDQFai4jlBMCEIu78HEB6Ci8tBsiE3uNCbdsqNnkengBlXIhG1NYKL81glLdV4btnMrSyaHQN1uRa2WPfnHwDbOzGBeNLWkqOwrAEuEJYqNcvYn+KqxLBYTNNLQ9FLCmJmbzcdWEMxOLIqnLLKDf3il1KzBJ6DD7a8hTT49mAG2jnRAYjAeKPgk96B7KoacMuB2/vrou8FXdNbwf8T/bqlmLRPt/O+do/QRPq5QgBWaV1kbsN7TaQIDAQAB";
 
 	// 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String notify_url = "http://liaoningjianzhi.cn/f/alipayaNotifyOrder";
+	public static String notify_url = "http://liaoningjianzhi.cn/f/alipayanotify";
 	
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问

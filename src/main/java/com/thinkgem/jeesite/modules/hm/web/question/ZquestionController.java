@@ -194,4 +194,30 @@ public class ZquestionController extends BaseController {
 			 
 		return "redirect:" + adminPath + "/hm/question/zquestion?repage";
     }
+
+
+	
+	
+	
+	/**
+	 * 组卷时选择题目
+	 * @param zquestion
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("hm:question:zquestion:view")
+	@RequestMapping(value = {"quesel"})
+	public String quesel(Zquestion zquestion, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<Zquestion> page = zquestionService.findPage(new Page<Zquestion>(request, response), zquestion); 
+		model.addAttribute("page", page);
+		model.addAttribute("zquestion", zquestion);		
+		return "modules/hm/question/quesel";
+	}
+	
+	
+	
+
+
 }

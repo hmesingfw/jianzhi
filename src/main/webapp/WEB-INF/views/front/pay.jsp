@@ -10,17 +10,28 @@
 		.Hhide{
 			display: none !important;
 		}
-		 
+		.mypay{
+			background: #3c79d1;
+		}
+		.mypay label{
+			color:#fff;
+		}
+		 .page-width11{
+		 	margin: 30px auto;
+		 	box-shadow: 0px 0px 5px #ccc
+		 }
 	</style>
+		}
+		}
 <body>
 	<jsp:include page="include/ifie.jsp" />
 	
 	<jsp:include page="include/header.jsp" />
 
 	<div class="clear blank20"></div>
-    <div class="page-width" style="width: 800px;">
-		<div class="pay1">
-			<label class="pay1-la2">专业名</label>
+    <div class="page-width page-width11" style="width: 800px;">
+		<div class="pay1 mypay">
+			<label class="pay1-la2">专业名1</label>
 			<label class="pay1-la3">有效期</label>
 			<label class="pay1-la4">实付</label>
 		</div>

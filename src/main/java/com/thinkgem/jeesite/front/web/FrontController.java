@@ -479,9 +479,15 @@ public class FrontController {
 			} else {
 				zuserService.save(zuser);
 				request.getSession().setAttribute("sessionMyinfo", zuser);
-				model.addAttribute("msg", "注册成功");
-				model.addAttribute("sessionMyinfo", zuser);
-				return "redirect:myinfo";
+//				model.addAttribute("msg", "注册成功");
+//				model.addAttribute("sessionMyinfo", zuser);
+//				return "redirect:myinfo";
+				
+				
+				
+				//判断是否列表页过来还是详情页     2为列表页面				
+				model.addAttribute("id", zuser.getMajor());				
+				return "front/pay";
 			}
 
 		} catch (Exception e) {
@@ -944,7 +950,7 @@ public class FrontController {
 	 */
 	
 	@ResponseBody
-	@RequestMapping(value = "alipayaNotifyOrder")
+	@RequestMapping(value = "alipayanotify")
 	public String alipayaNotifyOrder(HttpServletRequest request, HttpServletResponse response, Model model) {
 		System.out.println("支付宝回调：----------------------------------");
 		PrintWriter out = null;		

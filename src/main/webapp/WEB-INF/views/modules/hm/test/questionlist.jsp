@@ -41,38 +41,50 @@
 	
 		<input type="hidden" name="testid" value="${testid}">
 		<sys:message content="${message}"/>		
-			
-		<c:forEach items="${questlist}" var="info">
-			<div class="control-group">
-				<label class="control-label">试题标题：</label>
-				<div class="controls"> 
-					<form:select path="id" class="input-medium">
-						<form:option value="${fns:getQuestion(info.question).id}" label="${fns:getQuestion(info.question).title}"/>
-						<form:options items="${fns:getQuestionList()}" itemLabel="title" itemValue="id" htmlEscape="false"/>
-					</form:select>
-					<span class="marginleft20">设定分数：</span>
-					<input type="text" name="fractions" value="${info.fraction}" maxlength="10" class="required digits">
-				</div>
-			</div>
-		</c:forEach>
-		<c:if test="${fn:length(questlist) == 0}">
-			<div class="control-group">
-				<label class="control-label">试题标题：</label>
-				<div class="controls"> 
-					<form:select path="id" class="input-medium">
-						<form:option value="" label=""/>
-						<form:options items="${fns:getQuestionList()}" itemLabel="title" itemValue="id" htmlEscape="false"/>
-					</form:select>
-					<span class="marginleft20">设定分数：</span>
-					<input type="text" name="fractions" value="" maxlength="10" class="required digits">
-				</div>
-			</div>			 
-		</c:if>
+
+
+
+		<table id="contentTable" class="table table-striped table-bordered table-condensed">
+			<thead>
+				<tr>
+					<th>序号</th>
+					<th>试题标题</th>
+					<th>类型</th>
+					<th>默认分数</th>		
+					<th>操作</th>		
+				</tr>
+			</thead>
+			<tbody id="quesContent">
+			<c:forEach items="${questlist}" var="info" varStatus="list">				
+				<tr>
+					<input type="hidden" name="id" value="${info.question}">
+					<input type="hidden" name="queid" value="${info.question}">
+					<td>
+						${list.index+1}
+					</td>
+					<td>
+						${fns:getQuestion(info.question).title}
+					</td>
+					<td>
+						${fns:getDictLabel(fns:getQuestion(info.question).type, 'question_type', '')}  
+					</td>
+					<td >
+ 						<input type="text" name="fractions" value="${info.fraction}" maxlength="10" class="required digits">
+					</td>	
+					<td>
+						<a href="javascript:;" onclick="delQues(this)">删除</a>
+					</td>			
+				</tr>
+			</c:forEach>
+			</tbody>
+		</table>	
+
+
 		<div id="addaddress">
 			
 		</div>
 		<div class="form-actions">
-			<input onclick="addtest()" class="btn btn-primary" type="button" value="添加题目"/>&nbsp;
+			<input onclick="selQues()" class="btn btn-primary" type="button" value="添加题目"/>&nbsp;
 			<shiro:hasPermission name="hm:test:ztest:edit">
 				<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;
 			</shiro:hasPermission>
@@ -80,21 +92,71 @@
 		</div>
 
 		<script type="text/javascript">
-			function addtest(){
-				var str = '';
-				str += '<div class="control-group">';
-				str += '	<label class="control-label">试题标题：</label>';
-				str += '	<div class="controls"> ';
-				str += '		<form:select path="id" class="input-medium">';
-				str += '			<form:option value="" label=""/>';
-				str += '			<form:options items="${fns:getQuestionList()}" itemLabel="title" itemValue="id" htmlEscape="false"/>';
-				str += '		</form:select>';
-				str += '		<span class="marginleft20">设定分数：</span>';
-				str += '		<input type="text" name="fractions" value="" maxlength="10" class="required digits">';
-				str += '	</div>';
-				str += '</div>	';
-				$("#addaddress").append(str);
-			}
+
+			function selQues() {
+	            var url = "${ctx}/hm/question/zquestion/quesel";
+	            windowOpen(url, "选择试题", 1024, 700);
+	        }
+
+
+
+	        
+
+	        // 删除试题信息
+	        function delQues(e) {
+	            $(e).parent().parent().remove();
+	            // seq('1');
+	            // var score = 0;
+	            // $("input[name='sco']").each(function () {
+	            //     score += parseFloat($(this).val());
+	            // })
+	            // $("#score").val(score);
+	        }
+			
+			function addQue(ids, title, type, score) {
+            // 1. 判断试题是否已经存在
+	            var idArr = ids.split("~");
+	            var tiArr = title.split("~");
+	            var type = type.split("~");
+	            var sc = score.split("~");
+
+	            var idlist = '';
+	            $("input[name='queid']").each(function () {
+	            	idlist += $(this).val()+"~!";
+	            })
+	            console.log(idlist)
+	            var len = $("input[name='queid']").length;
+ 				 
+	            for (var i in idArr) {
+	            	console.log(idlist.indexOf(idArr[i]))
+	            	if(idlist=='' || idlist.indexOf(idArr[i]) == -1){
+	            		len++;
+
+	            		var str = '<tr>';
+	            		str += '<input type="hidden" name="id" value="'+idArr[i]+'">';
+	            		str += '<td>'+len+'</td>';
+	            		str += '<td>'+tiArr[i]+'</td>';
+	            		str += '<td>'+type[i]+'</td>';
+	            		str += '<td ><input type="text" name="fractions" value="'+sc[i]+'" maxlength="10" class="required digits"></td>';
+	            		str += '<td><a href="javascript:;" onclick="delQues(this)">删除</a></td>';
+	            		str += '</tr>';
+	            		$('#quesContent').append(str);
+	            	}	             
+	                // if (!ist) {
+	                //     // 添加试题
+	                //     quesCount = parseInt(quesCount) + 1;
+	                //     var va = type[i].split("_");
+	                //     var inserthtml = '<tr><td>' + quesCount + '</td>' +
+	                //         '<td>' + va[1] + '</td>' +
+	                //         '<td>' + tiArr[i] + '</td>' +
+	                //         '<td>' + sc[i] + '</td><input type="hidden" name="sco" value="' + sc[i] + '"/>' +
+	                //         '<td><a href="javascript:void(0)" onclick="delQues(this)">删除</a>' +
+	                //         '<input type="hidden" id="quesType_' + quesCount + '" name="quesType_' + quesCount + '" value="' + va[0] + '"/>' +
+	                //         '<input type="hidden" id="quesId_' + quesCount + '" name="queIds" value="' + idArr[i] + '"/></td></tr>'
+	                //     $('#quesContent').append(inserthtml);
+	                // }
+	            }	             
+	        }
 		</script>
 	</form:form>
 </body>

@@ -3,7 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.hm.web.user;
 
-import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +26,11 @@ import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
+import com.thinkgem.jeesite.modules.hm.entity.order.ZcourseOrder;
 import com.thinkgem.jeesite.modules.hm.entity.user.Zuser;
+import com.thinkgem.jeesite.modules.hm.service.course_sort.ZcourseSortService;
+import com.thinkgem.jeesite.modules.hm.service.order.ZcourseOrderService;
 import com.thinkgem.jeesite.modules.hm.service.user.ZuserService;
 import com.thinkgem.jeesite.modules.hm.utils.ZuserUtils;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
@@ -45,6 +49,10 @@ public class ZuserController extends BaseController {
 	private ZuserService zuserService;
 	@Autowired
 	private DictService dictService;  
+	@Autowired
+	private ZcourseSortService zcourseSortService;  
+	@Autowired
+	private ZcourseOrderService zcourseOrderService;  
 	
 	@ModelAttribute
 	public Zuser get(@RequestParam(required=false) String id) {
@@ -86,6 +94,24 @@ public class ZuserController extends BaseController {
 			return form(zuser, model);
 		}
 		zuserService.save(zuser);
+		ZcourseSort sort = zcourseSortService.get(zuser.getMajor());
+		
+		
+		//为当时用户加上专业
+		ZcourseOrder order = new ZcourseOrder();
+		order.setUserid(zuser.getId());
+		order.setPaystatus("4");
+		order.setCourseid(zuser.getMajor());
+		order.setPaytime(new Date());
+		order.setExptime(sort.getValidity());
+		List<ZcourseOrder> orderlist = zcourseOrderService.findList(order);
+		if (orderlist != null && orderlist.size() > 0) {
+		} else {
+			zcourseOrderService.save(order);
+		}
+		
+		
+		
 		addMessage(redirectAttributes, "保存用户信息成功");
 		return "redirect:"+Global.getAdminPath()+"/hm/user/zuser/?repage";
 	}

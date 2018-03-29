@@ -154,10 +154,11 @@ public class ZtestController extends BaseController {
 	@RequiresPermissions("hm:test:ztest:edit")
 	@RequestMapping(value = "questlistsave")
 	public String questlistsave(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
-		String ids[] = request.getParameterValues("id");		
+		String ids[] = request.getParameterValues("id");	
+		
 		String fractions[] = request.getParameterValues("fractions");
 		String testid = request.getParameter("testid");
-		
+		 
 		int frac = 0;	//总分数
 		
 		ZtestQuestion question = new ZtestQuestion();
@@ -165,6 +166,7 @@ public class ZtestController extends BaseController {
 		ztestQuestionService.deleteTestid(question);	//删除试题卷中的题目
 		if(ids!=null && ids.length>0){
 			for (int i = 0; i < ids.length; i++) {
+				
 				question = new ZtestQuestion();
 				question.setTestid(testid);	
 				question.setQuestion(ids[i]);
