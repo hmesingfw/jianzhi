@@ -31,6 +31,7 @@ import com.thinkgem.jeesite.modules.hm.service.test_question.ZtestQuestionServic
 
 /**
  * 试卷管理Controller
+ * 
  * @author hm
  * @version 2018-03-14
  */
@@ -44,23 +45,23 @@ public class ZtestController extends BaseController {
 	private ZtestQuestionService ztestQuestionService;
 	@Autowired
 	private ZquestionService zquestionService;
-	
+
 	@ModelAttribute
-	public Ztest get(@RequestParam(required=false) String id) {
+	public Ztest get(@RequestParam(required = false) String id) {
 		Ztest entity = null;
-		if (StringUtils.isNotBlank(id)){
+		if (StringUtils.isNotBlank(id)) {
 			entity = ztestService.get(id);
 		}
-		if (entity == null){
+		if (entity == null) {
 			entity = new Ztest();
 		}
 		return entity;
 	}
-	
+
 	@RequiresPermissions("hm:test:ztest:view")
-	@RequestMapping(value = {"list", ""})
+	@RequestMapping(value = { "list", "" })
 	public String list(Ztest ztest, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<Ztest> page = ztestService.findPage(new Page<Ztest>(request, response), ztest); 
+		Page<Ztest> page = ztestService.findPage(new Page<Ztest>(request, response), ztest);
 		model.addAttribute("page", page);
 		return "modules/hm/test/ztestList";
 	}
@@ -74,71 +75,92 @@ public class ZtestController extends BaseController {
 
 	@RequiresPermissions("hm:test:ztest:edit")
 	@RequestMapping(value = "save")
-	public String save(Ztest ztest, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, ztest)){
+	public String save(Ztest ztest, Model model, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, ztest)) {
 			return form(ztest, model);
 		}
-		 
-		System.out.println(ztest.getTesttype());
+
+		String[] typevals = request.getParameterValues("typeval");
 		ztestService.save(ztest);
-		
-		//自动组卷
-		if("1".equals(ztest.getType())){
-			
-			int limit = StringUtils.isNumeric(ztest.getSum()) ? Integer.parseInt(ztest.getSum()) : 1;
-			Zquestion ztion = new Zquestion();
-			List<String> sortlist = new ArrayList<>();
-			if(ztest.getTesttype()!=null && !"".equals(ztest.getTesttype())){
-				String[] types = ztest.getTesttype().split(",");
-				for (String string : types) {
-					if(StringUtils.isNotBlank(string)){
-						sortlist.add(string);
-					}
-				}
-				ztion.setSortlist(sortlist);				
-			}			
-			ztion.setLimit(limit);
-			ztion.setDelFlag("0");
-			List<Zquestion> questionlist = zquestionService.findRandList(ztion);		//获取随机题目列表
-			
-			if(questionlist!=null && questionlist.size()>0){
-				int frac = 0;	//总分数				
-				ZtestQuestion question = new ZtestQuestion();
-				question.setTestid(ztest.getId());	
-				for (int i = 0; i < questionlist.size(); i++) {
-					Zquestion zques = questionlist.get(i);
-					//添加试题
-					question = new ZtestQuestion();
-					question.setTestid(ztest.getId());	
-					question.setQuestion(zques.getId());
-					question.setFraction(zques.getDefaultFraction());
-					ztestQuestionService.save(question);
-					
-					if(StringUtils.isNumeric(zques.getDefaultFraction())){
-						frac += Integer.parseInt(zques.getDefaultFraction());
-					}
-				}
+
+		// 自动组卷
+		if ("1".equals(ztest.getType())) {
+			// 每个类型的题目数量
+			if (ztest.getTesttype() != null && !"".equals(ztest.getTesttype())) {
+				List<Zquestion> questionlist = new ArrayList<>();		//根据题目数量，随机匹配的总列表
 				
-				//更新总分数			
-				ztest.setFraction(frac+"");
-				ztestService.save(ztest);
+				String[] types = ztest.getTesttype().split(",");
+
+				for (int i = 0; i < types.length; i++) {
+					if (StringUtils.isNotBlank(types[i])) {
+						Zquestion ztion = new Zquestion();
+						ztion.setDelFlag("0");
+						ztion.setType(types[i]);
+						int limit = typevals.length > i && StringUtils.isNotBlank(typevals[i])? Integer.parseInt(typevals[i]) : 0;
+						ztion.setLimit(limit);
+						System.out.println(types[i]+"______________________________________"+limit);
+						List<Zquestion> questionlists = zquestionService.findRandList(ztion);
+						for (Zquestion zquestion : questionlists) {
+							questionlist.add(zquestion);
+						}
+					}
+				}
+				 // 获取随机题目列表		
+				if (questionlist != null && questionlist.size() > 0) {
+					int frac = 0; // 总分数					 
+					ZtestQuestion question = new ZtestQuestion();
+					question.setTestid(ztest.getId());
+					for (int i = 0; i < questionlist.size(); i++) {
+						Zquestion zques = questionlist.get(i);
+						// 添加试题
+						question = new ZtestQuestion();
+						question.setTestid(ztest.getId());
+						question.setQuestion(zques.getId());
+						question.setFraction(zques.getDefaultFraction());
+						ztestQuestionService.save(question);
+
+						if (StringUtils.isNumeric(zques.getDefaultFraction())) {
+							frac += Integer.parseInt(zques.getDefaultFraction());
+						}
+					}
+					// 更新总分数
+					ztest.setFraction(frac + "");
+					//更新总题目数量
+					ztest.setSum(questionlist.size()+"");
+					ztestService.save(ztest);
+				}
 			}
+			
+//			int limit = StringUtils.isNumeric(ztest.getSum()) ? Integer.parseInt(ztest.getSum()) : 1;
+//			Zquestion ztion = new Zquestion();
+//			List<String> sortlist = new ArrayList<>();
+//			if (ztest.getTesttype() != null && !"".equals(ztest.getTesttype())) {
+//				String[] types = ztest.getTesttype().split(",");
+//				for (String string : types) {
+//					if (StringUtils.isNotBlank(string)) {
+//						sortlist.add(string);
+//					}
+//				}
+//				ztion.setSortlist(sortlist);
+//			}
+//			ztion.setLimit(limit);
+//			ztion.setDelFlag("0");
+//			List<Zquestion> questionlist = zquestionService.findRandList(ztion); // 获取随机题目列表
+			
 		}
-	
+		
 		addMessage(redirectAttributes, "保存试卷成功");
-		return "redirect:"+Global.getAdminPath()+"/hm/test/ztest/?repage";
+		return "redirect:" + Global.getAdminPath() + "/hm/test/ztest/?repage";
 	}
-	
+
 	@RequiresPermissions("hm:test:ztest:edit")
 	@RequestMapping(value = "delete")
 	public String delete(Ztest ztest, RedirectAttributes redirectAttributes) {
 		ztestService.delete(ztest);
 		addMessage(redirectAttributes, "删除试卷成功");
-		return "redirect:"+Global.getAdminPath()+"/hm/test/ztest/?repage";
+		return "redirect:" + Global.getAdminPath() + "/hm/test/ztest/?repage";
 	}
 
-	
-	
 	@RequiresPermissions("hm:test:ztest:edit")
 	@RequestMapping(value = "questionlist")
 	public String questionlist(String id, RedirectAttributes redirectAttributes, Model model) {
@@ -153,40 +175,40 @@ public class ZtestController extends BaseController {
 
 	@RequiresPermissions("hm:test:ztest:edit")
 	@RequestMapping(value = "questlistsave")
-	public String questlistsave(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes, Model model) {
-		String ids[] = request.getParameterValues("id");	
-		
+	public String questlistsave(HttpServletRequest request, HttpServletResponse response,
+			RedirectAttributes redirectAttributes, Model model) {
+		String ids[] = request.getParameterValues("id");
+
 		String fractions[] = request.getParameterValues("fractions");
 		String testid = request.getParameter("testid");
-		 
-		int frac = 0;	//总分数
-		
+
+		int frac = 0; // 总分数
+
 		ZtestQuestion question = new ZtestQuestion();
-		question.setTestid(testid);	
-		ztestQuestionService.deleteTestid(question);	//删除试题卷中的题目
-		if(ids!=null && ids.length>0){
+		question.setTestid(testid);
+		ztestQuestionService.deleteTestid(question); // 删除试题卷中的题目
+		if (ids != null && ids.length > 0) {
 			for (int i = 0; i < ids.length; i++) {
-				
+
 				question = new ZtestQuestion();
-				question.setTestid(testid);	
+				question.setTestid(testid);
 				question.setQuestion(ids[i]);
 				question.setFraction(fractions[i]);
 				ztestQuestionService.save(question);
-				
-				if(StringUtils.isNumeric(fractions[i])){
+
+				if (StringUtils.isNumeric(fractions[i])) {
 					frac += Integer.parseInt(fractions[i]);
 				}
 			}
-		}			
-		
-		//更新总分数
+		}
+
+		// 更新总分数
 		Ztest test = ztestService.get(testid);
-		test.setFraction(frac+"");
+		test.setFraction(frac + "");
 		ztestService.save(test);
-		
+
 		addMessage(redirectAttributes, "保存题目成功");
-		return "redirect:"+Global.getAdminPath()+"/hm/test/ztest/?repage";
+		return "redirect:" + Global.getAdminPath() + "/hm/test/ztest/?repage";
 	}
-	
-	
+
 }

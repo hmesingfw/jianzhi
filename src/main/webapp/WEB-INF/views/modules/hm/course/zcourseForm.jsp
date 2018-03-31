@@ -64,7 +64,7 @@
 					<form:options items="${fns:getCourseSortList()}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
 				--%>
-				<sys:treeselect id="office" name="parentid" value="${office.id}" labelName="office.name" labelValue="${office.name}"
+				<sys:treeselect id="office" name="parentid" value="${zcourse.parentid}" labelName="${fns:getCourseSort(zcourse.parentid).name}" labelValue="${fns:getCourseSort(zcourse.parentid).name}"
 					title="课程分类" url="/hm/course_sort/zcourseSort/treeData" cssClass="required"/>
 			</div>
 		</div>

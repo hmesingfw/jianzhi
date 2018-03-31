@@ -101,6 +101,14 @@ public class ZuserController extends BaseController {
 		ZcourseOrder order = new ZcourseOrder();
 		order.setUserid(zuser.getId());
 		order.setPaystatus("4");
+		
+		//取消以前分配的内部专业
+		List<ZcourseOrder> status4list = zcourseOrderService.findList(order);
+		for (ZcourseOrder zcourseOrder : status4list) {
+			zcourseOrder.setPaystatus("1");
+			zcourseOrderService.save(zcourseOrder);
+		}
+		
 		order.setCourseid(zuser.getMajor());
 		order.setPaytime(new Date());
 		order.setExptime(sort.getValidity());

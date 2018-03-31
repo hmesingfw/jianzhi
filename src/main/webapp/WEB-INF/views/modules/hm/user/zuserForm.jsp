@@ -61,10 +61,14 @@
 		<div class="control-group">
 			<label class="control-label">专业：</label>
 			<div class="controls">  
+				<sys:treeselect id="office" name="major" value="${zuser.major}" labelName="${fns:getCourseSort(zuser.major).name}" labelValue="${fns:getCourseSort(zuser.major).name}"
+					title="课程分类" url="/hm/course_sort/zcourseSort/treeData" cssClass="required"/>
+					<%--
 				<form:select path="major" class="input-xlarge required">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getCourseSortList()}" itemLabel="name" itemValue="id" htmlEscape="false"/>
 				</form:select>
+				--%>
 			</div>
 		</div>
 		<div class="control-group">

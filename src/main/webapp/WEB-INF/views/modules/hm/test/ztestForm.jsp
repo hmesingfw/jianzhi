@@ -80,7 +80,7 @@
 			</div>
 		</div>
 
-		<div class="control-group coursetype">
+		<div class="control-group" style="display: none;">
 			<label class="control-label">题目数量：</label>
 			<div class="controls">
 				<form:input path="sum" htmlEscape="false" maxlength="20" class="input-xlarge "/>
@@ -92,6 +92,7 @@
 			<div class="controls"> 
 				<c:forEach items="${fns:getDictList('question_type')}" var="info"> 
 					<input type="checkbox" name="testtype" value="${info.value}"  ${fn:indexOf(ztest.testtype, info.value) != -1? 'checked':''  }    >${info.label}
+					<input type="text" name="typeval" placeholder="题目数量" class="required digits" maxlength="20" style="margin-left: 20px;"><br>
 				</c:forEach>
 				 
 				<span style="margin-left: 30px;color: red;">试题卷类型为自动时，请选择题目类型，不勾选时，默认为全选</span>
