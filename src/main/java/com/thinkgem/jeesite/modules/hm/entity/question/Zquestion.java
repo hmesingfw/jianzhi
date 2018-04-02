@@ -32,6 +32,23 @@ public class Zquestion extends DataEntity<Zquestion> {
 	private int limit;			//随机数
 	private List<ZquestionAnswer> ZquestionAnswer;
 	
+	
+	
+	//导入题目时的答案选项
+	private String answer1;	
+	private String answer2;	
+	private String answer3;	
+	private String answer4;	
+	private String answer5;	
+	private String answer6;	
+	private String answer7;	
+	private String answer8;	
+	private String answer9;	
+	private String answer10;	
+	private String answer11;	
+	private String answer12;	
+	
+	
 	private List<String> sortlist;	//前台点击分类
 	
 	public Zquestion() {
@@ -138,6 +155,120 @@ public class Zquestion extends DataEntity<Zquestion> {
 	public void setIsCorrect(String isCorrect) {
 		this.isCorrect = isCorrect;
 	}
+
+	
+	@ExcelField(title="选项1", align=2, sort=80)
+	public String getAnswer1() {
+		return answer1;
+	}
+
+	public void setAnswer1(String answer1) {
+		this.answer1 = answer1;
+	}
+
+	
+	@ExcelField(title="选项2", align=2, sort=90)
+	public String getAnswer2() {
+		return answer2;
+	}
+
+	public void setAnswer2(String answer2) {
+		this.answer2 = answer2;
+	}
+
+	@ExcelField(title="选项3", align=2, sort=100)
+	public String getAnswer3() {
+		return answer3;
+	}
+
+	public void setAnswer3(String answer3) {
+		this.answer3 = answer3;
+	}
+	
+	@ExcelField(title="选项4", align=2, sort=110)
+	public String getAnswer4() {
+		return answer4;
+	}
+
+	public void setAnswer4(String answer4) {
+		this.answer4 = answer4;
+	}
+
+	@ExcelField(title="选项5", align=2, sort=120)
+	public String getAnswer5() {
+		return answer5;
+	}
+
+	public void setAnswer5(String answer5) {
+		this.answer5 = answer5;
+	}
+
+	@ExcelField(title="选项6", align=2, sort=130)
+	public String getAnswer6() {
+		return answer6;
+	}
+
+	public void setAnswer6(String answer6) {
+		this.answer6 = answer6;
+	}
+
+	@ExcelField(title="选项7", align=2, sort=140)
+	public String getAnswer7() {
+		return answer7;
+	}
+
+	public void setAnswer7(String answer7) {
+		this.answer7 = answer7;
+	}
+
+	@ExcelField(title="选项8", align=2, sort=150)
+	public String getAnswer8() {
+		return answer8;
+	}
+
+	public void setAnswer8(String answer8) {
+		this.answer8 = answer8;
+	}
+
+	@ExcelField(title="选项9", align=2, sort=160)
+	public String getAnswer9() {
+		return answer9;
+	}
+
+	public void setAnswer9(String answer9) {
+		this.answer9 = answer9;
+	}
+
+	@ExcelField(title="选项10", align=2, sort=170)
+	public String getAnswer10() {
+		return answer10;
+	}
+
+	public void setAnswer10(String answer10) {
+		this.answer10 = answer10;
+	}
+
+	@ExcelField(title="选项11", align=2, sort=180)
+	public String getAnswer11() {
+		return answer11;
+	}
+
+	public void setAnswer11(String answer11) {
+		this.answer11 = answer11;
+	}
+
+	@ExcelField(title="选项12", align=2, sort=190)
+	public String getAnswer12() {
+		return answer12;
+	}
+
+	public void setAnswer12(String answer12) {
+		this.answer12 = answer12;
+	}
+	
+	
+	
+	
 	
 	
 	

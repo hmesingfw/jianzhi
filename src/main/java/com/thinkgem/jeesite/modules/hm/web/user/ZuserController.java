@@ -112,8 +112,12 @@ public class ZuserController extends BaseController {
 		order.setCourseid(zuser.getMajor());
 		order.setPaytime(new Date());
 		order.setExptime(sort.getValidity());
-		List<ZcourseOrder> orderlist = zcourseOrderService.findList(order);
+		
+		List<ZcourseOrder> orderlist = zcourseOrderService.findMyorderByid(order);
 		if (orderlist != null && orderlist.size() > 0) {
+			ZcourseOrder zorder = orderlist.get(0);
+			order.setId(zorder.getId());
+			zcourseOrderService.save(order);
 		} else {
 			zcourseOrderService.save(order);
 		}

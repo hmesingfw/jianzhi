@@ -16,13 +16,12 @@
 		.mypay label{
 			color:#fff;
 		}
-		 .page-width11{
+		.page-width11{
 		 	margin: 30px auto;
 		 	box-shadow: 0px 0px 5px #ccc
-		 }
-	</style>
 		}
-		}
+	</style>	
+		
 <body>
 	<jsp:include page="include/ifie.jsp" />
 	

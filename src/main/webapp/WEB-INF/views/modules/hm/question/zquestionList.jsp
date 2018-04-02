@@ -19,6 +19,39 @@
 				$.jBox($("#importBox").html(), {title:"导入数据", buttons:{"关闭":true}, 
 					bottomText:"导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"});
 			});
+
+
+			$("#all").on("click",function(){	
+				var b = $(this).attr("checked");
+		      	if(b){
+		        	// checkboxAll("ids");
+		        	$("input[name='ids']").attr("checked","true");
+		     	}else{
+			        // clearSelect("ids"); 
+			        $("input[name='ids']").removeAttr("checked");
+		      	}
+		   	});
+
+
+		   	$("#alldelete").click(function(){
+		   		layer.confirm('确认要删除该试题吗？', {
+				  	btn: ['确定', '取消'] //可以无限个按钮
+				  	,btn3: function(index, layero){
+				    //按钮【按钮三】的回调
+				  	}
+				}, function(index, layero){
+				  //按钮【按钮一】的回调
+				  	var ids = "";
+				 	$("input[name='ids']:checked").each(function () {
+						ids += $(this).val()+"~";
+					});
+					console.log(ids)
+					$("#deleteValue").val(ids);
+					$("#deleteform").submit();
+				});
+
+		   		    		 	
+			});
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -27,8 +60,14 @@
         	return false;
         }
 	</script>
+	<script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
 </head>
 <body>
+	<form action="${ctx}/hm/question/zquestion/deleteAll" id="deleteform" method="post" style="display: none;">
+		<input type="text" name="deleteValue" id="deleteValue" value="">
+	</form>
+
+
 	<div id="importBox" class="hide">
 		<form id="importForm" action="${ctx}/hm/question/zquestion/import" method="post" enctype="multipart/form-data"
 			class="form-search" style="padding-left:20px;text-align:center;" onsubmit="loading('正在导入，请稍等...');"><br/>
@@ -46,6 +85,8 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+			<li><input id="alldelete" class="btn btn-primary" type="button" value="批量删除" /></li> </li>
+
 			<li><label>标题：</label>
 				<form:input path="title" htmlEscape="false" maxlength="3000" class="input-medium"/>
 			</li>
@@ -57,7 +98,7 @@
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
 				<!-- <input id="btnExport" class="btn btn-primary" type="button" value="导出"/> -->
-				<input id="btnImport" class="btn btn-primary" type="button" value="导入"/></li>
+				<input id="btnImport" class="btn btn-primary" type="button" value="导入"/></li> 
 
 			<li class="clearfix"></li>
 		</ul>
@@ -66,6 +107,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th><input type="checkbox" name="all" id="all"/></th>
 				<th>标题</th>
 				<th>类型</th>
 				<th>试题解析</th>
@@ -77,9 +119,12 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="zquestion">
 			<tr>
-				<td><a href="${ctx}/hm/question/zquestion/form?id=${zquestion.id}">
-					${zquestion.title}
-				</a></td>
+				<td><input type="checkbox" name="ids" value="${zquestion.id }" /></td>
+				<td>
+					<a href="${ctx}/hm/question/zquestion/form?id=${zquestion.id}">
+						${zquestion.title}
+					</a>
+				</td>
 				<td>
 					${fns:getDictLabel(zquestion.type, 'question_type', '')}
 				</td>
@@ -94,7 +139,7 @@
 				</td>
 				<shiro:hasPermission name="hm:question:zquestion:edit"><td>
     				<a href="${ctx}/hm/question/zquestion/form?id=${zquestion.id}">修改</a>
-					<a href="${ctx}/hm/question/zquestion/delete?id=${zquestion.id}" onclick="return confirmx('确认要删除该试题管理吗？', this.href)">删除</a>
+					<a href="${ctx}/hm/question/zquestion/delete?id=${zquestion.id}" onclick="return confirmx('确认要删除该试题吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

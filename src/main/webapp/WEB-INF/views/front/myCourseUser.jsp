@@ -19,6 +19,7 @@
         	return false;
         }
 	</script>
+	<link href="${ctxStatic}/jianzhi/layui/css/layui.css" rel="stylesheet">
 <body>
 	<jsp:include page="include/ifie.jsp" />
 	
@@ -59,7 +60,10 @@
 										<label>已学习${fns:getCourseSchedule(info.usertime, info.coursetime)}%</label>
 									</div>
 								</div>
-								<a href="" class="usercuo">×</a>
+								<!-- <a href="" class="usercuo">×</a> -->
+								<a href="${ctxF}/coursedetail?id=${info.courseid}&parentid=${fns:getCourse(info.courseid).parentid}"  target="_blank" class="usercuo" style="margin-top: 22px;">
+									<button class="layui-btn layui-btn-normal" type="button">观看</button>
+								</a>
 							</li>
 						</c:forEach>	
 					</ul>

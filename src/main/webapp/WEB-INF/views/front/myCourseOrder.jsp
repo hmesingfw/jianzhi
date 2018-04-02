@@ -58,14 +58,12 @@
 										购买状态：${fns:getDictLabel(info.paystatus, 'pay_status', '')}
 									</div>
 								</div>
-								<!-- ×</a> -->
-								<%--
-								<c:if test="${info.paystatus == 2 || info.paystatus==4}">
-									<a href="" class="usercuo">
-										<button class="layui-btn layui-btn-normal" type="button" onclick="window.location.href='${ctxF}/gotolookcourse?id=${info.id}'">观看</button>
-									</a>
+								<c:if test="${info.paystatus == 1}">
+									<a href="${ctxF}/gotopaycourse?type=2&id=${info.courseid}" class="usercuo" style="margin-top: 22px;">
+										<button class="layui-btn layui-btn-normal" type="button">购买</button>
+									</a>								
 								</c:if>
-								--%>
+							
 							</li>
 						</c:forEach>	
 					</ul>

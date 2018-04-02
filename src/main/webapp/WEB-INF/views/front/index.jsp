@@ -110,10 +110,12 @@
 	<jsp:include page="include/footer.jsp" /> 
 
     <aside class="aside-operate">
-    	<ul>    		 
+    	<ul> 
+    		<!-- <li><span>手机<br />app</span><i class="edufont e-icon-phone"></i><div class="code-box"><em></em><img src="img/wechat-code.png" /><p>下载移动app</p></div></li> -->
+    		<li onclick="window.location.href='http://wpa.qq.com/msgrd?v=3&amp;uin=800022936&amp;site=qq&amp;menu=yes'"><span>QQ<br />咨询</span><i class="edufont e-icon-wechat"></i></li>
     		<li onclick="goTop()"><span>返回<br />头部</span><i class="edufont e-icon-top"></i></li>
     	</ul>
-    </aside>  
+    </aside>   
 
 
 
@@ -127,17 +129,15 @@
 
 //轮播图
 $('#carousel').carousel({
-	  object:'li',
-	  scrollType:'slide',
-	  width:'100%',
-	  height:'500',
-	  arrow:true,
-	  autoPlay:true,
-	  dots:1,
-	  speed:400,
-	  interval:4000,
-	  
-
+	object:'li',
+	scrollType:'slide',
+	width:'100%',
+	height:'500',
+	arrow:true,
+	autoPlay:true,
+	dots:1,
+	speed:400,
+	interval:4000
 });
 //懒加载
 imgLoad('m-img','/tp/PC/skin055/images/common/none.png');

@@ -646,6 +646,37 @@ public class FrontController {
 			model.addAttribute("msg", "请登陆.");
 			return "front/login";
 		}
+		ZcourseOrder order = new ZcourseOrder();
+		order.setUserid(user.getId());
+		order.setDelFlag("0");
+//		order.setPaystatus("2");
+		List<ZcourseOrder> status4list = zcourseOrderService.findList(order);
+		//添加课程学习记录
+		for (ZcourseOrder zcourseOrder : status4list) {
+			if("2".equals(zcourseOrder.getPaystatus()) || "4".equals(zcourseOrder.getPaystatus())){
+				
+				Zcourse zcourse = new Zcourse();
+				zcourse.setParentid(zcourseOrder.getCourseid());
+				zcourse.setDelFlag("0");
+				List<Zcourse> courselist = zcourseService.findList(zcourse);			//当前专业的课程
+				
+				for (Zcourse zcourse2 : courselist) {
+					// 课程观看时间记录
+					ZcourseUser zcourseUser = new ZcourseUser();
+					zcourseUser.setUserid(user.getId());
+					zcourseUser.setCourseid(zcourse2.getId());
+					zcourseUser.setDelFlag("0");
+					zcourseUser.setUsertime("0");
+					List<ZcourseUser> culist = zcourseUserService.findList(zcourseUser);
+					if (culist != null && culist.size() > 0) {
+					} else {
+						zcourseUserService.save(zcourseUser);
+					}
+				}				
+			}
+		}
+		
+		
 		ZcourseUser courseuser = new ZcourseUser();
 		courseuser.setUserid(user.getId());
 		courseuser.setDelFlag("0");
@@ -694,17 +725,22 @@ public class FrontController {
 				if (ZcourseSortUtils.isExp(zcourseOrder.getPaytime(), daynum)) {			
 					if ("4".equals(zcourseOrder.getPaystatus())) { // 是否是内部用户的专业
 						model.addAttribute("ispay", "yespay");
+						System.out.println("_____________________________________1");
 						// 是否支付成功
 					} else if ("2".equals(zcourseOrder.getPaystatus())) {
 						model.addAttribute("ispay", "yespay");
+						System.out.println("_____________________________________2");
 					} else {
 						model.addAttribute("ispay", "nopay");
+						System.out.println("_____________________________________3");
 					}
 				} else {
 					model.addAttribute("ispay", "nopay");
+					System.out.println("_____________________________________4");
 				}
 			} else {
 				model.addAttribute("ispay", "nopay");
+				System.out.println("_____________________________________5");
 			}
 		}
 		model.addAttribute("currentclick", currentclick);
@@ -791,7 +827,6 @@ public class FrontController {
 			model.addAttribute("msg", "请登陆.");
 			return "front/login";
 		}
-
 		zcourse = zcourseService.get(zcourse.getId());
 		// 当前专业是否购买
 		ZcourseOrder zcourseOrder = new ZcourseOrder();
