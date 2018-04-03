@@ -74,7 +74,7 @@
 				--%>
 			</div>
 
-			<sys:treeselect id="office" name="parentid" value="${office.id}" labelName="office.name" labelValue="${office.name}"
+			<sys:treeselect id="office" name="parentid" value="${zquestion.parentid}" labelName="${fns:getCourseSort(zquestion.parentid).name}" labelValue="${fns:getCourseSort(zquestion.parentid).name}"
 					title="课程分类" url="/hm/course_sort/zcourseSort/treeData" cssClass="required"/>
 
 			

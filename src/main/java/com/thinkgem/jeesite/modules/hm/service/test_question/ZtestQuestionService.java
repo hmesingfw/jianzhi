@@ -52,4 +52,10 @@ public class ZtestQuestionService extends CrudService<ZtestQuestionDao, ZtestQue
 	public void deleteTestid(ZtestQuestion ztestQuestion){
 		ztestQuestionDao.deleteTestid(ztestQuestion);
 	}
+	
+	
+	public List<ZtestQuestion> findListLeftquestion(ZtestQuestion ztestQuestion){
+		return ztestQuestionDao.findListLeftquestion(ztestQuestion);
+	}
+	
 }

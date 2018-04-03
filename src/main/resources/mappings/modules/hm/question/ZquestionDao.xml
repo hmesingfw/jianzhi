@@ -44,6 +44,11 @@
 			<if test="type != null and type != ''">
 				AND a.type = #{type}
 			</if>
+			<if test="parentid != null and parentid != ''">
+				AND a.parentid = #{parentid}
+			</if>
+			
+			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

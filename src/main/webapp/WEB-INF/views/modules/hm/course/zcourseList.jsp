@@ -58,6 +58,7 @@
 				<!-- <th>价格</th> -->
 				<th>权重</th>
 				<th>推荐</th>
+				<th>课程管理</th>
 				<th>更新时间</th>
 				<th>备注</th>
 				<shiro:hasPermission name="hm:course:zcourse:edit"><th>操作</th></shiro:hasPermission>
@@ -94,6 +95,11 @@
 				<td>
 					<fmt:formatDate value="${zcourse.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
+				<shiro:hasPermission name="hm:course:zcourse:edit">
+					<td>
+						<a href="${ctx}/hm/coursehour/zcourseHour?courseid=${zcourse.id}">课程列表</a>
+					</td>
+				</shiro:hasPermission>
 				<td>
 					${zcourse.remarks}
 				</td>

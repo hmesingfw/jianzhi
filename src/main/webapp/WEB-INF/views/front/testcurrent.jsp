@@ -65,9 +65,6 @@
                                         </div>
                                     </div>
 
-
-
-
                                     <c:forEach items="${mytestlist}" var="info" varStatus="list">
                                         <div class="blank10 clear" id="reclear"></div>
                                         <div class="sjlist">
@@ -98,7 +95,6 @@
                                         </div>
                                     </c:forEach>
 
-
                                 </div>
                             </div>
                         </div>                    
@@ -107,8 +103,7 @@
                 </div>
             </div>
         </div>
-    </div>
-   
+    </div>   
     <jsp:include page="include/footer.jsp" />
 </body>
 </html>

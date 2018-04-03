@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.hm.dao.test_question;
 
+import java.util.List;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.hm.entity.test_question.ZtestQuestion;
@@ -15,4 +17,6 @@ import com.thinkgem.jeesite.modules.hm.entity.test_question.ZtestQuestion;
 @MyBatisDao
 public interface ZtestQuestionDao extends CrudDao<ZtestQuestion> {
 	public void deleteTestid(ZtestQuestion ztestQuestion);
+	
+	public List<ZtestQuestion> findListLeftquestion(ZtestQuestion ztestQuestion);
 }

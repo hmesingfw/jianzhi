@@ -16,8 +16,9 @@
 	</div>
 	<div class="myuser2">
 		<a href="${ctxF}/myinfo">个人资料</a>
-		<a href="${ctxF}/myCourseOrder">我的专业</a>
-		<a href="${ctxF}/myCourseUser">学习记录</a>
+		<a href="${ctxF}/myCourseOrder">我购买的专业</a>
+		<a href="${ctxF}/myCourseUser">我的课程</a>
 		<a href="${ctxF}/myDoc">文档下载</a>
+		<a href="${ctxF}/myTest">我的专业试题</a>
 	</div>
 </div>

@@ -387,4 +387,22 @@
   </function>
 
 
+
+
+  <function>
+    <description>随机测题列表</description>
+    <name>getZtestRandomList</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZcourseTestRandom</function-class>
+    <function-signature>java.util.List getZtestRandomList()</function-signature>
+    <example>${fns:getZtestRandomList()}</example>  
+  </function>
+
+  <function>
+    <description>随机测题信息</description>
+    <name>getZtestRandom</name>
+    <function-class>com.thinkgem.jeesite.modules.hm.utils.ZcourseTestRandom</function-class>
+    <function-signature>com.thinkgem.jeesite.modules.hm.entity.testrandom.ZtestRandom getZtestRandom(java.lang.String)</function-signature>
+    <example>${fns:getZtestRandom(id)}</example>  
+  </function>
+
 </taglib>

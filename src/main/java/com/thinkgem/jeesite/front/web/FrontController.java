@@ -45,6 +45,7 @@ import com.thinkgem.jeesite.modules.hm.entity.question.Zquestion;
 import com.thinkgem.jeesite.modules.hm.entity.question_answer.ZquestionAnswer;
 import com.thinkgem.jeesite.modules.hm.entity.test.Ztest;
 import com.thinkgem.jeesite.modules.hm.entity.test_question.ZtestQuestion;
+import com.thinkgem.jeesite.modules.hm.entity.testrandom.ZtestRandom;
 import com.thinkgem.jeesite.modules.hm.entity.user.Zuser;
 import com.thinkgem.jeesite.modules.hm.entity.userdoc.ZuserDoc;
 import com.thinkgem.jeesite.modules.hm.entity.usertest.ZuserTest;
@@ -60,6 +61,7 @@ import com.thinkgem.jeesite.modules.hm.service.order.ZcourseOrderService;
 import com.thinkgem.jeesite.modules.hm.service.question.ZquestionService;
 import com.thinkgem.jeesite.modules.hm.service.question_answer.ZquestionAnswerService;
 import com.thinkgem.jeesite.modules.hm.service.test.ZtestService;
+import com.thinkgem.jeesite.modules.hm.service.testrandom.ZtestRandomService;
 import com.thinkgem.jeesite.modules.hm.service.user.ZuserService;
 import com.thinkgem.jeesite.modules.hm.service.userdoc.ZuserDocService;
 import com.thinkgem.jeesite.modules.hm.service.usertest.ZuserTestService;
@@ -123,6 +125,9 @@ public class FrontController {
 	// 用户课程观看记录
 	@Autowired
 	private ZcourseUserService zcourseUserService;
+	//测试随机题配置
+	@Autowired
+	private ZtestRandomService ztestRandomService;
 
 	/**
 	 * 首页管理
@@ -532,7 +537,7 @@ public class FrontController {
 			model.addAttribute("msg", "账户密码错误，请重新输入");
 			return "front/login";
 		}
-		return "redirect:myinfo";
+		return "redirect:myCourseUser";
 	}
 
 	/**
@@ -583,6 +588,27 @@ public class FrontController {
 		model.addAttribute("page", page);
 
 		return "front/myDoc";
+	}
+	
+	/**
+	 * 我的专业试题
+	 */
+	@RequestMapping(value = "myTest")
+	public String myTest(HttpServletRequest request, HttpServletResponse response, Model model){
+		Zuser user = (Zuser) request.getSession().getAttribute("sessionMyinfo");
+		if (user == null || StringUtils.isBlank(user.getId())) {
+			model.addAttribute("msg", "请登陆.");
+			return "front/login";
+		}
+		
+		Ztest test = new Ztest();
+		test.setParentid(user.getMajor());
+		test.setDelFlag("0");
+		
+		Page<Ztest> page = ztestService.findPage(new Page<Ztest>(request, response), test);
+		model.addAttribute("page", page);
+		
+		return "front/myTest";
 	}
 
 	/**
@@ -659,7 +685,7 @@ public class FrontController {
 				zcourse.setParentid(zcourseOrder.getCourseid());
 				zcourse.setDelFlag("0");
 				List<Zcourse> courselist = zcourseService.findList(zcourse);			//当前专业的课程
-				
+						
 				for (Zcourse zcourse2 : courselist) {
 					// 课程观看时间记录
 					ZcourseUser zcourseUser = new ZcourseUser();
@@ -1076,7 +1102,7 @@ public class FrontController {
 	@RequestMapping(value = "alipayReturn")
 	public String alipayReturn(HttpServletRequest request, HttpServletResponse response, Model model) {
 		// 重定向到我的订单
-		return "redirect:myCourseOrder";
+		return "redirect:myCourseUser";
 	}
 
 	/**
@@ -1286,7 +1312,7 @@ public class FrontController {
 		ZtestQuestion ztestQuestion = new ZtestQuestion();
 		ztestQuestion.setTestid(test.getId());
 		ztestQuestion.setDelFlag("0");
-		List<ZtestQuestion> testquestionlist = ztestQuestionDao.findList(ztestQuestion);
+		List<ZtestQuestion> testquestionlist = ztestQuestionDao.findListLeftquestion(ztestQuestion);
 
 		if(testquestionlist!=null && testquestionlist.size()>0){
 			
@@ -1333,12 +1359,8 @@ public class FrontController {
 		}
 
 		String type = request.getParameter("type"); // 专业类型
-		String value = request.getParameter("value"); // 题目数量
-		if (!StringUtils.isNumeric(value)) {
-			model.addAttribute("message", "请输入正确的题目数量");
-			return "front/questionlist";
-		}
-
+		ZtestRandom ztestRandom = ztestRandomService.get(type);
+						
 		Ztest test = new Ztest();
 		test.setTitle("随机测试题");
 		test.setTesttime("60");
@@ -1350,22 +1372,42 @@ public class FrontController {
 			usertest.setTestid(ztest.getId());
 			zuserTestService.deleteUesrtest(usertest); // 删除用户考试记录
 		}
-
-		test.setSum(value);
+//		test.setSum(value);
 		test.setParentid(type);
 		ztestService.save(test); // 创建试题
 
 		model.addAttribute("testid", test.getId());
 		model.addAttribute("test", test);
 
+			
+		List<Zquestion> questionlist = new ArrayList<>();
 		// 查找出当前试卷的所有题目
-		Zquestion zquestion = new Zquestion();
+		Zquestion zquestion = new Zquestion();		
 		zquestion.setParentid(type);
-		if (StringUtils.isNumeric(value)) {
-			zquestion.setLimit(Integer.parseInt(value));
+		
+		//单选题 
+		zquestion.setLimit(StringUtils.isNumeric(ztestRandom.getRadio()) ? Integer.parseInt(ztestRandom.getRadio()) : 0);
+		zquestion.setType("1");		 
+		List<Zquestion> qlist = zquestionService.findRandList(zquestion);
+		for (Zquestion zquestion2 : qlist) {
+			questionlist.add(zquestion2);
 		}
-		List<Zquestion> questionlist = zquestionService.findRandList(zquestion);
-
+		//多选题 
+		zquestion.setLimit(StringUtils.isNumeric(ztestRandom.getCheckbox()) ? Integer.parseInt(ztestRandom.getCheckbox()) : 0);
+		zquestion.setType("2");		
+		qlist = zquestionService.findRandList(zquestion);
+		for (Zquestion zquestion2 : qlist) {
+			questionlist.add(zquestion2);
+		}
+		//判断题
+		zquestion.setLimit(StringUtils.isNumeric(ztestRandom.getJudge()) ? Integer.parseInt(ztestRandom.getJudge()) : 0);
+		zquestion.setType("3");		
+		qlist = zquestionService.findRandList(zquestion);
+		for (Zquestion zquestion2 : qlist) {
+			questionlist.add(zquestion2);
+		}
+		
+		
 		if(questionlist!=null && questionlist.size()>0){
 			// 添加用户需要考试题的记录
 			int sort = 1;
@@ -1385,9 +1427,7 @@ public class FrontController {
 			if (StringUtils.isNumeric(time)) {
 				model.addAttribute("time", Integer.parseInt(time) * 60);
 			}
-			return "front/test";
-			
-			
+			return "front/test";					
 		}else{
 			model.addAttribute("message", "当前专业下未分配测试题，请选择其实专业");
 			return "front/test";
@@ -1441,14 +1481,16 @@ public class FrontController {
 			model.addAttribute("nextusertestid", nexttest.get(0).getId());
 		}
 
-		ZquestionAnswer zquestionAnswer = new ZquestionAnswer();
-		zquestionAnswer.setQuesId(zquestion.getId());
-		zquestionAnswer.setDelFlag("0");
-
-		List<ZquestionAnswer> answerList = zquestionAnswerService.findList(zquestionAnswer);
+		if(zquestion!=null && StringUtils.isNotBlank(zquestion.getId())){
+			ZquestionAnswer zquestionAnswer = new ZquestionAnswer();
+			zquestionAnswer.setQuesId(zquestion.getId());
+			zquestionAnswer.setDelFlag("0");
+	
+			List<ZquestionAnswer> answerList = zquestionAnswerService.findList(zquestionAnswer);
+			model.addAttribute("answerList", answerList);
+		}
 
 		model.addAttribute("zquestion", zquestion);
-		model.addAttribute("answerList", answerList);
 
 	}
 

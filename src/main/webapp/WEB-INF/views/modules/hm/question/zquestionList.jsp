@@ -90,6 +90,10 @@
 			<li><label>标题：</label>
 				<form:input path="title" htmlEscape="false" maxlength="3000" class="input-medium"/>
 			</li>
+			<li><label>所属专业：</label>
+				<sys:treeselect id="office" name="parentid" value="office.id" labelName="" labelValue=""
+					title="课程分类" url="/hm/course_sort/zcourseSort/treeData" cssClass="required"/>
+			</li>
 			<li><label>类型：</label>
 				<form:select path="type" class="input-medium">
 					<form:option value="" label=""/>
@@ -111,6 +115,7 @@
 				<th>标题</th>
 				<th>类型</th>
 				<th>试题解析</th>
+				<th>所属专业</th>
 				<th>更新时间</th>
 				<th>备注信息</th>
 				<shiro:hasPermission name="hm:question:zquestion:edit"><th>操作</th></shiro:hasPermission>
@@ -130,6 +135,9 @@
 				</td>
 				<td>
 					${zquestion.analytical}
+				</td>
+				<td>
+					${fns:getCourseSort(zquestion.parentid).name}
 				</td>
 				<td>
 					<fmt:formatDate value="${zquestion.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

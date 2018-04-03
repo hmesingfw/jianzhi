@@ -67,17 +67,15 @@
             }
 
             var type = $("#classflythr").val() || $("#classflytwo").val() || $("#classflyone").val();
+            window.location.href='${ctxF}/gotoquestionRandom?type='+type; 
             
-            layer.prompt({
-                title: '请输入测试题目，输入值超过最大值时取最大题目数量',
-            }, function(value, index, elem){      
-                console.log(value)
-                window.location.href='${ctxF}/gotoquestionRandom?type='+type+'&value='+value;             
-
-                layer.close(index);
-            });
-
-                     
+            // layer.prompt({
+            //     title: '请输入测试题目，输入值超过最大值时取最大题目数量',
+            // }, function(value, index, elem){      
+            //     console.log(value)
+            //     window.location.href='${ctxF}/gotoquestionRandom?type='+type+'&value='+value;             
+            //     layer.close(index);
+            // });
         }
   </script>
 <body>

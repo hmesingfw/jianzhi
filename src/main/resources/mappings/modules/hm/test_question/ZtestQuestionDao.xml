@@ -43,6 +43,15 @@
 		</choose>
 	</select>
 	
+	<select id="findListLeftquestion" resultType="ZtestQuestion">
+		select <include refid="ztestQuestionColumns"/>,b.type from(
+		select * from ztest_question where testid=#{testid} and del_flag='0'
+		)a left join zquestion b on a.question=b.id order by b.type
+	</select>
+	
+	
+	
+	
 	<select id="findAllList" resultType="ZtestQuestion">
 		SELECT 
 			<include refid="ztestQuestionColumns"/>

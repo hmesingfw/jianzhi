@@ -18,6 +18,7 @@ public class ZtestQuestion extends DataEntity<ZtestQuestion> {
 	private String testid;		// 试卷编号
 	private String question;		// 题库编号
 	private String fraction;		// 设置分数
+	private String type;			//当前题目的类型
 	
 	public ZtestQuestion() {
 		super();
@@ -25,6 +26,14 @@ public class ZtestQuestion extends DataEntity<ZtestQuestion> {
 
 	public ZtestQuestion(String id){
 		super(id);
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	@Length(min=0, max=64, message="试卷编号长度必须介于 0 和 64 之间")

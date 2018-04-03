@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.hm.dao.testrandom.ZtestRandomDao">
+    
+	<sql id="ztestRandomColumns">
+		a.id AS "id",
+		a.parentid AS "parentid",
+		a.radio AS "radio",
+		a.checkbox AS "checkbox",
+		a.judge AS "judge",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="ztestRandomJoins">
+	</sql>
+    
+	<select id="get" resultType="ZtestRandom">
+		SELECT 
+			<include refid="ztestRandomColumns"/>
+		FROM ztest_random a
+		<include refid="ztestRandomJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZtestRandom">
+		SELECT 
+			<include refid="ztestRandomColumns"/>
+		FROM ztest_random a
+		<include refid="ztestRandomJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZtestRandom">
+		SELECT 
+			<include refid="ztestRandomColumns"/>
+		FROM ztest_random a
+		<include refid="ztestRandomJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO ztest_random(
+			id,
+			parentid,
+			radio,
+			checkbox,
+			judge,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{parentid},
+			#{radio},
+			#{checkbox},
+			#{judge},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE ztest_random SET 	
+			parentid = #{parentid},
+			radio = #{radio},
+			checkbox = #{checkbox},
+			judge = #{judge},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE ztest_random SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
