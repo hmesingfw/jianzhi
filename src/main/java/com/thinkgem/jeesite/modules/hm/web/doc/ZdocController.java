@@ -28,6 +28,7 @@ import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.hm.entity.doc.Zdoc;
+import com.thinkgem.jeesite.modules.hm.entity.question.Zquestion;
 import com.thinkgem.jeesite.modules.hm.service.doc.ZdocService;
 import com.thinkgem.jeesite.modules.hm.utils.ZdocUtils;
 
@@ -176,6 +177,26 @@ public class ZdocController extends BaseController {
 		zdocService.delete(zdoc);
 		addMessage(redirectAttributes, "删除文档成功");
 		return "redirect:"+Global.getAdminPath()+"/hm/doc/zdoc/?repage";
+	}
+	
+	// 批量删除
+	@RequiresPermissions("hm:question:zquestion:edit")
+	@RequestMapping(value = "deleteAll")
+	public String deleteAll(String deleteValue, RedirectAttributes redirectAttributes) {
+
+		if (StringUtils.isNotBlank(deleteValue)) {
+			String[] vals = deleteValue.trim().split("~");
+			for (String string : vals) {
+
+				if (StringUtils.isNotBlank(string)) {
+					Zdoc zquestion = zdocService.get(string);
+					zdocService.delete(zquestion);
+				}
+			}
+		}
+
+		addMessage(redirectAttributes, "删除试题管理成功");
+		return "redirect:" + Global.getAdminPath() + "/hm/doc/zdoc/?repage";
 	}
 
 }

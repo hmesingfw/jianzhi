@@ -44,4 +44,7 @@ public class ZcourseHourService extends CrudService<ZcourseHourDao, ZcourseHour>
 		super.delete(zcourseHour);
 	}
 	
+	public List<ZcourseHour> findListByCourseid(ZcourseHour zcourseHour){
+		return dao.findListByCourseid(zcourseHour);
+	}
 }

@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.hm.dao.course_user;
 
+import java.util.List;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.hm.entity.course_user.ZcourseUser;
@@ -15,4 +17,6 @@ import com.thinkgem.jeesite.modules.hm.entity.course_user.ZcourseUser;
 @MyBatisDao
 public interface ZcourseUserDao extends CrudDao<ZcourseUser> {
 	public void updateUsertime(ZcourseUser zcourseUser);
+	
+	public List<ZcourseUser> findListByCourseUser(ZcourseUser zcourseUser);
 }

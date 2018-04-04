@@ -4,9 +4,40 @@
 <head>
 	<title>文档管理</title>
 	<meta name="decorator" content="default"/>
+	<script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			
+			$("#all").on("click",function(){	
+				var b = $(this).attr("checked");
+		      	if(b){
+		        	// checkboxAll("ids");
+		        	$("input[name='ids']").attr("checked","true");
+		     	}else{
+			        // clearSelect("ids"); 
+			        $("input[name='ids']").removeAttr("checked");
+		      	}
+		   	});
+
+
+			$("#alldelete").click(function(){
+		   		layer.confirm('确认要删除该文档吗？', {
+				  	btn: ['确定', '取消'] //可以无限个按钮
+				  	,btn3: function(index, layero){
+				    //按钮【按钮三】的回调
+				  	}
+				}, function(index, layero){
+				  //按钮【按钮一】的回调
+				  	var ids = "";
+				 	$("input[name='ids']:checked").each(function () {
+						ids += $(this).val()+"~";
+					});
+					console.log(ids)
+					$("#deleteValue").val(ids);
+					$("#deleteform").submit();
+				});
+
+		   		    		 	
+			});
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -21,10 +52,16 @@
 		<li class="active"><a href="${ctx}/hm/doc/zdoc/">文档列表</a></li>
 		<shiro:hasPermission name="hm:doc:zdoc:edit"><li><a href="${ctx}/hm/doc/zdoc/form">文档添加</a></li></shiro:hasPermission>
 	</ul>
+	
+	<form action="${ctx}/hm/doc/zdoc/deleteAll" id="deleteform" method="post" style="display: none;">
+		<input type="text" name="deleteValue" id="deleteValue" value="">
+	</form>
+
 	<form:form id="searchForm" modelAttribute="zdoc" action="${ctx}/hm/doc/zdoc/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+			<li><input id="alldelete" class="btn btn-primary" type="button" value="批量删除" /></li> </li>
 			<li><label>标题：</label>
 				<form:input path="title" htmlEscape="false" maxlength="200" class="input-medium"/>
 			</li>
@@ -66,6 +103,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th><input type="checkbox" name="all" id="all"/></th>
 				<th>标题</th>
 				<th>文件类型</th>
 				<th>浏览量</th>
@@ -79,6 +117,8 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="zdoc">
 			<tr>
+				<td><input type="checkbox" name="ids" value="${zdoc.id }" /></td>
+
 				<td><a href="${ctx}/hm/doc/zdoc/form?id=${zdoc.id}">
 					${zdoc.title}
 				</a></td>

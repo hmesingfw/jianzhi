@@ -25,11 +25,14 @@
 	
 	<jsp:include page="include/footer.jsp" /> 
 
-    <aside class="aside-operate">
-    	<ul>    		 
-    		<li onclick="goTop()"><span>返回<br />头部</span><i class="edufont e-icon-top"></i></li>
-    	</ul>
-    </aside>  
+     <jsp:include page="include/aside.jsp" />  
+    <script src="${ctxStatic}/jianzhi/js/imgload.js"></script>
+    <script src="${ctxStatic}/jianzhi/js/cs.assembly.js"></script>
+    <!--执行页面加载js-->
+    <script src="${ctxStatic}/jianzhi/js/page.index.js"></script>
+    <script src="${ctxStatic}/jianzhi/js/page.load.js"></script>
+    <script src="${ctxStatic}/jianzhi/js/page.main.js"></script>
+     
 
 </script>
 </body>

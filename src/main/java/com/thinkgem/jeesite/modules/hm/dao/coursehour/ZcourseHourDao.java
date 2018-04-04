@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.hm.dao.coursehour;
 
+import java.util.List;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.hm.entity.coursehour.ZcourseHour;
@@ -15,4 +17,5 @@ import com.thinkgem.jeesite.modules.hm.entity.coursehour.ZcourseHour;
 @MyBatisDao
 public interface ZcourseHourDao extends CrudDao<ZcourseHour> {
 	
+	public List<ZcourseHour> findListByCourseid(ZcourseHour zcourseHour);
 }

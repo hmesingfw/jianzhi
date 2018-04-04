@@ -51,6 +51,27 @@
 		</choose>
 	</select>
 	
+	
+	<select id="findListByCourseUser" resultType="ZcourseUser">
+		SELECT 
+			<include refid="zcourseUserColumns"/>
+		FROM zcourse_user a
+		<include refid="zcourseUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND a.courseid = #{courseid}			
+			AND a.userid = #{userid}			
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
 	<select id="findAllList" resultType="ZcourseUser">
 		SELECT 
 			<include refid="zcourseUserColumns"/>

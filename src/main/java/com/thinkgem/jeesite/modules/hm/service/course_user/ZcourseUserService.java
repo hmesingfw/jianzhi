@@ -53,4 +53,8 @@ public class ZcourseUserService extends CrudService<ZcourseUserDao, ZcourseUser>
 		zcourseUserDao.updateUsertime(zcourseUser);;
 	}
 	
+	public List<ZcourseUser> findListByCourseUser(ZcourseUser zcourseUser){
+		return zcourseUserDao.findListByCourseUser(zcourseUser);
+	}
+	
 }

@@ -52,4 +52,7 @@ public class ZcourseOrderService extends CrudService<ZcourseOrderDao, ZcourseOrd
 		return zcourseOrderDao.findMyorderByid(zcourseOrder);
 	}
 	
+	public List<ZcourseOrder> findMyorder(ZcourseOrder zcourseOrder){
+		return zcourseOrderDao.findMyorder(zcourseOrder);
+	}
 }

@@ -83,7 +83,7 @@
   
   <jsp:include page="include/header.jsp" />
   <!--// header-->
-  
+  <%--
   <section class="i-banner" id="banner">
     <ul>
       <c:forEach items="${aboutBanner}" var="banner" end="4">
@@ -91,7 +91,7 @@
       </c:forEach>
     </ul>
   </section>
-
+  --%>
 
   	<div class="myteam">
         <div class="myteam1">
@@ -162,12 +162,14 @@
     <jsp:include page="include/footer.jsp" /> 
 
 
+     <jsp:include page="include/aside.jsp" />  
     <script src="${ctxStatic}/jianzhi/js/imgload.js"></script>
     <script src="${ctxStatic}/jianzhi/js/cs.assembly.js"></script>
     <!--执行页面加载js-->
     <script src="${ctxStatic}/jianzhi/js/page.index.js"></script>
     <script src="${ctxStatic}/jianzhi/js/page.load.js"></script>
     <script src="${ctxStatic}/jianzhi/js/page.main.js"></script>
+    
     <script>
 
     //轮播图

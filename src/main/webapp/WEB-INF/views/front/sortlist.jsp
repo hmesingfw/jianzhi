@@ -47,7 +47,7 @@
 	<jsp:include page="include/header.jsp" />
 	<!--// header-->
      
-
+<%--
 	<section class="i-banner" id="banner">
 		<ul>
 			<c:forEach items="${aboutBanner}" var="banner" end="4">
@@ -55,7 +55,7 @@
 			</c:forEach>
 		</ul>
 	</section>
-
+--%>
 	<div class="myteam">
   		<div class="myteam1">
   			<div class="myteam2">
@@ -170,14 +170,7 @@
     <jsp:include page="include/footer.jsp" /> 
 <!--//footer-->
 
-    <aside class="aside-operate">
-    	<ul>
-    		<li style="border-top:0" onclick="window.open('http://me.cs.com/message.aspx')"><span>留言<br />建议</span><i class="edufont e-icon-yijianfankui"></i></li>
-    		<li><span>手机<br />app</span><i class="edufont e-icon-phone"></i><div class="code-box"><em></em><img src="img/wechat-code.png" /><p>下载移动app</p></div></li>
-    		<li><span>关注<br />微信</span><i class="edufont e-icon-wechat"></i><div class="code-box"><em></em><img src="img/wechat-code.png" /><p>关注微信公众号</p></div></li>
-    		<li onclick="goTop()"><span>返回<br />头部</span><i class="edufont e-icon-top"></i></li>
-    	</ul>
-    </aside>  
+    <jsp:include page="include/aside.jsp" />  
     
 
 

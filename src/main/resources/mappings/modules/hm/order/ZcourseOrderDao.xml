@@ -100,6 +100,16 @@
 			</where>	
 	</select>
 	
+	
+	<select id="findMyorder" resultType="ZcourseOrder">
+		SELECT 
+			<include refid="zcourseOrderColumns"/>
+		from zcourse_order where 
+		a.userid=#{userid} and 
+		a.paystatus in (2, 4) and 
+		a.del_flag = '0'
+	</select>
+	
 	<insert id="insert">
 		INSERT INTO zcourse_order(
 			id,

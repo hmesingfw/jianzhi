@@ -29,12 +29,24 @@ public class ZcourseOrder extends DataEntity<ZcourseOrder> {
 	private int buynum;			//支付次数
 	private String exptime;		//到期时间
 	
+	
+	private String width;		//课程时间进度
+	
 	public ZcourseOrder() {
 		super();
 	}
 
 	public ZcourseOrder(String id){
 		super(id);
+	}
+
+	
+	public String getWidth() {
+		return width;
+	}
+
+	public void setWidth(String width) {
+		this.width = width;
 	}
 
 	@Length(min=0, max=64, message="课程编号长度必须介于 0 和 64 之间")

@@ -56,8 +56,8 @@
 										<fmt:formatDate value="${info.updateDate}" pattern="yyyy-MM-dd"/>
 									</p>
 									<div class="userxian">
-										<div class="userxian1"><span class="userxian2" style="width: ${fns:getCourseSchedule(info.usertime, info.coursetime)}%"></span></div>
-										<label>已学习${fns:getCourseSchedule(info.usertime, info.coursetime)}%</label>
+										<div class="userxian1"><span class="userxian2" style="width: ${info.width}%"></span></div>	
+										<label>已学习${info.width}%</label> 
 									</div>
 								</div>
 								<!-- <a href="" class="usercuo">×</a> -->
@@ -80,13 +80,13 @@
  	<jsp:include page="include/footer.jsp" /> 
 <!--//footer-->
 
-    <aside class="aside-operate">
-    	<ul>
-    		<li style="border-top:0" onclick="window.open('http://me.cs.com/message.aspx')"><span>留言<br />建议</span><i class="edufont e-icon-yijianfankui"></i></li>
-    		<li><span>手机<br />app</span><i class="edufont e-icon-phone"></i><div class="code-box"><em></em><img src="/tp/PC/skin055/images/common/wechat-code.png" /><p>下载移动app</p></div></li>
-    		<li><span>关注<br />微信</span><i class="edufont e-icon-wechat"></i><div class="code-box"><em></em><img src="/tp/PC/skin055/images/common/wechat-code.png" /><p>关注微信公众号</p></div></li>
-    		<li onclick="goTop()"><span>返回<br />头部</span><i class="edufont e-icon-top"></i></li>
-    	</ul>
-    </aside>  
+     <jsp:include page="include/aside.jsp" />  
+    <script src="${ctxStatic}/jianzhi/js/imgload.js"></script>
+    <script src="${ctxStatic}/jianzhi/js/cs.assembly.js"></script>
+    <!--执行页面加载js-->
+    <script src="${ctxStatic}/jianzhi/js/page.index.js"></script>
+    <script src="${ctxStatic}/jianzhi/js/page.load.js"></script>
+    <script src="${ctxStatic}/jianzhi/js/page.main.js"></script>
+    
 </body>
 </html>

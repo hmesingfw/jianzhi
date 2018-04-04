@@ -96,6 +96,16 @@
                                     </c:forEach>
 
                                 </div>
+                               
+                                <c:if test="${test.type ==4}">
+                                    <div class="exam-rightArea" style="   float: none;width: 100%;">
+                                        <div class="rightArea-answer" style="width: 100%;text-align: center;">
+                                            <div class="ft" style="width: 40%;left: 320px;  position: relative;">
+                                                <div class="btn-1" id="page-btn-next" onclick="randomtest('${test.parentid}')">再试一次</div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                </c:if>
                             </div>
                         </div>                    
                     <!-- // END -->
@@ -104,6 +114,12 @@
             </div>
         </div>
     </div>   
+    <script type="text/javascript">
+         function randomtest(type){             
+            window.location.href='${ctxF}/gotoquestionRandom?type='+type; 
+                       
+        }
+    </script>
     <jsp:include page="include/footer.jsp" />
 </body>
 </html>

@@ -14,8 +14,8 @@ public class ZcourseUserUtils {
 	 * @return
 	 */
 	public static int getCourseSchedule(String usertime, String coursetime){
-		double utime = 0;
-		double ctime = 0;
+		double utime = 0;		//课程学习时长
+		double ctime = 0;		//课程学习总时长
 		if(usertime!=null && StringUtils.isNumeric(usertime)){
 			utime = Integer.parseInt(usertime);
 		}else{

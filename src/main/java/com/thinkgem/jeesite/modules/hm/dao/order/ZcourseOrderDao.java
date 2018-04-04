@@ -18,4 +18,6 @@ import com.thinkgem.jeesite.modules.hm.entity.order.ZcourseOrder;
 public interface ZcourseOrderDao extends CrudDao<ZcourseOrder> {
 	
 	public List<ZcourseOrder> findMyorderByid(ZcourseOrder zcourseOrder);
+	
+	public List<ZcourseOrder> findMyorder(ZcourseOrder zcourseOrder);
 }

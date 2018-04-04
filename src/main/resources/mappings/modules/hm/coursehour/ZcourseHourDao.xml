@@ -7,6 +7,7 @@
 		a.courseid AS "courseid",
 		a.title AS "title",
 		a.url AS "url",
+		a.weight AS "weight",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag"
@@ -30,6 +31,9 @@
 		<include refid="zcourseHourJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="courseid != null and courseid != ''">
+				AND a.courseid = #{courseid}
+			</if>
 			<if test="title != null and title != ''">
 				AND a.title LIKE 
 					<if test="dbName == 'oracle'">'%'||#{title}||'%'</if>
@@ -42,7 +46,26 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.update_date DESC,a.weight desc
+			</otherwise>
+		</choose>
+	</select>
+	
+		<select id="findListByCourseid" resultType="ZcourseHour">
+		SELECT 
+			<include refid="zcourseHourColumns"/>
+		FROM zcourse_hour a
+		<include refid="zcourseHourJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			AND a.courseid = #{courseid}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC,a.weight desc
 			</otherwise>
 		</choose>
 	</select>
@@ -60,7 +83,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.update_date DESC,a.weight desc
 			</otherwise>
 		</choose>
 	</select>
@@ -71,6 +94,7 @@
 			courseid,
 			title,
 			url,
+			weight,
 			update_date,
 			remarks,
 			del_flag
@@ -79,6 +103,7 @@
 			#{courseid},
 			#{title},
 			#{url},
+			#{weight},
 			#{updateDate},
 			#{remarks},
 			#{delFlag}
@@ -90,6 +115,7 @@
 			courseid = #{courseid},
 			title = #{title},
 			url = #{url},
+			weight = #{weight},
 			update_date = #{updateDate},
 			remarks = #{remarks}
 		WHERE id = #{id}

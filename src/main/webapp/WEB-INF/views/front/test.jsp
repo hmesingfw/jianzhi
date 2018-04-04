@@ -79,7 +79,15 @@
                                                         </label>
                                                     </c:forEach>                                     
                                                 </div>                                              
-                                            </div>                                          
+                                            </div>  
+                                            <div class="exam-rightArea" style="   float: none;width: 100%;">
+                                                <div class="rightArea-answer" style="width: 100%;text-align: center;">
+                                                    <div class="ft" style="width: 40%;left: 230px;  position: relative;">
+                                                        <div class="btn-1" id="page-btn-next" onclick="xiayiti('${nextusertestid}')">下一题</div>
+                                                    </div>  
+                                                </div>
+                                            </div>
+                                                                                 
                                         </div>
                                     </div>
                                 </div>
@@ -122,7 +130,7 @@
                                             </ul>
                                         </div>
                                         <div class="ft">
-                                            <div class="btn-1" id="page-btn-next" onclick="xiayiti('${nextusertestid}')">下一题</div>
+                                            <!-- <div class="btn-1" id="page-btn-next" onclick="xiayiti('${nextusertestid}')">下一题</div> -->
                                             <div class="btn-2" id="page-btn-submit" onclick="succurrent('1')">交卷</div>
                                         </div>
                                     </div>

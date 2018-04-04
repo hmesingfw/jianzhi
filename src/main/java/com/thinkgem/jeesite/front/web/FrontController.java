@@ -37,6 +37,7 @@ import com.thinkgem.jeesite.modules.hm.dao.test_question.ZtestQuestionDao;
 import com.thinkgem.jeesite.modules.hm.entity.course.Zcourse;
 import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
 import com.thinkgem.jeesite.modules.hm.entity.course_user.ZcourseUser;
+import com.thinkgem.jeesite.modules.hm.entity.coursehour.ZcourseHour;
 import com.thinkgem.jeesite.modules.hm.entity.doc.Zdoc;
 import com.thinkgem.jeesite.modules.hm.entity.docsort.ZdocSort;
 import com.thinkgem.jeesite.modules.hm.entity.news.Znew;
@@ -54,6 +55,7 @@ import com.thinkgem.jeesite.modules.hm.service.banner.ZbannerService;
 import com.thinkgem.jeesite.modules.hm.service.course.ZcourseService;
 import com.thinkgem.jeesite.modules.hm.service.course_sort.ZcourseSortService;
 import com.thinkgem.jeesite.modules.hm.service.course_user.ZcourseUserService;
+import com.thinkgem.jeesite.modules.hm.service.coursehour.ZcourseHourService;
 import com.thinkgem.jeesite.modules.hm.service.doc.ZdocService;
 import com.thinkgem.jeesite.modules.hm.service.docsort.ZdocSortService;
 import com.thinkgem.jeesite.modules.hm.service.news.ZnewService;
@@ -128,6 +130,10 @@ public class FrontController {
 	//测试随机题配置
 	@Autowired
 	private ZtestRandomService ztestRandomService;
+	
+	//课时管理
+	@Autowired
+	private ZcourseHourService zcourseHourService;
 
 	/**
 	 * 首页管理
@@ -672,50 +678,93 @@ public class FrontController {
 			model.addAttribute("msg", "请登陆.");
 			return "front/login";
 		}
-		ZcourseOrder order = new ZcourseOrder();
-		order.setUserid(user.getId());
-		order.setDelFlag("0");
-//		order.setPaystatus("2");
-		List<ZcourseOrder> status4list = zcourseOrderService.findList(order);
-		//添加课程学习记录
-		for (ZcourseOrder zcourseOrder : status4list) {
-			if("2".equals(zcourseOrder.getPaystatus()) || "4".equals(zcourseOrder.getPaystatus())){
-				
-				Zcourse zcourse = new Zcourse();
-				zcourse.setParentid(zcourseOrder.getCourseid());
-				zcourse.setDelFlag("0");
-				List<Zcourse> courselist = zcourseService.findList(zcourse);			//当前专业的课程
-						
-				for (Zcourse zcourse2 : courselist) {
-					// 课程观看时间记录
-					ZcourseUser zcourseUser = new ZcourseUser();
-					zcourseUser.setUserid(user.getId());
-					zcourseUser.setCourseid(zcourse2.getId());
-					zcourseUser.setDelFlag("0");
-					zcourseUser.setUsertime("0");
-					List<ZcourseUser> culist = zcourseUserService.findList(zcourseUser);
-					if (culist != null && culist.size() > 0) {
-					} else {
-						zcourseUserService.save(zcourseUser);
-					}
-				}				
-			}
-		}
+//		ZcourseOrder order = new ZcourseOrder();
+//		order.setUserid(user.getId());
+//		order.setDelFlag("0");
+////		order.setPaystatus("2");
+//		List<ZcourseOrder> status4list = zcourseOrderService.findList(order);
+//		//添加课程学习记录
+//		for (ZcourseOrder zcourseOrder : status4list) {
+//			if("2".equals(zcourseOrder.getPaystatus()) || "4".equals(zcourseOrder.getPaystatus())){
+//				
+//				Zcourse zcourse = new Zcourse();
+//				zcourse.setParentid(zcourseOrder.getCourseid());
+//				zcourse.setDelFlag("0");
+//				List<Zcourse> courselist = zcourseService.findList(zcourse);			//当前专业的课程
+//						
+////				for (Zcourse zcourse2 : courselist) {
+////					// 课程观看时间记录
+////					ZcourseUser zcourseUser = new ZcourseUser();
+////					zcourseUser.setUserid(user.getId());
+////					zcourseUser.setCourseid(zcourse2.getId());
+////					zcourseUser.setDelFlag("0");
+////					zcourseUser.setUsertime("0");
+////					List<ZcourseUser> culist = zcourseUserService.findList(zcourseUser);
+////					if (culist != null && culist.size() > 0) {
+////					} else {
+////						zcourseUserService.save(zcourseUser);
+////					}
+////				}				
+//			}
+//		}
 		
-		
-		ZcourseUser courseuser = new ZcourseUser();
-		courseuser.setUserid(user.getId());
-		courseuser.setDelFlag("0");
-
-		Page<ZcourseUser> pages = new Page<ZcourseUser>();
+		ZcourseOrder zcourseOrder = new ZcourseOrder();
+		zcourseOrder.setUserid(user.getId());
+		Page<ZcourseOrder> pages = new Page<ZcourseOrder>();
 		pages.setPageSize(10);
+		
 
-		Page<ZcourseUser> page = zcourseUserService.findPage(pages, courseuser);
+		Page<ZcourseOrder> page = zcourseOrderService.findPage(pages, zcourseOrder);
+		for (ZcourseOrder order : page.getList()) {
+			int sche = courseSchedule(order.getCourseid(), user.getId());
+			order.setWidth(sche+"");
+		}
 		model.addAttribute("page", page);
-
+		
+		
 		return "front/myCourseUser";
 	}
 
+	/**
+	 * 课程学习进度
+	 * @param courseid			课程编号	
+	 * @param userid		用户编号
+	 * @return				返回进度
+	 */
+	public int courseSchedule(String courseid, String userid){
+		double ctime = 0;		//课程学习总时长
+		double utime = 0;		//课程学习时长
+		
+		ZcourseHour hour = new ZcourseHour();
+		hour.setCourseid(courseid);
+		hour.setDelFlag("0");
+		List<ZcourseHour> hourlist = zcourseHourService.findListByCourseid(hour);			//当前课程的课时
+		
+		for (ZcourseHour zcourseHour : hourlist) {
+			ZcourseUser cu = new ZcourseUser();
+			cu.setCourseid(zcourseHour.getId());
+			cu.setUserid(userid);
+			cu.setDelFlag("0");
+			List<ZcourseUser> userlist = zcourseUserService.findListByCourseUser(cu); 		//当前课时的学习进度
+			
+			for (ZcourseUser zcourseUser : userlist) {
+				 double cctime = StringUtils.isNumeric(zcourseUser.getCoursetime()) ? Double.parseDouble(zcourseUser.getCoursetime()) : 0;		//当前课时总长度
+				 double uutime = StringUtils.isNumeric(zcourseUser.getUsertime()) ? Double.parseDouble(zcourseUser.getUsertime()) : 0;		//当前课时学习长度 
+				 
+				 utime += uutime;
+				 ctime += cctime;	 
+			}
+		}
+		double sche = utime/ctime * 100;
+		sche = Math.floor(sche);
+		System.out.println(sche+"__________________________________________");
+		if(sche>100){
+			return 100;
+		}else{
+			return (int)sche;
+		}
+	}
+	
 	/**
 	 * 课程列表
 	 * 
@@ -1136,21 +1185,28 @@ public class FrontController {
 			zcourseOrder.setPaytype("3");
 			zcourseOrderService.save(zcourseOrder);
 		}
+		
+		//课时列表
+		ZcourseHour zcourseHour = new ZcourseHour();
+		zcourseHour.setCourseid(zcourse.getId());
+		List<ZcourseHour> hourlist = zcourseHourService.findList(zcourseHour);
+		
 
 		// 课程观看时间记录
-		ZcourseUser zcourseUser = new ZcourseUser();
-		zcourseUser.setUserid(user.getId());
-		zcourseUser.setCourseid(zcourse.getId());
-		zcourseUser.setDelFlag("0");
-		zcourseUser.setUsertime("0");
-		List<ZcourseUser> culist = zcourseUserService.findList(zcourseUser);
-		if (culist != null && culist.size() > 0) {
-		} else {
-			zcourseUserService.save(zcourseUser);
-		}
-
+//		ZcourseUser zcourseUser = new ZcourseUser();
+//		zcourseUser.setUserid(user.getId());
+//		zcourseUser.setCourseid(zcourse.getId());
+//		zcourseUser.setDelFlag("0");
+//		zcourseUser.setUsertime("0");
+//		List<ZcourseUser> culist = zcourseUserService.findList(zcourseUser);
+//		if (culist != null && culist.size() > 0) {
+//		} else {
+//			zcourseUserService.save(zcourseUser);
+//		}
 		zcourse = zcourseService.get(zcourse.getId());
+		
 		model.addAttribute("zcourse", zcourse);
+		model.addAttribute("hourlist", hourlist);
 		return "front/lookvideo";
 	}
 
@@ -1158,6 +1214,25 @@ public class FrontController {
 	 * 
 	 * @param path
 	 */
+	@ResponseBody
+	@RequestMapping(value = "createCourseuser")
+	public String createCourseuser(@RequestParam(required = false, value = "courseid") String courseid,HttpServletRequest request, HttpServletResponse response) {
+		Zuser user = (Zuser) request.getSession().getAttribute("sessionMyinfo");
+		if (user != null && !StringUtils.isBlank(user.getId())) {
+			// 课程观看时间记录
+			ZcourseUser zcourseUser = new ZcourseUser();
+			zcourseUser.setUserid(user.getId());
+			zcourseUser.setCourseid(courseid);
+			zcourseUser.setDelFlag("0");
+			zcourseUser.setUsertime("0");
+			List<ZcourseUser> culist = zcourseUserService.findList(zcourseUser);
+			if (culist != null && culist.size() > 0) {
+			} else {
+				zcourseUserService.save(zcourseUser);
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * 课程观看记录

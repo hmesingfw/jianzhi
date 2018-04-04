@@ -96,7 +96,7 @@
 		  	<h1>友情链接：</h1>
 		  	<div class="bat3-div">
 		  		<c:forEach items="${aboutFriendship}" var="ship" end="3">
-			  		<a href="${ship.url}" target="_blank"><img src="${ship.filepath}"/></a>
+			  		<a href="${ship.url}" target="_blank" style="font-size: 1.5em;margin-left: 10px">${ship.name}<!-- <img src="${ship.filepath}"/> --></a>
 			  	</c:forEach>
 		  	</div>
 	  	</div>
@@ -109,13 +109,7 @@
 	
 	<jsp:include page="include/footer.jsp" /> 
 
-    <aside class="aside-operate">
-    	<ul> 
-    		<!-- <li><span>手机<br />app</span><i class="edufont e-icon-phone"></i><div class="code-box"><em></em><img src="img/wechat-code.png" /><p>下载移动app</p></div></li> -->
-    		<li onclick="window.location.href='http://wpa.qq.com/msgrd?v=3&amp;uin=800022936&amp;site=qq&amp;menu=yes'"><span>QQ<br />咨询</span><i class="edufont e-icon-wechat"></i></li>
-    		<li onclick="goTop()"><span>返回<br />头部</span><i class="edufont e-icon-top"></i></li>
-    	</ul>
-    </aside>   
+    <jsp:include page="include/aside.jsp" />  
 
 
 
@@ -132,7 +126,7 @@ $('#carousel').carousel({
 	object:'li',
 	scrollType:'slide',
 	width:'100%',
-	height:'500',
+	height:'350',
 	arrow:true,
 	autoPlay:true,
 	dots:1,

@@ -37,7 +37,9 @@
 		<thead>
 			<tr>
 				<th>标题</th>
+				<th>权重</th>
 				<th>链接地址</th>
+				<th>更新时间</th>
 				<th>备注信息</th>
 				<th>操作</th>
 			</tr>
@@ -51,7 +53,13 @@
 					</a>
 				</td>
 				<td>
+					${zcourseHour.weight}
+				</td>
+				<td>
 					${zcourseHour.url}
+				</td>
+				<td>
+					<fmt:formatDate value="${zcourseHour.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
 					${zcourseHour.remarks}

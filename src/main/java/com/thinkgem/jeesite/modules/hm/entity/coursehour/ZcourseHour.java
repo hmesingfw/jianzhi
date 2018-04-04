@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.hm.entity.coursehour;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 
 /**
  * 课时管理Entity
@@ -18,6 +19,7 @@ public class ZcourseHour extends DataEntity<ZcourseHour> {
 	private String courseid;		// 课程编号
 	private String title;		// 标题
 	private String url;		// 链接
+	private String weight;
 	
 	public ZcourseHour() {
 		super();
@@ -25,6 +27,18 @@ public class ZcourseHour extends DataEntity<ZcourseHour> {
 
 	public ZcourseHour(String id){
 		super(id);
+	}
+
+	
+	public String getWeight() {
+		if(!StringUtils.isNumeric(weight)){
+			weight = "0";
+		}
+		return weight;
+	}
+
+	public void setWeight(String weight) {
+		this.weight = weight;
 	}
 
 	@Length(min=0, max=64, message="课程编号长度必须介于 0 和 64 之间")
