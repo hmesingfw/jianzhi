@@ -28,7 +28,7 @@ public class ZcourseOrder extends DataEntity<ZcourseOrder> {
 	private String payid;		// 支付编号
 	private int buynum;			//支付次数
 	private String exptime;		//到期时间
-	
+	private String shoptype;	//购买类型  2课程购买
 	
 	private String width;		//课程时间进度
 	
@@ -41,6 +41,14 @@ public class ZcourseOrder extends DataEntity<ZcourseOrder> {
 	}
 
 	
+	public String getShoptype() {
+		return shoptype;
+	}
+
+	public void setShoptype(String shoptype) {
+		this.shoptype = shoptype;
+	}
+
 	public String getWidth() {
 		return width;
 	}

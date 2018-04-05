@@ -79,7 +79,32 @@
 			});
                      
         }
+        function moveSort(obj){
+        	var type = $(obj).attr('date-type');
+        	if('1'==type){
+        		$(obj).parent().find('a').show();
+        		$(obj).attr('date-type','2');
+        	}else{
+        		var alist = $(obj).parent().find('a');
+        		$.each(alist, function(i){
+        			if(i<5){
+        				$(this).show();
+        			}else{
+        				$(this).hide();
+        			}
+        		})
+        		$(obj).attr('date-type','1');
+        	}
+        }
+
 	</script>
+	<style type="text/css">
+		.myteam2 a{
+			 white-space: nowrap;
+			 margin-top: 5px;
+			 line-height: 36px;
+		}
+	</style>
 <body>
 	<jsp:include page="include/ifie.jsp" />
 	
@@ -102,26 +127,29 @@
   		<div class="myteam1">
   			<div class="myteam2">
   				<span>分类</span>
-	  			<c:forEach items="${sortlist1}" var="info">	  				 
-		  			<a href="javascript:;" onclick="sortclick('${info.id}','1')" ${info.id == classflyone?'class="myteamon"':'' } >${info.name}</a>
+	  			<c:forEach items="${sortlist1}" var="info" varStatus="list">	  					  				 
+		  			<a href="javascript:;" onclick="sortclick('${info.id}','1')" style="${list.index > 4 ? 'display: none;':''}" ${info.id == classflyone?'class="myteamon"':'' } >${info.name}</a>
 		  		</c:forEach>
+		  		<button onclick="moveSort(this)" type="button" date-type="1">▼</button>
   			</div>
   		</div>
 
   		<div class="myteam1">
   			<div class="myteam2">
   				<span>分类</span>
-	  			<c:forEach items="${sortlist2}" var="info">	  				 
-		  			<a href="javascript:;" onclick="sortclick('${info.id}','2')" ${info.id == classflytwo?'class="myteamon"':'' } >${info.name}</a>
+	  			<c:forEach items="${sortlist2}" var="info" varStatus="list">	  				 
+		  			<a href="javascript:;" onclick="sortclick('${info.id}','2')" style="${list.index > 4 ? 'display: none;':''}" ${info.id == classflytwo?'class="myteamon"':'' } >${info.name}</a>
 		  		</c:forEach>
+		  		<button onclick="moveSort(this)" type="button" date-type="1">▼</button>
   			</div>
   		</div>
   		<div class="myteam1">
   			<div class="myteam2">
   				<span>分类</span>
-	  			<c:forEach items="${sortlist3}" var="info">	  				 
-		  			<a href="javascript:;" onclick="sortclick('${info.id}','3')" ${info.id == classflythr?'class="myteamon"':'' } >${info.name}</a>
+	  			<c:forEach items="${sortlist3}" var="info" varStatus="list">	  				 
+		  			<a href="javascript:;" onclick="sortclick('${info.id}','3')" style="${list.index > 4 ? 'display: none;':''}" ${info.id == classflythr?'class="myteamon"':'' } >${info.name}</a>
 		  		</c:forEach>
+		  		<button onclick="moveSort(this)" type="button" date-type="1">▼</button>
   			</div>
   		</div>
   		
@@ -157,8 +185,8 @@
 
 							<div class="course-list-title"><a href="${ctxF}/coursedetail?id=${info.id}">${info.title}</a></div>
 							<div class="course-list-info" style="display: none;">${info.teacher}</div> 
-							<div class="reg3"><p>${info.introduce}</p></div>
-							<!-- <div class="course-list-price">
+							<div class="reg3"><p>${fns:abbr(info.introduce,250)}	</p></div>
+							<div class="course-list-price">
 								<span>
 									<c:if test="${info.type == 1}">
 										免费
@@ -167,7 +195,7 @@
 										<font>¥</font>${info.price}
 									</c:if>									
 								</span>
-							</div> -->
+							</div>
 							<div class="course-list-button"><a href="${ctxF}/coursedetail?id=${info.id}">马上学习</a></div>
 							
 						</li>

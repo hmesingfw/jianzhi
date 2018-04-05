@@ -45,26 +45,52 @@
 					<ul class="user2-ul1">
 
 						<c:forEach items="${page.list}" var="info">
-							<li>
-								<div class="user2-lt">
-									<%-- <img src="${fns:getCourseSort(info.courseid).img}" /> --%>
-								</div>
-								<div class="user2-rt">
-									<h1>${fns:getCourseSort(info.courseid).name}</h1>
-									<p>创建时间：
-										<fmt:formatDate value="${info.createDate}" pattern="yyyy-MM-dd"/>
-									</p>
-									<div class="userxian">
-										购买状态：${fns:getDictLabel(info.paystatus, 'pay_status', '')}
-									</div>
-								</div>
-								<c:if test="${info.paystatus == 1}">
-									<a href="${ctxF}/gotopaycourse?type=2&id=${info.courseid}" class="usercuo" style="margin-top: 22px;">
-										<button class="layui-btn layui-btn-normal" type="button">购买</button>
-									</a>								
-								</c:if>
-							
-							</li>
+							<c:choose>  
+								<c:when test="${info.shoptype == 2}"> 
+									<li>
+										<div class="user2-lt">
+											<img src="${fns:getCourseSort(info.courseid).img}" />
+										</div>
+										<div class="user2-rt">
+											<h1>${fns:getCourse(info.courseid).title}</h1>
+											<p>创建时间：
+												<fmt:formatDate value="${info.createDate}" pattern="yyyy-MM-dd"/>
+											</p>
+											<div class="userxian">
+												购买状态：${fns:getDictLabel(info.paystatus, 'pay_status', '')}
+											</div>
+										</div>
+										<c:if test="${info.paystatus == 1}">
+											<a href="${ctxF}/gotopaycourse?id=${info.courseid}" class="usercuo" style="margin-top: 22px;">
+												<button class="layui-btn layui-btn-normal" type="button">购买</button>
+											</a>								
+										</c:if>
+									
+									</li>
+								</c:when>
+								<c:otherwise>    
+									<li>
+										<div class="user2-lt">
+											<%-- <img src="${fns:getCourseSort(info.courseid).img}" /> --%>
+										</div>
+										<div class="user2-rt">
+											<h1>${fns:getCourseSort(info.courseid).name}</h1>
+											<p>创建时间：
+												<fmt:formatDate value="${info.createDate}" pattern="yyyy-MM-dd"/>
+											</p>
+											<div class="userxian">
+												购买状态：${fns:getDictLabel(info.paystatus, 'pay_status', '')}
+											</div>
+										</div>
+										<c:if test="${info.paystatus == 1}">
+											<a href="${ctxF}/gotopaycourse?type=2&id=${info.courseid}" class="usercuo" style="margin-top: 22px;">
+												<button class="layui-btn layui-btn-normal" type="button">购买</button>
+											</a>								
+										</c:if>
+									
+									</li>
+   								</c:otherwise>  
+							</c:choose>
 						</c:forEach>	
 					</ul>
 					<div class="pages">

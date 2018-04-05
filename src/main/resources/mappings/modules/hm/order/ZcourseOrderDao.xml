@@ -6,6 +6,7 @@
 		a.id AS "id",
 		a.courseid AS "courseid",
 		a.userid AS "userid",
+		a.shoptype AS "shoptype",
 		a.paytype AS "paytype",
 		a.paytime AS "paytime",
 		a.payprice AS "payprice",
@@ -44,6 +45,9 @@
 			</if>
 			<if test="userid != null and userid != ''">
 				AND a.userid = #{userid}
+			</if>
+			<if test="shoptype != null and shoptype != ''">
+				AND a.shoptype = #{shoptype}
 			</if>
 			<if test="paytype != null and paytype != ''">
 				AND a.paytype = #{paytype}
@@ -115,6 +119,7 @@
 			id,
 			courseid,
 			userid,
+			shoptype,
 			paytype,
 			paytime,
 			payprice,
@@ -132,6 +137,7 @@
 			#{id},
 			#{courseid},
 			#{userid},
+			#{shoptype},
 			#{paytype},
 			#{paytime},
 			#{payprice},
@@ -152,6 +158,7 @@
 		UPDATE zcourse_order SET 	
 			courseid = #{courseid},
 			userid = #{userid},
+			shoptype = #{shoptype},
 			paytype = #{paytype},
 			paytime = #{paytime},
 			payprice = #{payprice},

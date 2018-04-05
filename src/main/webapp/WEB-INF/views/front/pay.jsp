@@ -30,20 +30,30 @@
 	<div class="clear blank20"></div>
     <div class="page-width page-width11" style="width: 800px;">
 		<div class="pay1 mypay">
-			<label class="pay1-la2">专业名1</label>
+			<label class="pay1-la2">专业名</label>
 			<label class="pay1-la3">有效期</label>
 			<label class="pay1-la4">实付</label>
 		</div>
 
-
-		<div class="pay1">
+		<c:if test="${type == 1}">
+			<div class="pay1">
+				<label class="pay1-la2">${zcourse.title}</label>
+				<label class="pay1-la3">${fns:getCourseSort(zcourse.parentid).validity}(天)</label>
+				<label class="pay1-la4">￥${zcourse.price}</label>
+			</div>
+		</c:if>
+		
+		<c:if test="${type != 1}">
+			<div class="pay1">
 			<label class="pay1-la2">${fns:getCourseSort(id).name}</label>
 			<label class="pay1-la3">${fns:getCourseSort(id).validity}(天)</label>
 			<label class="pay1-la4">￥${fns:getCourseSort(id).price}</label>
 		</div>
+		</c:if>
 
 		 
   		<form action="${ctxF }/payCourse" id="submitForm" method="post">
+  			<input type="hidden" name="type" value="${type}">
   			<input type="hidden" name="id" value="${id}">
 	  		<div style="position: relative;height: 60px;line-height: 60px;text-align: center;">
 	  			<button class="layui-btn layui-btn-normal">结算</button>

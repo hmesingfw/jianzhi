@@ -127,11 +127,11 @@ public class FrontController {
 	// 用户课程观看记录
 	@Autowired
 	private ZcourseUserService zcourseUserService;
-	//测试随机题配置
+	// 测试随机题配置
 	@Autowired
 	private ZtestRandomService ztestRandomService;
-	
-	//课时管理
+
+	// 课时管理
 	@Autowired
 	private ZcourseHourService zcourseHourService;
 
@@ -261,14 +261,14 @@ public class FrontController {
 			zdocSort.setParent(sort1);
 			docsort = zdocSortService.findList(zdocSort);
 			model.addAttribute("docsort2", docsort);
-			if(StringUtils.isBlank(sort2)){
+			if (StringUtils.isBlank(sort2)) {
 				for (ZdocSort zdocSort2 : docsort) {
 					sortlist.add(zdocSort2.getId());
-	
+
 					// 第三级
 					zdocSort.setParent(zdocSort2.getId());
 					List<ZdocSort> sortlist12 = zdocSortService.findList(zdocSort);
-					if(StringUtils.isBlank(sort3)){
+					if (StringUtils.isBlank(sort3)) {
 						for (ZdocSort zcourseSort2 : sortlist12) {
 							sortlist.add(zcourseSort2.getId());
 						}
@@ -490,14 +490,12 @@ public class FrontController {
 			} else {
 				zuserService.save(zuser);
 				request.getSession().setAttribute("sessionMyinfo", zuser);
-//				model.addAttribute("msg", "注册成功");
-//				model.addAttribute("sessionMyinfo", zuser);
-//				return "redirect:myinfo";
-				
-				
-				
-				//判断是否列表页过来还是详情页     2为列表页面				
-				model.addAttribute("id", zuser.getMajor());				
+				// model.addAttribute("msg", "注册成功");
+				// model.addAttribute("sessionMyinfo", zuser);
+				// return "redirect:myinfo";
+
+				// 判断是否列表页过来还是详情页 2为列表页面
+				model.addAttribute("id", zuser.getMajor());
 				return "front/pay";
 			}
 
@@ -595,25 +593,25 @@ public class FrontController {
 
 		return "front/myDoc";
 	}
-	
+
 	/**
 	 * 我的专业试题
 	 */
 	@RequestMapping(value = "myTest")
-	public String myTest(HttpServletRequest request, HttpServletResponse response, Model model){
+	public String myTest(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Zuser user = (Zuser) request.getSession().getAttribute("sessionMyinfo");
 		if (user == null || StringUtils.isBlank(user.getId())) {
 			model.addAttribute("msg", "请登陆.");
 			return "front/login";
 		}
-		
+
 		Ztest test = new Ztest();
 		test.setParentid(user.getMajor());
 		test.setDelFlag("0");
-		
+
 		Page<Ztest> page = ztestService.findPage(new Page<Ztest>(request, response), test);
 		model.addAttribute("page", page);
-		
+
 		return "front/myTest";
 	}
 
@@ -635,7 +633,7 @@ public class FrontController {
 		// 1为内部用户 为内部用户添加课程
 		if ("1".equals(user.getType())) {
 			ZcourseSort sort = zcourseSortService.get(user.getMajor());
-			
+
 			ZcourseOrder order = new ZcourseOrder();
 			order.setUserid(user.getId());
 			order.setPaystatus("4");
@@ -678,93 +676,99 @@ public class FrontController {
 			model.addAttribute("msg", "请登陆.");
 			return "front/login";
 		}
-//		ZcourseOrder order = new ZcourseOrder();
-//		order.setUserid(user.getId());
-//		order.setDelFlag("0");
-////		order.setPaystatus("2");
-//		List<ZcourseOrder> status4list = zcourseOrderService.findList(order);
-//		//添加课程学习记录
-//		for (ZcourseOrder zcourseOrder : status4list) {
-//			if("2".equals(zcourseOrder.getPaystatus()) || "4".equals(zcourseOrder.getPaystatus())){
-//				
-//				Zcourse zcourse = new Zcourse();
-//				zcourse.setParentid(zcourseOrder.getCourseid());
-//				zcourse.setDelFlag("0");
-//				List<Zcourse> courselist = zcourseService.findList(zcourse);			//当前专业的课程
-//						
-////				for (Zcourse zcourse2 : courselist) {
-////					// 课程观看时间记录
-////					ZcourseUser zcourseUser = new ZcourseUser();
-////					zcourseUser.setUserid(user.getId());
-////					zcourseUser.setCourseid(zcourse2.getId());
-////					zcourseUser.setDelFlag("0");
-////					zcourseUser.setUsertime("0");
-////					List<ZcourseUser> culist = zcourseUserService.findList(zcourseUser);
-////					if (culist != null && culist.size() > 0) {
-////					} else {
-////						zcourseUserService.save(zcourseUser);
-////					}
-////				}				
-//			}
-//		}
-		
+		// ZcourseOrder order = new ZcourseOrder();
+		// order.setUserid(user.getId());
+		// order.setDelFlag("0");
+		//// order.setPaystatus("2");
+		// List<ZcourseOrder> status4list = zcourseOrderService.findList(order);
+		// //添加课程学习记录
+		// for (ZcourseOrder zcourseOrder : status4list) {
+		// if("2".equals(zcourseOrder.getPaystatus()) ||
+		// "4".equals(zcourseOrder.getPaystatus())){
+		//
+		// Zcourse zcourse = new Zcourse();
+		// zcourse.setParentid(zcourseOrder.getCourseid());
+		// zcourse.setDelFlag("0");
+		// List<Zcourse> courselist = zcourseService.findList(zcourse);
+		// //当前专业的课程
+		//
+		//// for (Zcourse zcourse2 : courselist) {
+		//// // 课程观看时间记录
+		//// ZcourseUser zcourseUser = new ZcourseUser();
+		//// zcourseUser.setUserid(user.getId());
+		//// zcourseUser.setCourseid(zcourse2.getId());
+		//// zcourseUser.setDelFlag("0");
+		//// zcourseUser.setUsertime("0");
+		//// List<ZcourseUser> culist =
+		// zcourseUserService.findList(zcourseUser);
+		//// if (culist != null && culist.size() > 0) {
+		//// } else {
+		//// zcourseUserService.save(zcourseUser);
+		//// }
+		//// }
+		// }
+		// }
+
 		ZcourseOrder zcourseOrder = new ZcourseOrder();
 		zcourseOrder.setUserid(user.getId());
 		Page<ZcourseOrder> pages = new Page<ZcourseOrder>();
 		pages.setPageSize(10);
-		
 
 		Page<ZcourseOrder> page = zcourseOrderService.findPage(pages, zcourseOrder);
 		for (ZcourseOrder order : page.getList()) {
 			int sche = courseSchedule(order.getCourseid(), user.getId());
-			order.setWidth(sche+"");
+			order.setWidth(sche + "");
 		}
 		model.addAttribute("page", page);
-		
-		
+
 		return "front/myCourseUser";
 	}
 
 	/**
 	 * 课程学习进度
-	 * @param courseid			课程编号	
-	 * @param userid		用户编号
-	 * @return				返回进度
+	 * 
+	 * @param courseid
+	 *            课程编号
+	 * @param userid
+	 *            用户编号
+	 * @return 返回进度
 	 */
-	public int courseSchedule(String courseid, String userid){
-		double ctime = 0;		//课程学习总时长
-		double utime = 0;		//课程学习时长
-		
+	public int courseSchedule(String courseid, String userid) {
+		double ctime = 0; // 课程学习总时长
+		double utime = 0; // 课程学习时长
+
 		ZcourseHour hour = new ZcourseHour();
 		hour.setCourseid(courseid);
 		hour.setDelFlag("0");
-		List<ZcourseHour> hourlist = zcourseHourService.findListByCourseid(hour);			//当前课程的课时
-		
+		List<ZcourseHour> hourlist = zcourseHourService.findListByCourseid(hour); // 当前课程的课时
+
 		for (ZcourseHour zcourseHour : hourlist) {
 			ZcourseUser cu = new ZcourseUser();
 			cu.setCourseid(zcourseHour.getId());
 			cu.setUserid(userid);
 			cu.setDelFlag("0");
-			List<ZcourseUser> userlist = zcourseUserService.findListByCourseUser(cu); 		//当前课时的学习进度
-			
+			List<ZcourseUser> userlist = zcourseUserService.findListByCourseUser(cu); // 当前课时的学习进度
+
 			for (ZcourseUser zcourseUser : userlist) {
-				 double cctime = StringUtils.isNumeric(zcourseUser.getCoursetime()) ? Double.parseDouble(zcourseUser.getCoursetime()) : 0;		//当前课时总长度
-				 double uutime = StringUtils.isNumeric(zcourseUser.getUsertime()) ? Double.parseDouble(zcourseUser.getUsertime()) : 0;		//当前课时学习长度 
-				 
-				 utime += uutime;
-				 ctime += cctime;	 
+				double cctime = StringUtils.isNumeric(zcourseUser.getCoursetime())
+						? Double.parseDouble(zcourseUser.getCoursetime()) : 0; // 当前课时总长度
+				double uutime = StringUtils.isNumeric(zcourseUser.getUsertime())
+						? Double.parseDouble(zcourseUser.getUsertime()) : 0; // 当前课时学习长度
+
+				utime += uutime;
+				ctime += cctime;
 			}
 		}
-		double sche = utime/ctime * 100;
+		double sche = utime / ctime * 100;
 		sche = Math.floor(sche);
-		System.out.println(sche+"__________________________________________");
-		if(sche>100){
+		System.out.println(sche + "__________________________________________");
+		if (sche > 100) {
 			return 100;
-		}else{
-			return (int)sche;
+		} else {
+			return (int) sche;
 		}
 	}
-	
+
 	/**
 	 * 课程列表
 	 * 
@@ -772,7 +776,7 @@ public class FrontController {
 	@RequestMapping(value = "courseList")
 	public String courseList(Zcourse zcourse, HttpServletRequest request, HttpServletResponse response, Model model) {
 		model.addAttribute("mendId", "2");
-		
+
 		Zuser user = (Zuser) request.getSession().getAttribute("sessionMyinfo");
 		if (user == null || StringUtils.isBlank(user.getId())) {
 			model.addAttribute("msg", "请登陆.");
@@ -784,10 +788,10 @@ public class FrontController {
 		String sort1 = request.getParameter("classflyone");
 		String sort2 = request.getParameter("classflytwo");
 		String sort3 = request.getParameter("classflythr");
-		
-		//当前专业是否购买
-		String currentclick = request.getParameter("currentclick");			//当前点击的专业
-		if(StringUtils.isNotBlank(currentclick)){
+
+		// 当前专业是否购买
+		String currentclick = request.getParameter("currentclick"); // 当前点击的专业
+		if (StringUtils.isNotBlank(currentclick)) {
 			ZcourseOrder zcourseOrder = new ZcourseOrder();
 			zcourseOrder.setCourseid(currentclick);
 			zcourseOrder.setUserid(user.getId());
@@ -795,9 +799,10 @@ public class FrontController {
 			List<ZcourseOrder> orderlist = zcourseOrderService.findMyorderByid(zcourseOrder);
 			if (orderlist != null && orderlist.size() == 1) {
 				zcourseOrder = orderlist.get(0);
-				int daynum = StringUtils.isNumeric(zcourseOrder.getExptime()) ? Integer.parseInt(zcourseOrder.getExptime())	: 0;		
+				int daynum = StringUtils.isNumeric(zcourseOrder.getExptime())
+						? Integer.parseInt(zcourseOrder.getExptime()) : 0;
 				// 当前专业是否到期
-				if (ZcourseSortUtils.isExp(zcourseOrder.getPaytime(), daynum)) {			
+				if (ZcourseSortUtils.isExp(zcourseOrder.getPaytime(), daynum)) {
 					if ("4".equals(zcourseOrder.getPaystatus())) { // 是否是内部用户的专业
 						model.addAttribute("ispay", "yespay");
 						System.out.println("_____________________________________1");
@@ -819,10 +824,8 @@ public class FrontController {
 			}
 		}
 		model.addAttribute("currentclick", currentclick);
-		//end
-		
-		
-		
+		// end
+
 		ZcourseSort sort = new ZcourseSort();
 		sort.setDelFlag("0");
 
@@ -838,14 +841,14 @@ public class FrontController {
 			sortlist1 = zcourseSortService.findList(sort);
 			model.addAttribute("sortlist2", sortlist1);
 
-			if(StringUtils.isBlank(sort2)){
+			if (StringUtils.isBlank(sort2)) {
 				for (ZcourseSort zcourseSort : sortlist1) {
 					sortlist.add(zcourseSort.getId());
-	
+
 					// 第三级
 					sort.setParentId(zcourseSort.getId());
 					List<ZcourseSort> sortlist12 = zcourseSortService.findList(sort);
-					if(StringUtils.isBlank(sort3)){
+					if (StringUtils.isBlank(sort3)) {
 						for (ZcourseSort zcourseSort2 : sortlist12) {
 							sortlist.add(zcourseSort2.getId());
 						}
@@ -909,37 +912,85 @@ public class FrontController {
 		zcourseOrder.setUserid(user.getId());
 		zcourseOrder.setDelFlag("0");
 		List<ZcourseOrder> orderlist = zcourseOrderService.findMyorderByid(zcourseOrder);
-
+		System.out.println("___________________________________");
 		if (orderlist != null && orderlist.size() == 1) {
 			zcourseOrder = orderlist.get(0);
 
 			int daynum = StringUtils.isNumeric(zcourseOrder.getExptime()) ? Integer.parseInt(zcourseOrder.getExptime())	: 0;
 
-			System.out.println("paystatus_________________"+zcourseOrder.getPaystatus());
+			System.out.println("paystatus_________________" + zcourseOrder.getPaystatus());
 			// 当前专业是否到期
-			if (ZcourseSortUtils.isExp(zcourseOrder.getPaytime(), daynum)) {			
+			if (ZcourseSortUtils.isExp(zcourseOrder.getPaytime(), daynum)) {
 				if ("4".equals(zcourseOrder.getPaystatus())) { // 是否是内部用户的专业
-					System.out.println("5");
+					System.out.println("5zzzz");
 					model.addAttribute("ispay", "yespay");
 
 					// 是否支付成功
 				} else if ("2".equals(zcourseOrder.getPaystatus())) {
-					System.out.println("1");
+					System.out.println("1zzzzzzz");
 					model.addAttribute("ispay", "yespay");
 				} else {
-					System.out.println("2");
-					model.addAttribute("ispay", "nopay");
+					System.out.println("2zzzzzzzzzzz");
+					model.addAttribute("ispay", isCoursePay(zcourse.getId(), user.getId()));
 				}
+			} else if ("yespay".equals(isCoursePay(zcourse.getId(), user.getId()))) {
+				model.addAttribute("ispay", "yespay");
 			} else {
-				System.out.println("2");
-				model.addAttribute("ispay", "nopay");
+				System.out.println("3zzzzzzzz");
+				model.addAttribute("ispay", isCoursePay(zcourse.getId(), user.getId()));
 			}
+		} else if ("yespay".equals(isCoursePay(zcourse.getId(), user.getId()))) {
+			System.out.println("6zzzzzzzz");
+			model.addAttribute("ispay", "yespay");
+
 		} else {
-			System.out.println("4");
+			System.out.println("4zzzzzzzz");
 			model.addAttribute("ispay", "nopay");
 		}
 		model.addAttribute("zcourse", zcourse);
 		return "front/coursedetail";
+	}
+
+	/**
+	 * 当前课程是否购买
+	 * 
+	 * @param zcourse
+	 * @return
+	 */
+	public String isCoursePay(String courseid, String userid) {
+		// 当前专业是否购买
+		ZcourseOrder zcourseOrder = new ZcourseOrder();
+		zcourseOrder.setCourseid(courseid);
+		zcourseOrder.setUserid(userid);
+		zcourseOrder.setDelFlag("0");
+		zcourseOrder.setShoptype("2");
+		List<ZcourseOrder> orderlist = zcourseOrderService.findList(zcourseOrder);
+		if (orderlist != null && orderlist.size() == 1) {
+			zcourseOrder = orderlist.get(0);
+
+			int daynum = StringUtils.isNumeric(zcourseOrder.getExptime()) ? Integer.parseInt(zcourseOrder.getExptime())	: 0;
+
+			System.out.println("paystatus_________________" + zcourseOrder.getPaystatus());
+			// 当前专业是否到期
+			if (ZcourseSortUtils.isExp(zcourseOrder.getPaytime(), daynum)) {
+				if ("4".equals(zcourseOrder.getPaystatus())) { // 是否是内部用户的专业
+					System.out.println("5");
+					return "yespay";
+					// 是否支付成功
+				} else if ("2".equals(zcourseOrder.getPaystatus())) {
+					System.out.println("1");
+					return "yespay";
+				} else {
+					System.out.println("2");
+					return "nopay";
+				}
+			} else {
+				System.out.println("2");
+				return "nopay";
+			}
+		} else {
+			return "nopay";
+		}
 	}
 
 	/**
@@ -960,20 +1011,22 @@ public class FrontController {
 		}
 		String type = request.getParameter("type");
 		String id = request.getParameter("id");
-		
-		//判断是否列表页过来还是详情页     2为列表页面
-		if("2".equals(type)){
+
+		// 判断是否列表页过来还是详情页 2为列表页面
+		if ("2".equals(type)) {
 			model.addAttribute("id", id);
-		}else{				
+		} else {
 			zcourse = zcourseService.get(zcourse.getId());
-			model.addAttribute("id", zcourse.getParentid());
+			model.addAttribute("type", "1");
+			model.addAttribute("id", zcourse.getId());
+			model.addAttribute("zcourse", zcourse);
 		}
 		return "front/pay";
 	}
 
 	/**
-	 * 课程购买
-	 * id 专业ID
+	 * 课程购买 id 专业ID
+	 * 
 	 * @param request
 	 * @return
 	 */
@@ -987,30 +1040,67 @@ public class FrontController {
 				model.addAttribute("msg", "请登陆.");
 				return "front/login";
 			}
-//			Zcourse zcourse = zcourseService.get(id);
+			// Zcourse zcourse = zcourseService.get(id);
 
-						
+			String type = request.getParameter("type");
+			
 			long orderid = new Date().getTime();
-			ZcourseSort sort = zcourseSortService.get(id);
-
-			// 查询订单
+			String actualcost = "";   // 价格
+			String body = "";		 //商品描述
 			ZcourseOrder zcourseOrder = new ZcourseOrder();
-			zcourseOrder.setCourseid(id);
-			zcourseOrder.setUserid(user.getId());
-			zcourseOrder.setDelFlag("0");
-			zcourseOrder.setPayprice(sort.getPrice());
-			zcourseOrder.setExptime(sort.getValidity());
-			zcourseOrder.setCourseprice(sort.getPrice());
-			List<ZcourseOrder> orderlist = zcourseOrderService.findMyorderByid(zcourseOrder);
+			List<ZcourseOrder> orderlist = new ArrayList<>();
+			//1为课程购买    2为专业购买
+			if("1".equals(type)){			
+				
+				Zcourse zcourse = zcourseService.get(id);									//课程
+				ZcourseSort sort = zcourseSortService.get(zcourse.getParentid());			//专业
+				zcourseOrder.setCourseid(id);
+				zcourseOrder.setShoptype("2");
+				zcourseOrder.setUserid(user.getId());
+				zcourseOrder.setDelFlag("0");
+				zcourseOrder.setPayprice(zcourse.getPrice());
+				zcourseOrder.setExptime(sort.getValidity());
+				zcourseOrder.setCourseprice(zcourse.getPrice());
+				actualcost = zcourse.getPrice(); 
+				body = zcourse.getTitle();
+				orderlist = zcourseOrderService.findMyorderByid(zcourseOrder);
+				
+				System.out.println(zcourse.getPrice()+"_____________________________________________");
+				//这里是免费课程
+				if("0".equals(zcourse.getPrice()) || "0.00".equals(zcourse.getPrice())){
+					zcourseOrder.setPaystatus("2");
+					zcourseOrder.setPayprice("0");
+					zcourseOrder.setPaytime(new Date());
+					zcourseOrder.setCourseprice("0");
+					zcourseOrder.setPaytype("3");
+					zcourseOrderService.save(zcourseOrder);
+					return "redirect:myCourseUser";
+				}
+				
+			}else{				
+			
+				ZcourseSort sort = zcourseSortService.get(id);			
+				// 查询订单				
+				zcourseOrder.setCourseid(id);
+				zcourseOrder.setUserid(user.getId());
+				zcourseOrder.setDelFlag("0");
+				zcourseOrder.setPayprice(sort.getPrice());
+				zcourseOrder.setExptime(sort.getValidity());
+				zcourseOrder.setCourseprice(sort.getPrice());
+				actualcost = sort.getPrice(); 
+				body = sort.getName();
+				orderlist = zcourseOrderService.findMyorderByid(zcourseOrder);
+			}			
 			if (orderlist != null && orderlist.size() > 0) {
 				zcourseOrder = orderlist.get(0);
-				
+
 				// 当前专业是否到期
-				int daynum = StringUtils.isNumeric(zcourseOrder.getExptime()) ? Integer.parseInt(zcourseOrder.getExptime())	: 0;
+				int daynum = StringUtils.isNumeric(zcourseOrder.getExptime())
+						? Integer.parseInt(zcourseOrder.getExptime()) : 0;
 				if (ZcourseSortUtils.isExp(zcourseOrder.getPaytime(), daynum)) {
-					zcourseOrder.setBuynum(zcourseOrder.getBuynum()+1);
-				}				
-				
+					zcourseOrder.setBuynum(zcourseOrder.getBuynum() + 1);
+				}
+
 				zcourseOrder.setPayid(orderid + "");
 				zcourseOrder.setPaytype("1");
 				zcourseOrderService.save(zcourseOrder);
@@ -1019,8 +1109,8 @@ public class FrontController {
 				zcourseOrder.setPaytype("1");
 				zcourseOrderService.save(zcourseOrder);
 			}
-			String actualcost = sort.getPrice(); // 价格
-			System.out.println("total__________________________"+actualcost);
+//			String actualcost = sort.getPrice(); // 价格
+			System.out.println("total__________________________" + actualcost);
 			/** 支付宝支付 */
 			// 获得初始化的AlipayClient
 			AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfig.gatewayUrl, AlipayConfig.app_id,
@@ -1032,7 +1122,7 @@ public class FrontController {
 			alipayRequest.setReturnUrl(AlipayConfig.return_url);
 			alipayRequest.setNotifyUrl(AlipayConfig.notify_url);
 			alipayRequest.setBizContent("{\"out_trade_no\":\"" + orderid + "\"," + "\"total_amount\":\"" + actualcost
-					+ "\"," + "\"subject\":\"" + sort.getName() + "\"," + "\"body\":\"" + sort.getName() + "\","
+					+ "\"," + "\"subject\":\"" + body + "\"," + "\"body\":\"" + body + "\","
 					+ "\"product_code\":\"FAST_INSTANT_TRADE_PAY\"}");
 			// 请求
 			String result = alipayClient.pageExecute(alipayRequest).getBody();
@@ -1058,13 +1148,13 @@ public class FrontController {
 	/**
 	 * 支付宝充值回调
 	 */
-	
+
 	@ResponseBody
 	@RequestMapping(value = "alipayanotify")
 	public String alipayaNotifyOrder(HttpServletRequest request, HttpServletResponse response, Model model) {
 		System.out.println("支付宝回调：----------------------------------");
-		PrintWriter out = null;		
-		try {			
+		PrintWriter out = null;
+		try {
 			/** 设置回传格式 */
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("text/html;charset=UTF-8");
@@ -1141,7 +1231,7 @@ public class FrontController {
 				out.close();
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -1185,26 +1275,25 @@ public class FrontController {
 			zcourseOrder.setPaytype("3");
 			zcourseOrderService.save(zcourseOrder);
 		}
-		
-		//课时列表
+
+		// 课时列表
 		ZcourseHour zcourseHour = new ZcourseHour();
 		zcourseHour.setCourseid(zcourse.getId());
 		List<ZcourseHour> hourlist = zcourseHourService.findList(zcourseHour);
-		
 
 		// 课程观看时间记录
-//		ZcourseUser zcourseUser = new ZcourseUser();
-//		zcourseUser.setUserid(user.getId());
-//		zcourseUser.setCourseid(zcourse.getId());
-//		zcourseUser.setDelFlag("0");
-//		zcourseUser.setUsertime("0");
-//		List<ZcourseUser> culist = zcourseUserService.findList(zcourseUser);
-//		if (culist != null && culist.size() > 0) {
-//		} else {
-//			zcourseUserService.save(zcourseUser);
-//		}
+		// ZcourseUser zcourseUser = new ZcourseUser();
+		// zcourseUser.setUserid(user.getId());
+		// zcourseUser.setCourseid(zcourse.getId());
+		// zcourseUser.setDelFlag("0");
+		// zcourseUser.setUsertime("0");
+		// List<ZcourseUser> culist = zcourseUserService.findList(zcourseUser);
+		// if (culist != null && culist.size() > 0) {
+		// } else {
+		// zcourseUserService.save(zcourseUser);
+		// }
 		zcourse = zcourseService.get(zcourse.getId());
-		
+
 		model.addAttribute("zcourse", zcourse);
 		model.addAttribute("hourlist", hourlist);
 		return "front/lookvideo";
@@ -1216,7 +1305,8 @@ public class FrontController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "createCourseuser")
-	public String createCourseuser(@RequestParam(required = false, value = "courseid") String courseid,HttpServletRequest request, HttpServletResponse response) {
+	public String createCourseuser(@RequestParam(required = false, value = "courseid") String courseid,
+			HttpServletRequest request, HttpServletResponse response) {
 		Zuser user = (Zuser) request.getSession().getAttribute("sessionMyinfo");
 		if (user != null && !StringUtils.isBlank(user.getId())) {
 			// 课程观看时间记录
@@ -1310,15 +1400,15 @@ public class FrontController {
 			sort.setParentId(sort1);
 			sortlist1 = zcourseSortService.findList(sort);
 			model.addAttribute("sortlist2", sortlist1);
-			
-			if(StringUtils.isBlank(sort2)){
+
+			if (StringUtils.isBlank(sort2)) {
 				for (ZcourseSort zcourseSort : sortlist1) {
 					sortlist.add(zcourseSort.getId());
-	
+
 					// 第三级
 					sort.setParentId(zcourseSort.getId());
 					List<ZcourseSort> sortlist12 = zcourseSortService.findList(sort);
-					if(StringUtils.isBlank(sort3)){
+					if (StringUtils.isBlank(sort3)) {
 						for (ZcourseSort zcourseSort2 : sortlist12) {
 							sortlist.add(zcourseSort2.getId());
 						}
@@ -1332,7 +1422,7 @@ public class FrontController {
 			sort.setParentId(sort2);
 			sortlist1 = zcourseSortService.findList(sort);
 			model.addAttribute("sortlist3", sortlist1);
-			if(!StringUtils.isNoneBlank(sort3)){
+			if (!StringUtils.isNoneBlank(sort3)) {
 				for (ZcourseSort zcourseSort : sortlist1) {
 					sortlist.add(zcourseSort.getId());
 				}
@@ -1389,13 +1479,13 @@ public class FrontController {
 		ztestQuestion.setDelFlag("0");
 		List<ZtestQuestion> testquestionlist = ztestQuestionDao.findListLeftquestion(ztestQuestion);
 
-		if(testquestionlist!=null && testquestionlist.size()>0){
-			
-		}else{			
+		if (testquestionlist != null && testquestionlist.size() > 0) {
+
+		} else {
 			model.addAttribute("isnottest", "yes");
 			return "front/questionlist";
 		}
-			// 添加用户需要考试题的记录
+		// 添加用户需要考试题的记录
 		int sort = 1;
 		for (ZtestQuestion ztestQuestion2 : testquestionlist) {
 			ZuserTest insertTest = new ZuserTest();
@@ -1413,7 +1503,7 @@ public class FrontController {
 		if (StringUtils.isNumeric(time)) {
 			model.addAttribute("time", Integer.parseInt(time) * 60);
 		}
-		
+
 		return "front/test";
 	}
 
@@ -1435,7 +1525,7 @@ public class FrontController {
 
 		String type = request.getParameter("type"); // 专业类型
 		ZtestRandom ztestRandom = ztestRandomService.get(type);
-						
+
 		Ztest test = new Ztest();
 		test.setTitle("随机测试题");
 		test.setTesttime("60");
@@ -1447,43 +1537,44 @@ public class FrontController {
 			usertest.setTestid(ztest.getId());
 			zuserTestService.deleteUesrtest(usertest); // 删除用户考试记录
 		}
-//		test.setSum(value);
+		// test.setSum(value);
 		test.setParentid(type);
 		ztestService.save(test); // 创建试题
 
 		model.addAttribute("testid", test.getId());
 		model.addAttribute("test", test);
 
-			
 		List<Zquestion> questionlist = new ArrayList<>();
 		// 查找出当前试卷的所有题目
-		Zquestion zquestion = new Zquestion();		
+		Zquestion zquestion = new Zquestion();
 		zquestion.setParentid(type);
-		
-		//单选题 
-		zquestion.setLimit(StringUtils.isNumeric(ztestRandom.getRadio()) ? Integer.parseInt(ztestRandom.getRadio()) : 0);
-		zquestion.setType("1");		 
+
+		// 单选题
+		zquestion
+				.setLimit(StringUtils.isNumeric(ztestRandom.getRadio()) ? Integer.parseInt(ztestRandom.getRadio()) : 0);
+		zquestion.setType("1");
 		List<Zquestion> qlist = zquestionService.findRandList(zquestion);
 		for (Zquestion zquestion2 : qlist) {
 			questionlist.add(zquestion2);
 		}
-		//多选题 
-		zquestion.setLimit(StringUtils.isNumeric(ztestRandom.getCheckbox()) ? Integer.parseInt(ztestRandom.getCheckbox()) : 0);
-		zquestion.setType("2");		
+		// 多选题
+		zquestion.setLimit(
+				StringUtils.isNumeric(ztestRandom.getCheckbox()) ? Integer.parseInt(ztestRandom.getCheckbox()) : 0);
+		zquestion.setType("2");
 		qlist = zquestionService.findRandList(zquestion);
 		for (Zquestion zquestion2 : qlist) {
 			questionlist.add(zquestion2);
 		}
-		//判断题
-		zquestion.setLimit(StringUtils.isNumeric(ztestRandom.getJudge()) ? Integer.parseInt(ztestRandom.getJudge()) : 0);
-		zquestion.setType("3");		
+		// 判断题
+		zquestion
+				.setLimit(StringUtils.isNumeric(ztestRandom.getJudge()) ? Integer.parseInt(ztestRandom.getJudge()) : 0);
+		zquestion.setType("3");
 		qlist = zquestionService.findRandList(zquestion);
 		for (Zquestion zquestion2 : qlist) {
 			questionlist.add(zquestion2);
 		}
-		
-		
-		if(questionlist!=null && questionlist.size()>0){
+
+		if (questionlist != null && questionlist.size() > 0) {
 			// 添加用户需要考试题的记录
 			int sort = 1;
 			for (Zquestion ztestQuestion2 : questionlist) {
@@ -1495,19 +1586,19 @@ public class FrontController {
 				sort++;
 				zuserTestService.save(insertTest);
 			}
-	
+
 			myTestlist(test.getId(), user.getId(), model, "yes");
-	
+
 			String time = test.getTesttime();
 			if (StringUtils.isNumeric(time)) {
 				model.addAttribute("time", Integer.parseInt(time) * 60);
 			}
-			return "front/test";					
-		}else{
+			return "front/test";
+		} else {
 			model.addAttribute("message", "当前专业下未分配测试题，请选择其实专业");
 			return "front/test";
 		}
-		
+
 	}
 
 	/**
@@ -1540,7 +1631,8 @@ public class FrontController {
 	/**
 	 * 当前测试题
 	 * 
-	 * @param usertestid	当前用户测试记录的编号
+	 * @param usertestid
+	 *            当前用户测试记录的编号
 	 * @param model
 	 */
 	public void currentTest(String usertestid, Model model) {
@@ -1556,11 +1648,11 @@ public class FrontController {
 			model.addAttribute("nextusertestid", nexttest.get(0).getId());
 		}
 
-		if(zquestion!=null && StringUtils.isNotBlank(zquestion.getId())){
+		if (zquestion != null && StringUtils.isNotBlank(zquestion.getId())) {
 			ZquestionAnswer zquestionAnswer = new ZquestionAnswer();
 			zquestionAnswer.setQuesId(zquestion.getId());
 			zquestionAnswer.setDelFlag("0");
-	
+
 			List<ZquestionAnswer> answerList = zquestionAnswerService.findList(zquestionAnswer);
 			model.addAttribute("answerList", answerList);
 		}
