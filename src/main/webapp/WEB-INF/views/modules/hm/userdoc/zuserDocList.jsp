@@ -28,7 +28,14 @@
 			 
 				<form:select path="userid" class="input-medium">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getZuserList()}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+					<form:options items="${fns:getZuserList()}" itemLabel="truename" itemValue="id" htmlEscape="false"/>
+				</form:select>
+			</li>
+			<li><label>身份证：</label>
+			 
+				<form:select path="userid" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getZuserList()}" itemLabel="idcode" itemValue="id" htmlEscape="false"/>
 				</form:select>
 			</li>
 			<li><label>文档：</label> 
@@ -46,7 +53,8 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>用户编号</th>
+				<th>用户姓名</th>
+				<th>身份证</th>
 				<th>文档编号</th>
 				<th>下载时间</th>
 				<th>备注信息</th>
@@ -58,8 +66,11 @@
 			<tr>
 				<td><a href="${ctx}/hm/userdoc/zuserDoc/form?id=${zuserDoc.id}">				 
 
-					${fns:getZuser(zuserDoc.userid).name}
+					${fns:getZuser(zuserDoc.userid).truename}
 				</a></td>
+				<td>
+					${fns:getZuser(zuserDoc.userid).idcode}
+				</td>
 				<td>
 					${fns:getDoc(zuserDoc.docid).title}
 				</td>

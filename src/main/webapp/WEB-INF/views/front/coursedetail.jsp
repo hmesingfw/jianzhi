@@ -30,7 +30,8 @@
 	                <div class="courseInfo-right">
 	                	<div class="name">		                	
 	                		${zcourse.title}
-	                	</div> 					 
+	                	</div> 					
+	                	<em style="display: block;font-size: 14px;color: #dc6868;margin-bottom:6px;">主讲老师：${zcourse.teacher}</em> 
 						${zcourse.introduce}	
 																	
 	                    <div class="price">	      

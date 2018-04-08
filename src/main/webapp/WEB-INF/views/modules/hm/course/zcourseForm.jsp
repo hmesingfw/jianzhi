@@ -77,8 +77,8 @@
 				<span style="margin-left: 40px;color: red">图片推荐尺寸 450*300</span>
 			</div>
 		</div>
-		<div class="control-group" style="display: none;">
-			<label class="control-label">老师名称：</label>
+		<div class="control-group">
+			<label class="control-label">老师介绍：</label>
 			<div class="controls">
 				<form:input path="teacher" htmlEscape="false" maxlength="100" class="input-xlarge "/>
 			</div>
@@ -100,7 +100,7 @@
 				<span style="margin-left: 40px;color: red">价格推荐格式 100.00</span>
 			</div>
 		</div>
-		<div class="control-group coursetype" style="display: none;">
+		<div class="control-group coursetype">
 			<label class="control-label">价格：</label>
 			<div class="controls">
 				<form:input path="price" htmlEscape="false" maxlength="20" class="input-xlarge "/>
@@ -108,7 +108,7 @@
 				<span style="margin-left: 40px;color: red">价格推荐格式 100.00</span>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group" style="display: none;">
 			<label class="control-label">播放地址：</label>
 			<div class="controls">
 				<form:input path="files" htmlEscape="false" maxlength="500" class="input-xlarge " />

@@ -75,8 +75,8 @@
                                                 <div class="ex-text-option ex-option-radio">
                                                     <c:forEach items="${answerList}" var="info" varStatus="list">
                                                         <label class="dx_button">
-                                                            <input type="${zquestion.type == 2?'checkbox':'radio'}" iscurret="${info.isCorrect}" name="questioninfo" value="${info.id}" >${info.answer}
-                                                        </label>
+                                                            <input type="${zquestion.type == 2?'checkbox':'radio'}" ${fn:indexOf(mytestdati.answerid, info.id)!='-1' ? 'checked':''}  iscurret="${info.isCorrect}" name="questioninfo" value="${info.id}" >${info.answer}
+                                                        </label> 
                                                     </c:forEach>                                     
                                                 </div>                                              
                                             </div>  
@@ -198,7 +198,23 @@
             if(nextusertestid!=''){               
                 $("#myform").submit();
             }else{
-                layer.confirm('是否完成答卷', {
+                var a = $(".page-card-item");
+                var s = true;
+                $.each(a,function(i){
+                    if( (i!=(a.length-1)) && !$(this).hasClass('border')){
+                        s = false;
+                        return false;
+                    };
+                })
+                var tishi = "";
+                if(s){
+                    tishi = '是否完成答卷';
+                }else{
+                    tishi = '当前答题未完成，是否完成答卷';
+                }
+
+
+                layer.confirm(tishi, {
                     btn: ['确定', '取消'] //可以无限个按钮                    
                 }, function(index, layero){
                   //按钮【按钮一】的回调
@@ -211,11 +227,28 @@
 
         function succurrent(type){
             if('1'==type){
-                layer.confirm('是否完成答卷', {
+                var a = $(".page-card-item");
+                var s = true;
+                $.each(a,function(i){
+                    if( (i!=(a.length-1)) && !$(this).hasClass('border')){
+                        s = false;
+                        return false;
+                    };
+                })
+                var tishi = "";
+                if(s){
+                    tishi = '是否完成答卷';
+                }else{
+                    tishi = '当前答题未完成，是否完成答卷';
+                }
+                
+
+                layer.confirm(tishi, {
                     btn: ['确定', '取消'] //可以无限个按钮                    
                 }, function(index, layero){
-                  //按钮【按钮一】的回调
-                    gotosuc();
+                  //按钮【按钮一】的回调                                       
+                    gotosuc();                    
+                    
                 }, function(index){
                   //按钮【按钮二】的回调
                 });

@@ -31,10 +31,16 @@
 				</form:select>
 
 			</li>
-			<li><label>用户编号：</label>
+			<li><label>真实姓名：</label>
 				<form:select path="userid" class="input-medium">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getZuserList()}" itemLabel="name" itemValue="id" htmlEscape="false"/>
+					<form:options items="${fns:getZuserList()}" itemLabel="truename" itemValue="id" htmlEscape="false"/>
+				</form:select>
+			</li>
+			<li><label>身份证：</label>
+				<form:select path="userid" class="input-medium">
+					<form:option value="" label=""/>
+					<form:options items="${fns:getZuserList()}" itemLabel="idcode" itemValue="id" htmlEscape="false"/>
 				</form:select>
 			</li>
 			<li><label>支付方式：</label>
@@ -58,7 +64,8 @@
 		<thead>
 			<tr>
 				<th>课程名</th>
-				<th>用户名</th>
+				<th>真实姓名</th>
+				<th>身份证号码</th>
 				<th>支付方式</th>
 				<th>支付时间</th>
 				<th>购买状态</th>
@@ -71,7 +78,8 @@
 		<c:forEach items="${page.list}" var="zcourseOrder">
 			<tr>
 				<td>${fns:getCourse(zcourseOrder.courseid).title}</td>
-				<td>${fns:getZuser(zcourseOrder.userid).name}</td>
+				<td>${fns:getZuser(zcourseOrder.userid).truename}</td>
+				<td>${fns:getZuser(zcourseOrder.userid).idcode}</td>
 				<td>
 					<a href="${ctx}/hm/order/zcourseOrder/form?id=${zcourseOrder.id}">
 						${fns:getDictLabel(zcourseOrder.paytype, 'pay_type', '')}

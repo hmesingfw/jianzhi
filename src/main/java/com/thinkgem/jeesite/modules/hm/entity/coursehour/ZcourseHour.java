@@ -21,6 +21,9 @@ public class ZcourseHour extends DataEntity<ZcourseHour> {
 	private String url;		// 链接
 	private String weight;
 	
+	private String trueUrl;
+	
+	
 	public ZcourseHour() {
 		super();
 	}
@@ -30,6 +33,15 @@ public class ZcourseHour extends DataEntity<ZcourseHour> {
 	}
 
 	
+	
+	public String getTrueUrl() {
+		return trueUrl;
+	}
+
+	public void setTrueUrl(String trueUrl) {
+		this.trueUrl = trueUrl;
+	}
+
 	public String getWeight() {
 		if(!StringUtils.isNumeric(weight)){
 			weight = "0";

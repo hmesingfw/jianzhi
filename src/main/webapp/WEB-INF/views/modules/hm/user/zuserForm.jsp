@@ -164,7 +164,7 @@
 		<div class="control-group">
 			<label class="control-label">用户类型：</label>
 			<div class="controls">
-				<form:select path="type" class="input-xlarge ">
+				<form:select path="type" class="input-xlarge required">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('user_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
@@ -173,7 +173,7 @@
 		<div class="control-group">
 			<label class="control-label">用户状态：</label>
 			<div class="controls">
-				<form:select path="status" class="input-xlarge ">
+				<form:select path="status" class="input-xlarge required">
 					<form:option value="" label=""/>
 					<form:options items="${fns:getDictList('user_status')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>

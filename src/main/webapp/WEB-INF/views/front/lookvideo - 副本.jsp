@@ -3,8 +3,6 @@
 <!doctype html>
 <html>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>    
-
-    <script type="text/javascript" src="${ctxStatic}/ckplayerX/ckplayer/ckplayer.js"></script>
     <style>
     	html,body{
     		padding: 0;
@@ -133,113 +131,26 @@
             var url = $(".listul li:first div").attr('url');             
             playvideo(id, url);
         })
-
-        var newVideoObject = {
-            container: '#parent',//“#”代表容器的ID，“.”或“”代表容器的class
-            variable: 'player',//该属性必需设置，值等于下面的new chplayer()的对象
-            poster:'/static/ckplayer/blank.png',//封面图片
-            video: "",//视频地址
-            loaded: 'loadedHandler',                    //当播放器加载后执行的函数
-            autoplay: true,
-            volume:1
-        };
-        var  player=new ckplayer(newVideoObject);
-        
-        
-
-        function loadedHandler() {
-            player.addListener('time', timeHandler);
-            player.addListener('play', playHandler);
-            player.addListener('pause', pauseHandler); //监听暂停播放
-        }
-        function playHandler(){
-            console.log(1)
-            // $('video').trigger('pause');
-            // $("#play").show();
-        }
-        function pauseHandler(){
-            console.log(2)
-            
-            // $('video').trigger('play');
-            // $("#play").hide();
-        }
-        var currcourseid = "";
+        var playing = null;
+        var currcourseid = ''; //当时课时          
         function playvideo(courseid,url){
-            currcourseid = courseid;
             $.post('${ctxF}/createCourseuser',{courseid:courseid},function(){
-                var newVideoObject = {
-                    container: '#parent',//“#”代表容器的ID，“.”或“”代表容器的class
-                    variable: 'player',//该属性必需设置，值等于下面的new chplayer()的对象
-                    video: url,//视频地址
-                    loaded: 'loadedHandler',                    //当播放器加载后执行的函数
-                    autoplay: true,
-                    volume:1
-                };
+                $("#video").attr('src',url);
+                clearInterval(playing);
+                currcourseid=courseid;
 
-                if(player.playerType == 'html5video') {
-                    if(player.getFileExt(url) == '.flv' || player.getFileExt(url) == '.m3u8' || player.getFileExt(url) == '.f4v' || url.substr(0, 4) == 'rtmp') {
-                        
-                        player.removeChild();
+                playing = setInterval(function(){
+                    var currentTime = $("#current").text();     //当前播放时间
+                    var duration = $("#duration").text();       //视频总时长
 
-                        player = null;
-                        player = new ckplayer();
-                        player.embed(newVideoObject);
-                        
-                    } else {
-                        player.newVideo(newVideoObject);
-                        player.volume = 1;  
-                    }
-                } else {
-                    if(player.getFileExt(url) == '.mp4' || player.getFileExt(url) == '.webm' || player.getFileExt(url) == '.ogg') {
-                        player = null;
-                        player = new ckplayer();
-                        player.embed(newVideoObject);
-                        player.volume = 1;  
-                    } else {
-                        player.newVideo(newVideoObject);
-                        player.volume = 1;  
-                    }
-                }
+                    currentTime = Math.floor(currentTime);
+                    duration = Math.floor(duration);
+                    $.post('${ctxF}/courseLookRecord',{courseid:currcourseid,current:currentTime,duration:duration},function(){
+
+                    })
+                },5000)
             })
         }
-
-        function timeHandler(t){        
-            t = t+"";
-            var ts = t.substring(0,t.indexOf("."));     
-            var metaData = player.getMetaDate();
-            var duration = metaData['duration'];           
-
-            var currentTime =Math.floor(t) ;   //当前播放时间
-            duration = Math.floor(duration);     //视频总时长
-            $.post('${ctxF}/courseLookRecord',{courseid:currcourseid,current:currentTime,duration:duration},function(){
-
-            })
-            // isFree = true;          
-            // player.volume = 1;   
-            // player.videoPause();
-            
-        }
-
-        // var playing = null;
-        // var currcourseid = ''; //当时课时          
-        // function playvideo(courseid,url){
-        //     $.post('${ctxF}/createCourseuser',{courseid:courseid},function(){
-        //         $("#video").attr('src',url);
-        //         clearInterval(playing);
-        //         currcourseid=courseid;
-
-        //         playing = setInterval(function(){
-        //             var currentTime = $("#current").text();     //当前播放时间
-        //             var duration = $("#duration").text();       //视频总时长
-
-        //             currentTime = Math.floor(currentTime);
-        //             duration = Math.floor(duration);
-        //             $.post('${ctxF}/courseLookRecord',{courseid:currcourseid,current:currentTime,duration:duration},function(){
-
-        //             })
-        //         },5000)
-        //     })
-        // }
 
         function onTrackedVideoFrame(currentTime, duration){              
             $("#current").text(Math.floor(currentTime));
@@ -255,19 +166,19 @@
         // },5000) 
         
         
-        // function onplays(){
-        //     var videos = document.getElementById("video");
-        //     console.log()
+        function onplays(){
+            var videos = document.getElementById("video");
+            console.log()
 
-        //     if(videos.paused){
-        //         $('video').trigger('play');
-        //         $("#play").hide();
-        //     }else{
-        //         $('video').trigger('pause');
-        //         $("#play").show();
-        //     }
+            if(videos.paused){
+                $('video').trigger('play');
+                $("#play").hide();
+            }else{
+                $('video').trigger('pause');
+                $("#play").show();
+            }
             
-        // }
+        }
           
 
     </script>
@@ -282,8 +193,7 @@
 		<div class="head1-rt"><img src="${sessionMyinfo.img}"/><span>${sessionMyinfo.name}</span></div>
 	</div>
 	<div class="head1-center" onclick="onplays()">
-		<!-- <video controls="controls" id="video" src=""></video> -->
-        <div id="parent" style="width:100%;height:100%"></div>      
+		<video controls="controls" id="video" src=""></video>
 	</div>
    <div class="live_rightbox">
         <div class="positionrigh">
@@ -300,6 +210,6 @@
             </div>
         </div>
     </div>
-    <!-- <button type="button" style="position: absolute;top: 50%;left: 50%;z-index: 11;color: #fff;width: 150px;height: 30px;margin-top: -15px;margin-left: -75px;background: #03a9f4;border: none;border-radius:5px;cursor: pointer; " id="play" >点击播放</button> -->
+    <button type="button" style="position: absolute;top: 50%;left: 50%;z-index: 11;color: #fff;width: 150px;height: 30px;margin-top: -15px;margin-left: -75px;background: #03a9f4;border: none;border-radius:5px;cursor: pointer; " id="play" >点击播放</button>
 </body>
 </html>

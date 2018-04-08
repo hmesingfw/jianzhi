@@ -1,10 +1,8 @@
 package com.thinkgem.jeesite.front.web;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,6 +31,7 @@ import com.thinkgem.jeesite.common.utils.FileUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.pay.alipay.config.AlipayConfig;
 import com.thinkgem.jeesite.common.utils.sms.tool.SmsAliTool;
+import com.thinkgem.jeesite.front.utils.AliyunRecords;
 import com.thinkgem.jeesite.modules.hm.dao.test_question.ZtestQuestionDao;
 import com.thinkgem.jeesite.modules.hm.entity.course.Zcourse;
 import com.thinkgem.jeesite.modules.hm.entity.course_sort.ZcourseSort;
@@ -1280,6 +1279,14 @@ public class FrontController {
 		ZcourseHour zcourseHour = new ZcourseHour();
 		zcourseHour.setCourseid(zcourse.getId());
 		List<ZcourseHour> hourlist = zcourseHourService.findList(zcourseHour);
+		for (ZcourseHour zcourseHour2 : hourlist) {
+//			使用点播中的视频ID获取视频地址
+			List<Map<String, Object>> list = AliyunRecords.getVideoPayUrl(zcourseHour2.getUrl());
+			if (list != null && list.size() > 0){
+				System.out.println(list.get(list.size()-1).get("PlayURL").toString().trim()+"_________________________________________>");
+				zcourseHour2.setTrueUrl(list.get(list.size()-1).get("PlayURL").toString().trim());
+			}
+		}
 
 		// 课程观看时间记录
 		// ZcourseUser zcourseUser = new ZcourseUser();
@@ -1444,6 +1451,11 @@ public class FrontController {
 		model.addAttribute("classflyone", sort1);
 		model.addAttribute("classflytwo", sort2);
 		model.addAttribute("classflythr", sort3);
+		
+		String message = request.getParameter("message");
+		if("notest".equals(message)){
+			model.addAttribute("message", "当前专业下未分配测试题，请选择其它专业");
+		}
 		return "front/questionlist";
 	}
 
@@ -1525,7 +1537,11 @@ public class FrontController {
 
 		String type = request.getParameter("type"); // 专业类型
 		ZtestRandom ztestRandom = ztestRandomService.get(type);
-
+		if (ztestRandom == null || "".equals(ztestRandom)) {
+			model.addAttribute("message", "当前专业下未分配测试题，请选择其它专业");
+//			return "front/questionlist";
+			return "redirect:questionlist?message=notest";
+		}
 		Ztest test = new Ztest();
 		test.setTitle("随机测试题");
 		test.setTesttime("60");
@@ -1550,24 +1566,21 @@ public class FrontController {
 		zquestion.setParentid(type);
 
 		// 单选题
-		zquestion
-				.setLimit(StringUtils.isNumeric(ztestRandom.getRadio()) ? Integer.parseInt(ztestRandom.getRadio()) : 0);
+		zquestion.setLimit(StringUtils.isNumeric(ztestRandom.getRadio()) ? Integer.parseInt(ztestRandom.getRadio()) : 0);
 		zquestion.setType("1");
 		List<Zquestion> qlist = zquestionService.findRandList(zquestion);
 		for (Zquestion zquestion2 : qlist) {
 			questionlist.add(zquestion2);
 		}
 		// 多选题
-		zquestion.setLimit(
-				StringUtils.isNumeric(ztestRandom.getCheckbox()) ? Integer.parseInt(ztestRandom.getCheckbox()) : 0);
+		zquestion.setLimit(StringUtils.isNumeric(ztestRandom.getCheckbox()) ? Integer.parseInt(ztestRandom.getCheckbox()) : 0);
 		zquestion.setType("2");
 		qlist = zquestionService.findRandList(zquestion);
 		for (Zquestion zquestion2 : qlist) {
 			questionlist.add(zquestion2);
 		}
 		// 判断题
-		zquestion
-				.setLimit(StringUtils.isNumeric(ztestRandom.getJudge()) ? Integer.parseInt(ztestRandom.getJudge()) : 0);
+		zquestion.setLimit(StringUtils.isNumeric(ztestRandom.getJudge()) ? Integer.parseInt(ztestRandom.getJudge()) : 0);
 		zquestion.setType("3");
 		qlist = zquestionService.findRandList(zquestion);
 		for (Zquestion zquestion2 : qlist) {
@@ -1595,8 +1608,8 @@ public class FrontController {
 			}
 			return "front/test";
 		} else {
-			model.addAttribute("message", "当前专业下未分配测试题，请选择其实专业");
-			return "front/test";
+			model.addAttribute("message", "当前专业下未分配测试题，请选择其它专业");
+			return "redirect:questionlist?message=notest";
 		}
 
 	}
@@ -1683,7 +1696,9 @@ public class FrontController {
 
 		myTestlist(testid, user.getId(), model, "");
 		currentTest(mytestid, model);
-
+		
+		ZuserTest test = zuserTestService.get(mytestid);
+		model.addAttribute("mytestdati", test);
 		return "front/test";
 	}
 
@@ -1715,7 +1730,9 @@ public class FrontController {
 		String nextusertestid = request.getParameter("nextusertestid"); // 下一题题目的编号
 		ZuserTest usertest = zuserTestService.get(myusertestid);
 		usertest.setAnswerid(currentanswer);
-		usertest.setIsselected("1");
+		if(StringUtils.isNotBlank(currentanswer)){
+			usertest.setIsselected("1");
+		}
 		usertest.setIstrue(isCorrect);
 		zuserTestService.save(usertest);
 

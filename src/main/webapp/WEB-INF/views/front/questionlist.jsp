@@ -14,10 +14,10 @@
   <script src="https://cdn.bootcss.com/layer/3.1.0/layer.js"></script>
   <script type="text/javascript">
     $(document).ready(function() {
-      var msg = "${message}";
-      if(msg!='') {
-        layer.msg(msg);
-      }
+        var msg = "${message}";
+        if(msg!='') {
+            layer.msg(msg);
+        }
 
 
         var isnottest = '${isnottest}';
@@ -77,7 +77,33 @@
             //     layer.close(index);
             // });
         }
+
+
+        function moveSort(obj){
+            var type = $(obj).attr('date-type');
+            if('1'==type){
+                $(obj).parent().find('a').show();
+                $(obj).attr('date-type','2');
+            }else{
+                var alist = $(obj).parent().find('a');
+                $.each(alist, function(i){
+                    if(i<5){
+                        $(this).show();
+                    }else{
+                        $(this).hide();
+                    }
+                })
+                $(obj).attr('date-type','1');
+            }
+        }
   </script>
+    <style type="text/css">
+        .myteam2 a{
+             white-space: nowrap;
+             margin-top: 5px;
+             line-height: 36px;
+        }
+    </style>
 <body>
   <jsp:include page="include/ifie.jsp" />
   
@@ -97,26 +123,29 @@
         <div class="myteam1">
             <div class="myteam2">
                 <span>分类</span>
-                <c:forEach items="${sortlist1}" var="info">                  
-                    <a href="javascript:;" onclick="sortclick('${info.id}','1')" ${info.id == classflyone?'class="myteamon"':'' } >${info.name}</a>
+                <c:forEach items="${sortlist1}" var="info"  varStatus="list">                  
+                    <a href="javascript:;" onclick="sortclick('${info.id}','1')" style="${list.index > 4 ? 'display: none;':''}" ${info.id == classflyone?'class="myteamon"':'' } >${info.name}</a>
                 </c:forEach>
+                <button onclick="moveSort(this)" type="button" date-type="1">▼</button>
             </div>
         </div>
 
         <div class="myteam1">
             <div class="myteam2">
                 <span>分类</span>
-                <c:forEach items="${sortlist2}" var="info">                  
-                    <a href="javascript:;" onclick="sortclick('${info.id}','2')" ${info.id == classflytwo?'class="myteamon"':'' } >${info.name}</a>
+                <c:forEach items="${sortlist2}" var="info"  varStatus="list">                  
+                    <a href="javascript:;" onclick="sortclick('${info.id}','2')" style="${list.index > 4 ? 'display: none;':''}" ${info.id == classflytwo?'class="myteamon"':'' } >${info.name}</a>
                 </c:forEach>
+                <button onclick="moveSort(this)" type="button" date-type="1">▼</button>
             </div>
         </div>
         <div class="myteam1">
             <div class="myteam2">
                 <span>分类</span>
-                <c:forEach items="${sortlist3}" var="info">                  
-                    <a href="javascript:;" onclick="sortclick('${info.id}','3')" ${info.id == classflythr?'class="myteamon"':'' } >${info.name}</a>
+                <c:forEach items="${sortlist3}" var="info"  varStatus="list">                  
+                    <a href="javascript:;" onclick="sortclick('${info.id}','3')" style="${list.index > 4 ? 'display: none;':''}" ${info.id == classflythr?'class="myteamon"':'' } >${info.name}</a>
                 </c:forEach>
+                <button onclick="moveSort(this)" type="button" date-type="1">▼</button>
             </div>
         </div>
       	

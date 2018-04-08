@@ -46,7 +46,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">链接：</label>
+			<label class="control-label">视频id：</label>
 			<div class="controls">
 				<form:input path="url" htmlEscape="false" maxlength="3000" class="input-xlarge "/>
 			</div>

@@ -49,7 +49,7 @@
 								<c:when test="${info.shoptype == 2}"> 
 									<li>
 										<div class="user2-lt">
-											<img src="${fns:getCourseSort(info.courseid).img}" />
+											<img src="${fns:getCourse(info.courseid).img}" />
 										</div>
 										<div class="user2-rt">
 											<h1>${fns:getCourse(info.courseid).title}</h1>
