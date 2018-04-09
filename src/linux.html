@@ -25,12 +25,15 @@ docker run -d -p 80:8080 --privileged=true --name tomcat -v /opt/tomcat/webapps:
 
 
 
-docker logs -f -t --tail=10 bba2eddba1db
+docker logs -f -t --tail=10 tomcat    日志信息查看
 
+docker 项目映射路径   /opt/tomcat/
 
-
+172.18.0.1					数据库docker 内网地址
 172.18.0.1
-172.18.0.1
+
+
+ok教育服务器项目路径    C:\apache-tomcat-7.0.69\webapps\ROOT
 
 https://liaoningjianzhi.cn/f/alipayaNotify?gmt_create=2018-03-28%2017:14:04&charset=utf-8&gmt_payment=2018-03-28%2017:14:11&notify_time=2018-03-28%2017:14:12&subject=%E4%B9%B0&sign=$$$&buyer_id=2088802537268544&body=%E4%B9%B0&invoice_amount=0.01&version=1.0&notify_id=0697769ba01a9147aa19673c7262717k65&fund_bill_list=[{%22amount%22:%220.01%22,%22fundChannel%22:%22ALIPAYACCOUNT%22}]&notify_type=trade_status_sync&out_trade_no=1522257234657&total_amount=0.01&trade_status=TRADE_SUCCESS&trade_no=2018032821001004540556331869&auth_app_id=2018020102124783&receipt_amount=0.01&point_amount=0.00&app_id=2018020102124783&buyer_pay_amount=0.01&sign_type=RSA2&seller_id=2088921945967190
 

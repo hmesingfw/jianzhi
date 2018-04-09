@@ -1686,6 +1686,17 @@ public class FrontController {
 			model.addAttribute("msg", "请登陆.");
 			return "front/login";
 		}
+		String currentanswer = request.getParameter("currentanswer"); // 当前答案
+		String myusertestid = request.getParameter("myusertestid"); // 当前答题记录的编号
+		String isCorrect = request.getParameter("isCorrect");
+		ZuserTest usertest = zuserTestService.get(myusertestid);
+		usertest.setAnswerid(currentanswer);
+		if(StringUtils.isNotBlank(currentanswer)){
+			usertest.setIsselected("1");
+		}
+		usertest.setIstrue(isCorrect);
+		zuserTestService.save(usertest);
+		
 
 		String mytestid = request.getParameter("mytestid"); // 跳转到当前题
 		String testid = request.getParameter("testid");

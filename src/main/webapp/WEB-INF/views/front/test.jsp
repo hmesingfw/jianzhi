@@ -122,7 +122,7 @@
                                                     <dd class="panel-order">
 
                                                         <c:forEach items="${mytestlist}" var="info" varStatus="list">
-                                                            <a href="javascript:;" onclick="gotoQuestion('${info.id}','${test.id}')" class="page-card-item ${info.isselected == 1 ? 'border' : ''}" >${info.sort}</a>
+                                                            <a href="javascript:;" onclick="fungotoQuestion('${info.id}','${test.id}')" class="page-card-item ${info.isselected == 1 ? 'border' : ''}" >${info.sort}</a>
                                                         </c:forEach>
                                                     </dd>
                                                 </dl>
@@ -146,12 +146,65 @@
             </div>
         </div>
     </div>
+
+
+    <form id="gotoQuestion" name="gotoQuestion" action="${ctxF}/gotoQuestion" method="post">
+
+        <input type="hidden" name="currentanswer" value="" id="currentanswergotoQuestion"> 
+        <input type="hidden" name="isCorrect" value="" id="isCorrectgotoQuestion">
+        <input type="hidden" name="time" value="" id="timegotoQuestion">
+
+        <input type="hidden" name="myusertestid" value="${myusertestid}">
+
+        <input type="hidden" name="mytestid" value="" id="mytestidgotoQuestion">
+
+        <input type="hidden" name="testid" value="" id="testidgotoQuestion">
+    </form>
+
+
     <script type="text/javascript">
         var questiontype = '${zquestion.type == 2?"2":"1"}';
-        function gotoQuestion(mytestid, testid){
-            var time = $('.fen').html();
-            window.location.href='${ctxF}/gotoQuestion?mytestid='+mytestid+'&testid='+testid+'&time='+time;
+        function fungotoQuestion(mytestid, testid){
+
+            var answer = '';
+            var s = $("input[name='questioninfo']");
+            $.each(s,function(){
+                if($(this).is(":checked")){
+                    answer += $(this).val() +';';
+
+                    if(1==questiontype){
+                        if('1'==$(this).attr('iscurret')){
+                            $("#isCorrectgotoQuestion").val('1');
+                        }
+                    }else{
+                        if('1'==$(this).attr('iscurret') && iscurret){
+                            $("#isCorrectgotoQuestion").val('1');
+                        }else{
+                            iscurret = false;
+                            $("#isCorrectgotoQuestion").val('');
+                        }
+                    }
+                    
+                }                
+            })
+            console.log(answer)
+
+            $("#currentanswergotoQuestion").val(answer);
+            var fen = $('.fen').text();
+            $("#timegotoQuestion").val(fen);
+
+
+            $("#mytestidgotoQuestion").val(mytestid);
+            $("#testidgotoQuestion").val(testid);
+
+
+            $("#gotoQuestion").submit();
+
+            // var time = $('.fen').html();
+            // window.location.href='${ctxF}/gotoQuestion?mytestid='+mytestid+'&testid='+testid;
         }
+
+
         var iscurret = true;        //单选 多选  节点判断
         $(function(){
             var time = '${time}';
