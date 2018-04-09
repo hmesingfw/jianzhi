@@ -46,27 +46,34 @@
 
 
 						<c:forEach items="${page.list}" var="info">
-							<c:if test="${fn:length(fns:getCourse(info.courseid).parentid)>0}">
-								<li>
-									<div class="user2-lt">
-										<img src="${fns:getCourse(info.courseid).img}" />
-									</div>
-									<div class="user2-rt">
-										<h1>${fns:getCourse(info.courseid).title}</h1>
-										<p>最新学习时间：
-											<fmt:formatDate value="${info.updateDate}" pattern="yyyy-MM-dd"/>
-										</p>
-										<div class="userxian">
-											<div class="userxian1"><span class="userxian2" style="width: ${info.width}%"></span></div>	
-											<label>已学习${info.width}%</label> 
+							<c:choose>
+								<c:when test="${fn:length(fns:getCourse(info.courseid).parentid)>0}">
+									<li>
+										<div class="user2-lt">
+											<img src="${fns:getCourse(info.courseid).img}" />
 										</div>
-									</div>
-									<!-- <a href="" class="usercuo">×</a> -->
-									<a href="${ctxF}/coursedetail?id=${info.courseid}&parentid=${fns:getCourse(info.courseid).parentid}"  target="_blank" class="usercuo" style="margin-top: 22px;">
-										<button class="layui-btn layui-btn-normal" type="button">观看</button>
-									</a>
-								</li>
-							</c:if>
+										<div class="user2-rt">
+											<h1>${fns:getCourse(info.courseid).title}</h1>
+											<p>最新学习时间：
+												<fmt:formatDate value="${info.updateDate}" pattern="yyyy-MM-dd"/>
+											</p>
+											<div class="userxian">
+												<div class="userxian1"><span class="userxian2" style="width: ${info.width}%"></span></div>	
+												<label>已学习${info.width}%</label> 
+											</div>
+										</div>
+										<!-- <a href="" class="usercuo">×</a> -->
+										<a href="${ctxF}/coursedetail?id=${info.courseid}&parentid=${fns:getCourse(info.courseid).parentid}"  target="_blank" class="usercuo" style="margin-top: 22px;">
+											<button class="layui-btn layui-btn-normal" type="button">观看</button>
+										</a>
+									</li>
+
+								</c:when>
+								<c:otherwise>   
+
+								
+							   </c:otherwise>
+							</c:choose>
 						</c:forEach>	
 					</ul>
 					<div class="pages">

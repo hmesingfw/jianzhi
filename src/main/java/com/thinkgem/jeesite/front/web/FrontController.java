@@ -707,6 +707,16 @@ public class FrontController {
 		//// }
 		// }
 		// }
+		
+		
+		//添加专业课程
+		ZcourseOrder orders = new ZcourseOrder();
+		orders.setShoptype("2"); //专业购买
+		orders.setDelFlag("0");
+		List<ZcourseOrder> lists = zcourseOrderService.findList(orders);
+		
+		
+		
 
 		ZcourseOrder zcourseOrder = new ZcourseOrder();
 		zcourseOrder.setUserid(user.getId());
@@ -1240,6 +1250,46 @@ public class FrontController {
 	@RequestMapping(value = "alipayReturn")
 	public String alipayReturn(HttpServletRequest request, HttpServletResponse response, Model model) {
 		// 重定向到我的订单
+		Zuser user = (Zuser) request.getSession().getAttribute("sessionMyinfo");
+		if (user == null || StringUtils.isBlank(user.getId())) {
+			model.addAttribute("msg", "请登陆.");
+			return "front/login";
+		}
+		ZcourseOrder orders = new ZcourseOrder();
+		orders.setShoptype("2");
+		orders.setDelFlag("0");
+		List<ZcourseOrder> lists = zcourseOrderService.findList(orders);
+		for (ZcourseOrder Order : lists) {
+			
+			//当时专业下的课程
+			Zcourse course = new Zcourse();
+			course.setParentid(Order.getCourseid());
+			course.setDelFlag("0");
+			List<Zcourse> courselist = zcourseService.findList(course);
+			
+			for (Zcourse zcourse2 : courselist) {
+				ZcourseOrder zcourseOrder = new ZcourseOrder();
+				zcourseOrder.setCourseid(zcourse2.getId());
+				zcourseOrder.setUserid(user.getId());
+				zcourseOrder.setDelFlag("0");
+				List<ZcourseOrder> orderlist = zcourseOrderService.findMyorderByid(zcourseOrder);
+				if (orderlist != null && orderlist.size() > 0) {
+
+				} else {
+					zcourseOrder.setPaystatus("2");
+					zcourseOrder.setPayprice("0");
+					zcourseOrder.setPaytime(new Date());
+					zcourseOrder.setCourseprice("0");
+					zcourseOrder.setPaytype("3");
+					zcourseOrderService.save(zcourseOrder);
+				}
+			}
+						
+		}
+		
+		
+		
+		
 		return "redirect:myCourseUser";
 	}
 
