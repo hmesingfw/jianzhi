@@ -22,7 +22,29 @@
 					}
 				}
 			});
+
+			$("#files").change(function(){
+				var a = $(this).parent().find('#filesPreview>li>a:first');
+				console.log(a)
+			})
 		});
+		function upda(){
+			var a = $("#files").parent().find('#filesPreview>li>a:first').attr('href');
+			 
+			var name = $("#files").parent().find('#filesPreview>li>a:first').text();
+			var path = a.substring(1, a.lastIndexOf("/"));
+
+
+			console.log(path+"/"+name)
+		}
+		function update(){
+			var a = $("#files").parent().find('#filesPreview>li>a:first').attr('href');
+			 
+			var name = $("#files").parent().find('#filesPreview>li>a:first').text();
+			var path = a.substring(0, a.lastIndexOf("/"));
+
+			$("#files").val(path+"/"+name)
+		}
 	</script>
 </head>
 <body>
@@ -30,7 +52,7 @@
 		<li><a href="${ctx}/hm/doc/zdoc/">文档列表</a></li>
 		<li class="active"><a href="${ctx}/hm/doc/zdoc/form?id=${zdoc.id}">文档<shiro:hasPermission name="hm:doc:zdoc:edit">${not empty zdoc.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="hm:doc:zdoc:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="zdoc" action="${ctx}/hm/doc/zdoc/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="zdoc" action="${ctx}/hm/doc/zdoc/save" method="post" class="form-horizontal" onsubmit="update()">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
@@ -46,7 +68,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">上传文件：</label>
+			<label class="control-label" onclick="upda()">上传文件：</label>
 			<div class="controls">
 				<input type="hidden" id="files" name="files" value="${zdoc.files}" />
 				<sys:ckfinder input="files" type="files" uploadPath="/docfiles/files" selectMultiple="false"/> 
